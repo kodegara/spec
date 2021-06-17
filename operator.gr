@@ -1,0 +1,912 @@
+$m.sidang("Operator", fn () {
+    ada identitas = fn (x) { x }
+
+    tentang("++ (naikSetignkat)", fn () {
+        uji("hanya bisa digunakan jika ada metode naikSetingkat tanpa argumen", fn () {
+            tuntut coba {
+                ada a = benar
+                a++
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "kesalahan tipe: Boolean++"
+                benar
+            } == benar
+
+            ada a = 1
+            a++
+            tuntut a == 2
+
+            ada a = 1
+            tuntut a == 1
+            a.naikSetingkat()
+            a == 2
+        })
+
+        xuji("hanya bisa digunakan dengan pengenal", fn () {
+            // tuntut coba {
+            //     1++ // setelah punya eval
+            //     salah
+            // } tahan (e) {
+            //     tuntut e.pesan() == "operasi hanya bisa dilakukan dengan suatu variabel/fungsi"
+            //     benar
+            // } == benar
+        })
+
+        uji("pada Integer akan menambahkan 1 pada diri sendiri", fn () {
+            ada a = 1
+            a++
+            tuntut a == 2
+        })
+
+        uji("pada Riil akan menambahkan 1.0 pada diri sendiri", fn () {
+            ada a = 0.5
+            a++
+            tuntut a == 1.5
+        })
+
+        uji("bisa digunakan dengan iterasi `dari`", fn () {
+            ada angka = []
+            dari (ada i = 0; i < 5; i++) {
+                angka << i
+            }
+            tuntut angka == [0, 1, 2, 3, 4]
+        })
+    })
+
+    tentang("-- (turunSetingkat)", fn () {
+        uji("hanya bisa digunakan jika ada metode turunSetingkat tanpa argumen", fn () {
+            tuntut coba {
+                ada a = benar
+                a--
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "kesalahan tipe: Boolean--"
+                benar
+            } == benar
+
+            ada a = 1
+            a--
+            tuntut a == 0
+
+            ada a = 1
+            tuntut a == 1
+            a.turunSetingkat()
+            a == 0
+        })
+
+        xuji("hanya bisa digunakan dengan pengenal", fn () {
+            // tuntut coba {
+            //     1-- // setelah punya eval
+            //     salah
+            // } tahan (e) {
+            //     tuntut e.pesan() == "operasi hanya bisa dilakukan dengan suatu variabel/fungsi"
+            //     benar
+            // } == benar
+        })
+
+        uji("pada Integer akan mengurangi 1 dari diri sendiri", fn () {
+            ada a = 1
+            a--
+            tuntut a == 0
+        })
+
+        uji("pada Riil akan mengurangi 1.0 pada diri sendiri", fn () {
+            ada a = 0.5
+            a--
+            tuntut a == -0.5
+        })
+
+        uji("bisa digunakan dengan iterasi `dari`", fn () {
+            ada angka = []
+            dari (ada i = 5; i > 0; i--) {
+                angka << i
+            }
+            tuntut angka == [5, 4, 3, 2, 1]
+        })
+    })
+
+    tentang("&&", fn () {
+        ada p = {"peta": "iya"}
+        ada f = fn() { "5" }
+        ada d = [1, 2, 3, 4, 5]
+
+        uji("dapat beroperasi dengan nilai Boolean atau nilai apapun yang sebenar/sesalah", fn () {
+            tuntut (benar && benar) == benar
+            tuntut (benar && salah) == salah
+            tuntut (salah && benar) == salah
+            tuntut (salah && salah) == salah
+            tuntut (benar && nil) == nil
+            tuntut (nil && benar) == nil
+            tuntut (nil && nil) == nil
+            tuntut (salah && nil) == salah
+            tuntut (nil && salah) == nil
+            tuntut benar && (benar && (benar && salah)) == salah
+
+            tuntut (salah && benar == salah) == salah
+            tuntut (benar && 5) == 5
+            tuntut (benar && f) == f
+            tuntut (benar && d) == d
+            tuntut (benar && p) == p
+            tuntut (5 && benar) == benar
+            tuntut (5 && 8) == 8
+            tuntut (1 && "gara") == "gara"
+            tuntut (1 && salah) == salah
+            tuntut (salah && 1) == salah
+            tuntut (5 && nil) == nil
+            tuntut (nil && 5) == nil
+        })
+    })
+
+    tentang("||", fn () {
+        uji("dapat beroperasi dengan nilai Boolean atau nilai apapun yang sebenar/sesalah", fn () {
+            tuntut benar || benar == benar
+            tuntut benar || salah == benar
+            tuntut salah || benar == benar
+            tuntut salah || salah == salah
+            tuntut benar || nil == benar
+            tuntut nil || benar == benar
+            tuntut salah || 5 == 5
+            tuntut salah || "adam" == "adam"
+            tuntut salah || nil == nil
+        })
+
+        tentang("pada Nirdefinisi", fn () {
+            uji("memberikan nilai pertama yang tidak `nil`", fn () {
+                ada angka = nil || 5
+                ada pesan = nil || "pesan"
+
+                tuntut angka == 5
+                tuntut pesan == "pesan"
+            })
+        })
+    })
+
+    tentang("unary !", fn () {
+        tentang("pada Boolean", fn () {
+            uji("menegasikan nilai", fn () {
+                tuntut !benar == salah
+                tuntut !salah == benar
+                tuntut !nil == benar
+                tuntut !!nil == salah
+                tuntut !5 == salah
+                tuntut !!5 == benar
+            })
+        })
+    })
+
+    tentang("unary -", fn () {
+        uji("memiliki kedudukan lebih tinggi daripada operasi pemanggilan", fn () {
+            ada f = fn() { 1 }
+
+            tuntut f() == 1
+            tuntut -f() == -1
+        })
+
+        tentang("pada Integer", fn () {
+            uji("menegasikan nilai", fn () {
+                ada a = 1
+                tuntut -a == -1
+            })
+        })
+
+        tentang("pada Riil", fn () {
+            uji("menegasikan nilai", fn () {
+                ada a = 1.5
+                a = -a
+                tuntut a == -1.5
+                tuntut a.jadiKata() == "-1.5"
+                tuntut a + 1.5 == 0
+
+                tuntut -fAnanta == -fAnanta
+                tuntut (-fNaN).nan?() == benar
+            })
+        })
+    })
+
+    tentang("== (sama?)", fn () {
+        tentang("pada Boolean", fn () {
+            uji("hanya bernilai benar jika dua sisi benar-benar sama", fn () {
+                tuntut benar == benar
+                tuntut salah == salah
+                tuntut nil == nil
+                tuntut (benar == 1) == salah
+                tuntut (1 == benar) == salah
+            })
+        })
+
+        tentang("pada Deret", fn () {
+            uji("hanya bernilai benar jika setiap elemen pada deret A terdapat pada deret B dalam posisi yang sama", fn () {
+                ada arr = [1, 2, 3]
+
+                tuntut arr == arr
+                tuntut [1, 2, 3] == arr
+                tuntut [1, 2, 3] == [1, 2, 3]
+                tuntut ([1, 2, 3] == [1, 3, 2]) == salah
+                tuntut [1, 2, 3] == [1, 2, identitas(3)]
+                tuntut [1, 2, 3] != [1, 2, 4]
+                tuntut [1, 2, 3] != 1
+                tuntut [1, 2, 3] != salah
+                tuntut [1, 2, 3] != benar
+                tuntut [1, 2, 3] != nil
+                tuntut [1, 2, 3] != "string"
+                tuntut [1, 2, 3] != {}
+                tuntut [1, 2, 3] != fn() {}
+            })
+        })
+
+        tentang("pada Integer", fn () {
+            uji("hanya bernilai `benar` jika bernilai persis sama", fn () {
+                ada satu = 1
+
+                tuntut 1 == 1
+                tuntut satu == 1
+                tuntut -5 == -5
+            })
+        })
+
+        tentang("pada Nirdefinisi", fn () {
+            uji("hanya bernilai `benar` jika kedua sisi adalah `nil`", fn () {
+                tuntut nil == nil
+                tuntut nil != benar
+                tuntut nil != salah
+                tuntut benar != nil
+                tuntut salah != nil
+                tuntut nil != nil == salah
+                tuntut identitas(nil) == identitas(nil)
+            })
+        })
+
+        tentang("pada Riil", fn () {
+            uji("hanya bernilai `benar` jika kedua sisi bernilai hampir mendekati", fn () {
+                tuntut 0.1 + 0.2 == 0.3
+                tuntut fNaN != fNaN
+                tuntut (fNaN == fNaN) == salah
+                tuntut 1.1 == 1.1
+                tuntut 1.2 == 1.2
+                tuntut 1.3 == 1.3
+                tuntut 0.0 == 0.0
+                tuntut 0.0 == -0.0
+                tuntut 0.0 == 0
+                tuntut 5.0 == 5
+                tuntut (5.1 == 5) == salah
+                tuntut (0.0 == []) == salah
+                tuntut (0.0 == nil) == salah
+                tuntut (fAnanta == []) == salah
+                tuntut (fNaN == fNaN) == salah
+            })
+        })
+    })
+
+    tentang("!= (beda?)", fn () {
+        tentang("pada Boolean", fn () {
+            uji("hanya bernilai `benar` jika dua sisi benar-benar tidak sama", fn () {
+                tuntut benar != salah
+                tuntut benar != nil
+                tuntut salah != benar
+                tuntut salah != nil
+                tuntut nil != benar
+                tuntut nil != salah
+                tuntut 1 != benar
+                tuntut "benar" != benar
+                tuntut (1 == 1) == benar
+                tuntut (1 != 1) == salah
+            })
+        })
+
+        tentang("pada Integer", fn () {
+            uji("hanya bernilai `benar` jika dua sisi memiliki nilai yang berbeda", fn () {
+                tuntut 1 != 2
+                tuntut -1 != 1
+                tuntut 1 != 1.0
+            })
+        })
+    })
+
+    tentang("[] (padaPosisi)", fn () {
+        tentang("pada Deret", fn () {
+            ada angka = [1, 2, 3, 4, 5]
+
+            uji("mengembalikan elemen pada suatu posisi `i` dimana `i` adalah Integer", fn () {
+                tuntut angka[-1] == nil
+                tuntut angka[0] == 1
+                tuntut angka[1] == 2
+                tuntut angka[2] == 3
+                tuntut angka[3] == 4
+                tuntut angka[4] == 5
+                tuntut angka[5] == nil
+
+                // fungsi (atau ekspresi apapun) dapat digunakan asalkan mengutus Integer
+                tuntut angka[identitas(0)] == 1
+                tuntut angka[identitas(-1)] == nil
+
+                tuntut coba {
+                    angka[0.5]
+                    salah
+                } tahan (e) {
+                    e.pesan() == "tidak dapat menerima Riil"
+                    benar
+                } == benar
+            })
+        })
+
+        tentang("pada Kata", fn () {
+            uji("mengutus karakter pada suatu posisi `i` dimana `i` adalah Integer", fn () {
+                ada t = "halo!"
+                tuntut t[-1] == nil
+                tuntut t[0] == "h"
+                tuntut t[1] == "a"
+                tuntut t[2] == "l"
+                tuntut t[3] == "o"
+                tuntut t[4] == "!"
+                tuntut t[5] == nil
+            })
+        })
+
+        tentang("pada Peta", fn () {
+            ada kFungsi = fn () {}
+            ada kPeta = {benar: "adam"}
+            ada kArr = [1, 2, 3, 4, 5]
+
+            // nilai biner nya sama
+            ada kRiil = 3.0
+            ada kRiilTigaJumlah = (1.0 + 2.0)
+
+            // nilai biner nya beda
+            ada kRiil2v1 = 0.1 * 0.2
+            ada kRiil2v2 = 0.02
+
+            ada peta = {
+                1: 1,
+                "two": 4,
+                "two": 2, // harusnya di-overwrite, meski string immutable dan lokasi memori beda, tapi kobit tetap sama
+                benar: "yes",
+                salah: "no",
+                kFungsi: "",
+                kFungsi: "fungsi",
+                nil: salah,
+                nil: benar,
+                Masalah: salah,
+                kArr: kFungsi,
+                kPeta: "x",
+                kRiil: "tigaAsli",
+                kRiilTigaJumlah: "tigaJumlah",
+                kRiil2v1: "v1",
+                kRiil2v2: "v2",
+            }
+
+            uji("mengembalikan elemen yang terasosiasikan dengan `i` dimana `i` adalah objek apapun", fn () {
+                tuntut peta[1] == 1
+                tuntut peta[2] == nil
+                tuntut peta["two"] == 2
+                tuntut peta[benar] == "yes"
+                tuntut peta[salah] == "no"
+                tuntut peta[kFungsi] == "fungsi"
+                tuntut peta[nil] == benar
+                tuntut peta[Masalah] == salah
+                tuntut peta[kArr] == kFungsi
+                tuntut peta[kPeta] == "x"
+                tuntut peta[kRiilTigaJumlah] == "tigaJumlah"
+                tuntut peta[kRiil] == "tigaJumlah"
+                tuntut peta[kRiil2v1] == "v1"
+                tuntut peta[kRiil2v2] == "v2"
+            })
+        })
+    })
+
+    tentang("[]= (isiPosisi)", fn () {
+        tentang("pada Deret", fn () {
+            uji("bisa mengganti elemen pada posisi yang sebelumnya telah ditempati elemen lain", fn () {
+                ada x = [1, 2, 3, 4]
+
+                x[0] = 12
+                tuntut x == [12, 2, 3, 4]
+
+                x[fn(){0}()] = benar
+                tuntut x == [benar, 2, 3, 4]
+            })
+
+            uji("bisa menambahkan elemen baru pada posisi yang sebelumnya tidak terdefinisikan", fn () {
+                ada a = []
+                tuntut a == []
+
+                a[0] = 1
+                tuntut a == [1]
+
+                a[5] = 1
+                tuntut a == [1, nil, nil, nil, nil, 1]
+            })
+
+            uji("bisa digunakan dengan ekspresi", fn () {
+                ada f = fn () { [1, 2, 3, 4] }
+                fn () { [1, 2, 3, 4] }()[0] = 5
+                f()[0] = 5
+
+                tuntut f() == [1, 2, 3, 4] // tidak berubah
+            })
+        })
+
+        tentang("pada Peta", fn () {
+            uji("bisa mengganti elemen pada posisi yang sebelumnya telah ditempati elemen lain", fn () {
+                ada a = {"nama": "gara"}
+                a["nama"] = "Gara"
+                tuntut a["nama"] == "Gara"
+            })
+
+            uji("bisa menambahkan elemen baru pada posisi yang sebelumnya tidak terdefinisikan", fn () {
+                ada a = {}
+                tuntut a["nama"] == nil
+                a["nama"] = "Gara"
+                tuntut a["nama"] == "Gara"
+            })
+        })
+    })
+
+    // todo: delegasikan ke metode,
+    tentang("<<", fn () {
+        tentang("pada Deret", fn () {
+            uji("menambahkan elemen pada posisi terakhir", fn () {
+                ada der = []
+                ada derCopy = der
+                ada derLain = []
+
+                der << 1
+                tuntut der == [1]
+                tuntut derCopy == der
+                tuntut derLain == []
+
+                der << 2
+                tuntut der == [1, 2]
+                tuntut derCopy == der
+                tuntut derLain == []
+
+                derLain << 3
+                tuntut der == [1, 2]
+                tuntut derCopy == [1, 2]
+                tuntut derLain == [3]
+            })
+        })
+    })
+
+    tentang("+ (tambah)", fn () {
+        uji("operator + mendelegasikan ke metode `tambah`", fn () {
+            kelas A {
+                ada nilai
+
+                fn nilai(n) { nilai = n }
+                fn nilai() { nilai }
+
+                fn tambah(a) { nilai + a.nilai() }
+            }
+
+            ada x = A.baru()
+            ada y = A.baru()
+
+            x.nilai(10)
+            y.nilai(15)
+            tuntut x + y == 25
+        })
+
+        tentang("pada Integer", fn () {
+            uji("menjumlahkan sisi kiri dan sisi kanan", fn () {
+                ada satu = 1
+                ada dua = 2
+
+                tuntut satu + dua == 3
+                tuntut 1 + 2 == 3
+                tuntut 1 + 2 + 3 == 6
+                tuntut (1 + -2) - 3 == -4
+                tuntut 1 + 1.5 == 2.5
+            })
+        })
+
+        tentang("pada Kata", fn () {
+            uji("menggabungkan menjadi satu Kata", fn () {
+                ada halo = "halo"
+                ada dunia = "dunia"
+
+                tuntut halo + "" == "halo"
+                tuntut halo + " " + dunia == "halo dunia"
+                tuntut "string " + 1 == "string 1"
+            })
+        })
+
+        tentang("pada Riil", fn () {
+            ada a = 0.1
+            ada b = 0.2
+
+            tuntut a + b == 0.3
+            tuntut a + b == 0.3 // sengaja diulang, untuk memastikan riil bersifat immutable
+
+            tuntut a == 0.1
+            tuntut b == 0.2
+
+            tuntut 1 + 1.5 == 2.5
+            tuntut 1.5 + 1 == 2.5
+        })
+    })
+
+    tentang("+=", fn () {
+        tentang("pada Integer", fn () {
+            uji("menambahkan sisi kanan ke diri sendiri", fn () {
+                ada x = 1
+                x += 1
+                tuntut x == 2
+
+                x += 0.5
+                tuntut x == 2.5
+            })
+        })
+
+        tentang("pada Riil", fn () {
+            uji("menambahkan sisi kanan ke diri sendiri", fn () {
+                ada a = 5.0
+
+                a += 0.5
+                tuntut a == 5.5
+            })
+        })
+    })
+
+    tentang("- (kurang)", fn () {
+        tentang("pada Integer", fn () {
+            uji("mengurangi sisi kiri sebanyak sisi kanan", fn () {
+                ada satu = 1
+                ada dua = 2
+
+                tuntut satu - dua == -1
+                tuntut 1 - 2 == -1
+                tuntut 1 - 2 - 3 == -4
+                tuntut (1 - -2) - 3 == 0
+                tuntut 3 - 1.5 == 1.5
+            })
+        })
+
+        tentang("pada Riil", fn () {
+            uji("mengurangi sisi kiri sebanyak sisi kanan", fn () {
+                ada a = 0.1
+                ada b = 0.2
+
+                tuntut b - a == 0.1
+                tuntut b - a == 0.1
+
+                tuntut a == 0.1
+                tuntut b == 0.2
+
+                tuntut 3 - 1.5 == 1.5
+                tuntut 2.5 - 1 == 1.5
+                tuntut -fAnanta - fAnanta == -fAnanta
+                tuntut (-fAnanta - (-fAnanta)).nan?() == benar
+                tuntut (fAnanta - fAnanta).nan?()
+                tuntut fAnanta - (-fAnanta) == fAnanta
+            })
+        })
+    })
+
+    tentang("-=", fn () {
+        tentang("pada Integer", fn () {
+            uji("mengurangi diri sendiri sebanyak sisi kanan", fn () {
+                ada x = 1
+                x -= 1
+                tuntut x == 0
+
+                x -= 0.5
+                tuntut x == -0.5
+            })
+        })
+
+        tentang("pada Riil", fn () {
+            uji("mengurangi diri sendiri sebanyak sisi kanan", fn () {
+                ada a = 5.0
+
+                a -= 0.5
+                tuntut a == 4.5
+            })
+        })
+    })
+
+    tentang("* (ganda)", fn () {
+        tentang("pada Integer", fn () {
+            uji("mengalikan sisi kiri sebanyak sisi kanan", fn () {
+                ada satu = 1
+                ada dua = 2
+
+                tuntut satu * dua == 2
+                tuntut 1 * 2 == 2
+                tuntut 1 * 2 * 3 == 6
+                tuntut (1 * -2) * -3 == 6
+                tuntut 1 + 2 + 3 * 4 == 15
+                tuntut 1 + (2 + 3) * 4 == 21
+                tuntut (1 + (2 + 3)) * 4 == 24
+                tuntut 2 * 2.5 == 5.0
+                tuntut -1 * -1 == 1
+            })
+        })
+
+        tentang("pada Kata", fn () {
+            xuji("menggandakan Kata sebanyak sisi kanan", fn () {
+
+            })
+        })
+
+        tentang("pada Riil", fn () {
+            uji("mengalikan sisi kiri sebanyak sisi kanan", fn () {
+                ada a = 0.1
+                ada b = 0.2
+
+                tuntut a * b == 0.02
+                tuntut a * b == 0.02
+
+                tuntut a == 0.1
+                tuntut b == 0.2
+
+                tuntut 2 * 0.5 == 1.0
+                tuntut 0.5 * 2 == 1.0
+                tuntut 10 * (0.1 + 0.2) == 10 * 0.1 + 10 * 0.2
+                tuntut fAnanta * fAnanta == fAnanta
+                tuntut fAnanta * -fAnanta == -fAnanta
+                tuntut -fAnanta * fAnanta == -fAnanta
+                tuntut -fAnanta * -fAnanta == fAnanta
+                tuntut (0 * fAnanta).nan?() == benar
+                tuntut (fAnanta * 0).nan?() == benar
+                tuntut (0 * -fAnanta).nan?() == benar
+                tuntut (-fAnanta * 0).nan?() == benar
+            })
+        })
+    })
+
+    tentang("*=", fn () {
+        tentang("pada Integer", fn () {
+            uji("mengalikan diri sendiri sebanyak sisi kanan", fn () {
+                ada x = 5
+                x *= 5
+                tuntut x == 25
+
+                x *= 0.5
+                tuntut x == 12.5
+            })
+        })
+
+        tentang("pada Riil", fn () {
+            uji("mengalikan diri sendiri sebanyak sisi kanan", fn () {
+                ada a = 5.0
+
+                a *= 0.5
+                tuntut a == 2.5
+            })
+        })
+    })
+
+    tentang("/ (bagi)", fn () {
+        tentang("pada Integer", fn () {
+            uji("membagi secara bulat sisi kiri dengan sisi kanan", fn () {
+                ada satu = 1
+                ada dua = 2
+
+                tuntut satu / dua == 0
+                tuntut 4/2 == 2
+                tuntut 5 / 2 == 2
+                tuntut 5 / 2.0 ==2.5
+
+                tuntut coba {
+                    1 / 0
+                    salah
+                } tahan (e) {
+                    tuntut e.pesan() == "dibagi dengan 0"
+                    benar
+                } == benar
+            })
+        })
+
+        tentang("pada Riil", fn () {
+            uji("membagi sisi kiri dengan sisi kanan", fn () {
+                ada a = 5.0
+                ada b = 2.0
+
+                tuntut a / b == 2.5
+                tuntut a / b == 2.5
+
+                tuntut a == 5.0
+                tuntut b == 2.0
+
+                tuntut 5 / 2.0 == 2.5
+                tuntut 5.0 / 2 == 2.5
+
+                tuntut (0.0 / 0).nan?() == benar
+                tuntut 1.0 / 0 == fAnanta
+                tuntut fAnanta / 0 == fAnanta
+                tuntut -fAnanta / 0 == fAnanta
+                tuntut (fAnanta / fAnanta).nan?() == benar
+                tuntut (fAnanta / -fAnanta).nan?() == benar
+                tuntut (-fAnanta / fAnanta).nan?() == benar
+                tuntut (-fAnanta / -fAnanta).nan?() == benar
+            })
+        })
+    })
+
+    tentang("/=", fn () {
+        tentang("pada Integer", fn () {
+            uji("membagi diri sendiri dengan sisi kanan", fn () {
+                ada x = 10
+                x /= 5
+                tuntut x == 2
+
+                x /= 0.5
+                tuntut x == 4.0
+            })
+        })
+
+        tentang("pada Riil", fn () {
+            uji("membagi diri sendiri dengan sisi kanan", fn () {
+                ada a = 5.0
+
+                a /= 2.0
+                tuntut a == 2.5
+            })
+        })
+    })
+
+    tentang("% modulo", fn () {
+        tentang("pada Integer", fn () {
+            uji("mengutus hasil pembagian sisi kiri dari sisi kanan", fn () {
+                tuntut 5 % 1 == 0
+                tuntut 5 % 2 == 1
+                tuntut 5 % 3 == 2
+                tuntut 5 % 4 == 1
+                tuntut 5 % 5 == 0
+                tuntut 5 % 6 == 5
+            })
+        })
+    })
+
+    tentang("** (pangkat)", fn () {
+        tentang("pada Integer", fn () {
+            uji("memangkat sisi kiri terhadap sisi kanan", fn () {
+                tuntut 2 ** 0 == 1
+                tuntut 1 ** 2 == 1
+                tuntut 2 ** 2 == 4
+                tuntut 4 ** 4 == 256
+                tuntut 2 ** 2.5 == 5.65685424949238
+                tuntut (2 ** fNaN).nan?() == benar
+                tuntut (2 ** fAnanta) == fAnanta
+                tuntut (2 ** -fAnanta) == 0
+            })
+        })
+
+        tentang("pada Riil", fn () {
+            uji("memangkat sisi kiri terhadap sisi kanan", fn () {
+                tuntut (fNaN ** 2).nan?() == benar
+                tuntut (fNaN ** 2).nan?() == benar
+                tuntut (fNaN ** 2.0).nan?() == benar
+                tuntut (fNaN ** fNaN).nan?() == benar
+                tuntut fAnanta ** -2 == 0
+                tuntut fAnanta ** -1 == 0
+                tuntut fAnanta ** 0 == 1
+                tuntut fAnanta ** 1 == fAnanta
+                tuntut fAnanta ** 2 == fAnanta
+                tuntut -fAnanta ** 2 == fAnanta
+                tuntut -fAnanta ** -fAnanta == 0
+                tuntut -1 ** -fAnanta == 1.0
+                tuntut -2 ** -fAnanta == 0.0
+                tuntut -3 ** -fAnanta == 0.0
+                tuntut 0 ** -fAnanta == fAnanta
+                tuntut 1 ** -fAnanta == 1
+                tuntut 2 ** -fAnanta == 0.0
+                tuntut 3 ** -fAnanta == 0.0
+                tuntut 0 ** fAnanta == 0
+                tuntut 1 ** fAnanta == 1.0
+                tuntut -1 ** fAnanta == 1
+                tuntut 1 ** fAnanta == 1
+                tuntut 2 ** fAnanta == fAnanta
+                tuntut 3 ** fAnanta == fAnanta
+                tuntut 0 ** fAnanta == 0.0
+            })
+        })
+    })
+
+    tentang("> (lebihDari?)", fn () {
+        tentang("pada Integer", fn () {
+            uji("mengutus `benar` jika sisi kiri bernilai lebih besar daripada sisi kanan", fn () {
+                tuntut 1 > 0 == benar
+                tuntut 1 > 0.5 == benar
+                tuntut 2 > 1 == benar
+                tuntut 3 > 4 == salah
+                tuntut 3 > 3 == salah
+                tuntut 0 > -1 == benar
+                tuntut -1 > -2 == benar
+            })
+        })
+
+        tentang("pada Riil", fn () {
+            uji("mengutus `benar` jika sisi kiri bernilai lebih besar daripada sisi kanan", fn () {
+                tuntut (0.1 + 0.2) > 0.3 == salah
+                tuntut 4.1 > 4.0 == benar
+                tuntut 4.1 > 4 == benar
+                tuntut fAnanta > -fAnanta == benar
+                tuntut fAnanta > 1 == benar
+                tuntut fNaN > fAnanta == salah
+                tuntut fAnanta > fNaN == salah
+            })
+        })
+    })
+
+    tentang(">= (samaAtauLebihDari?)", fn () {
+        tentang("pada Integer", fn () {
+            uji("mengutus `benar` jika sisi kiri bernilai sama atau lebih besar daripada sisi kanan", fn () {
+                tuntut 1 >= 1 == benar
+                tuntut 1 >= 1.0 == benar
+                tuntut 1 >= 2 == salah
+                tuntut 2 >= 3 == salah
+                tuntut -1 >= -2 == benar
+                tuntut -1 >= 0 == salah
+                tuntut 5 > 4.99 == benar
+            })
+        })
+
+        tentang("pada Riil", fn () {
+            uji("mengutus `benar` jika sisi kiri bernilai mendekati atau lebih besar daripada sisi kanan", fn () {
+                tuntut (0.1 + 0.2) >= 0.3 == benar
+                tuntut 1.1 >= 1.1 == benar
+                tuntut 1.1 >= 1.09 == benar
+                tuntut fAnanta >= fAnanta == benar
+                tuntut fAnanta >= -fAnanta == benar
+                tuntut -fAnanta >= -fAnanta == benar
+                tuntut fNaN >= fNaN == salah
+                tuntut fNaN >= fAnanta == salah
+                tuntut fNaN >= -fAnanta == salah
+            })
+        })
+    })
+
+    tentang("< (kurangDari?)", fn () {
+        tentang("pada Integer", fn () {
+            uji("mengutus `benar` jika sisi kiri bernilai lebih kecil daripada sisi kanan", fn () {
+                tuntut 0 < 1 == benar
+                tuntut -2 < -1 == benar
+                tuntut 1 < 0 == salah
+                tuntut 1 < 2 == benar
+                tuntut 1 < 1.1 == benar
+                tuntut 2 < 2 == salah
+            })
+        })
+
+        tentang("pada Riil", fn () {
+            uji("mengutus `benar` jika sisi kiri bernilai lebih kecil daripada sisi kanan", fn () {
+                tuntut (0.1 + 0.2) < 0.3 == salah
+                tuntut 4 < 4.9 == benar
+                tuntut 5.0 < 5.01 == benar
+                tuntut 1 < fAnanta == benar
+                tuntut -fAnanta < 1 == benar
+                tuntut -fAnanta < fAnanta == benar
+                tuntut fAnanta < fNaN == salah
+                tuntut fNaN < fAnanta == salah
+                tuntut fNaN < 1 == salah
+                tuntut fNaN < -fAnanta == salah
+            })
+        })
+    })
+
+    tentang("<= (samaAtauKurangDari?)", fn () {
+        tentang("pada Integer", fn () {
+            uji("mengutus `benar` jika sisi kiri bernilai sama atau lebih kecil daripada sisi kanan", fn () {
+                tuntut 1 <= 1 == benar
+                tuntut 1 <= 1.1 == benar
+                tuntut 1 <= 2 == benar
+                tuntut 2 <= 3 == benar
+                tuntut -1 <= -2 == salah
+                tuntut -1 <= 0 == benar
+                tuntut 5 < 5.01 == benar
+            })
+        })
+
+        tentang("pada Riil", fn () {
+            uji("mengutus `benar` jika sisi kiri bernilai mendekati atau lebih kecil daripada sisi kanan", fn () {
+                tuntut (0.1 + 0.2) <= 0.3 == benar
+                tuntut 1.1 <= 1.1 == benar
+                tuntut 1.1 <= 1.2 == benar
+                tuntut fAnanta <= fAnanta == benar
+                tuntut -fAnanta <= -fAnanta == benar
+                tuntut fAnanta <= -fAnanta == salah
+            })
+        })
+    })
+})

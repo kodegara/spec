@@ -1,0 +1,133 @@
+$m.sidang("Kata kunci `putus`", fn () {
+    uji("akan menjadi masalah eksekusi jika dipanggil diluar iterasi", fn () {
+        tuntut coba {
+            putus
+        } tahan (e) {
+            tuntut e itu MasalahEksekusi
+            tuntut e.pesan().berisi?("`putus` tidak dimungkinkan karena tidak sedang dalam iterasi")
+            benar
+        } == benar
+    })
+
+    uji("dapat memutus iterasi `selama`", fn () {
+        ada deret = []
+        ada i = 0
+
+        selama (i < 100) {
+            deret << i
+            i += 1
+
+            jika (i == 5) {
+                putus
+                deret << 12345 // tidak ditambahkan!
+            }
+        }
+
+        tuntut deret == [0, 1, 2, 3, 4]
+    })
+
+    uji("dapat memutus iterasi `dari`", fn () {
+        ada deret = []
+
+        dari (ada i = 0; i < 100; i += 1) {
+            deret << i
+
+            jika (i == 5) {
+                putus
+                deret << 12345 // tidak ditambahkan!
+            }
+        }
+
+        tuntut deret == [0, 1, 2, 3, 4, 5]
+    })
+
+    uji("dapat memutus iterasi `selama` yang selalu `benar`", fn () {
+        ada deret = []
+        ada i = 0
+
+        selama (benar) {
+            deret << i
+            i += 1
+
+            jika (i == 5) {
+                putus
+                deret << 12345 // tidak ditambahkan!
+            }
+        }
+
+        tuntut deret == [0, 1, 2, 3, 4]
+    })
+
+    uji("dapat memutus iterasi `dari` yang selalu `benar`", fn () {
+        ada nilaiLain = fn () {
+            ada d = []
+            dari (ada i = 0; benar; i += 1) {
+                d << i
+                jika (i == 5) {
+                    putus
+                    d << 12345 // tidak ditambahkan!
+                }
+            }
+            d
+        }
+
+        tuntut nilaiLain() == [0, 1, 2, 3, 4, 5]
+    })
+
+    uji("dapat memutus iterasi dari fungsi pengiterasi", fn () {
+        ada iterasikan = fn (x, fnPengiterasi) {
+            dari (ada i = 0; i < x.panjang(); i += 1) {
+                fnPengiterasi(x[i])
+            }
+        }
+
+        ada deret = []
+
+        iterasikan([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], fn (i) {
+            deret << i
+            jika (i == 5) {
+                putus
+                deret << 12345 // tidak ditambahkan!
+            }
+        })
+
+        tuntut deret == [1, 2, 3, 4, 5]
+    })
+
+    uji("hanya memutus iterasi paling dekat", fn () {
+        ada deret = []
+
+        dari (ada i = 0; i < 3; i += 1) {
+            deret << i
+
+            dari (ada j = i; j < 3; j += 1) {
+                deret << j
+                putus
+                deret << 12345 // tidak ditambahkan!
+            }
+        }
+
+        tuntut deret == [0, 0, 1, 1, 2, 2]
+
+        deret = []
+        tuntut deret.kosong?()
+
+        ada i = 0
+        selama (i < 3) {
+            ada j = i
+
+            deret << i
+
+            selama (j < 3) {
+                deret << j
+                j += 1
+                putus
+                deret << 12345 // tidak ditambahkan!
+            }
+
+            i += 1
+        }
+
+        tuntut deret == [0, 0, 1, 1, 2, 2]
+    })
+})

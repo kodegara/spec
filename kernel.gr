@@ -1,0 +1,66 @@
+$m.sidang(Kernel, fn () {
+    uji("#cetak mencetak pesan", fn () {
+        Kernel.cetak("mencetak dari kernel")
+
+        // bisa resolve metode dengan nama yang sama dengan yang dari Kernel
+        kelas A {
+            fn cetak(a) {
+                Kernel.cetak("cetak: " + a)
+            }
+
+            fn cetak2() {
+                cetak(2)
+            }
+        }
+
+        A.baru().cetak2()
+    })
+
+    tentang("#eval!(arg)", fn () {
+        uji("bisa mengevaluasi argumen sebagai kode", fn () {
+            tuntut eval!("1 + 1") == 2
+            tuntut eval!("fn(){\"dari eval\"}()") == "dari eval"
+        })
+
+        uji("bisa meresolusi pengenal dari blok yang sama", fn () {
+            ada a = "a"
+            ada b = "a"
+
+            tuntut a.beralamatSamaDalamMemori?(b) == salah
+            tuntut a.beralamatSamaDalamMemori?(a) == benar
+
+            tuntut eval!("a").beralamatSamaDalamMemori?(a) == benar
+            tuntut eval!("b").beralamatSamaDalamMemori?(b) == benar
+        })
+
+        uji("bisa mengubah pengenal dari blok yang sama", fn () {
+            ada a = []
+
+            tuntut eval!("a << 1") == a
+            tuntut a == [1]
+        })
+    })
+
+    uji("#muat memuat dan mengevaluasi file sebagai inti Kernel", fn () {
+        tidakAda!(fn () { ADariMuat })
+        tidakAda!(fn () { BDariMuat })
+        tidakAda!(fn () { ADariBlok })
+
+        tuntut fn dalamBlok() {
+            Kernel.muat("./pelengkap/kernel/muat/kelas_a.gr")
+            muat("./pelengkap/kernel/muat/kelas_b.gr")
+
+            tuntut ADariMuat.baru().b() itu BDariMuat
+            tuntut BDariMuat.baru().a() itu ADariMuat
+
+            kelas ADariBlok {}
+            tuntut ADariBlok itu Kelas
+
+            benar
+        }() == benar
+
+        tidakAda!(fn () { ADariBlok })
+        tuntut ADariMuat itu Kelas
+        tuntut BDariMuat itu Kelas
+    })
+})

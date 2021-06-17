@@ -1,0 +1,23 @@
+$m.sidang("Komentar", fn (uji) {
+    uji("boleh dekat dengan kata kunci", fn() {
+        // ada nilai = 0
+    })
+
+    uji("boleh dekat dengan operator", fn() {
+        // a == 0
+    })
+
+    uji("boleh berentetan sebaris", fn () {
+        // //
+    })
+
+    uji("boleh berentetan banyak baris", fn () {
+        // a
+        // b
+        // c
+
+        //
+        //
+        //
+    })
+})

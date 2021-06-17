@@ -1,0 +1,72 @@
+$m.sidang("Masalah", fn (uji) {
+    uji(".baru() bisa membuat objek masalah tanpa pesan", fn () {
+        ada msl = Masalah.baru()
+        tuntut msl itu Masalah
+        // tuntut msl.pesan() == ""
+    })
+
+    uji(".baru() bisa membuat objek masalah dengan pesan", fn () {
+        ada msl = MasalahKode.baru("ada kesalahan dalam kode")
+
+        tuntut msl itu MasalahKode
+        tuntut msl itu Masalah
+
+        tuntut msl.pesan() == "ada kesalahan dalam kode"
+    })
+
+    tentang(".jejak()", fn () {
+        uji("mencetak jejak eksekusi dalam metode yang bermasalah", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                fn err() { tuntut salah }
+            }
+
+            tuntut coba {
+                A.baru().err()
+                salah
+            } tahan (e) {
+                tuntut e.jejak().panjang() > 0
+                benar
+            } == benar
+        })
+    })
+
+    uji(".pesan=(arg) menyetel isi pesan masalah", fn () {
+        ada msl = Masalah.baru("bermasalah")
+        tuntut msl.pesan() == "bermasalah"
+
+        msl.pesan = "tetap bermasalah"
+        tuntut msl.pesan() == "tetap bermasalah"
+    })
+
+    tentang(".rincian()", fn () {
+        uji("mengutus `nil` jika `pesan()` dan `jejak()` kosong", fn () {
+            ada m = Masalah.baru()
+
+            tuntut m.pesan().kosong?()
+            tuntut m.jejak().kosong?()
+
+            tuntut m.rincian() == nil
+        })
+
+        uji("mengutus pesan jika hanya `pesan()` yang bernilai", fn () {
+            ada m = Masalah.baru("masalah")
+
+            tuntut m.pesan() != nil
+            tuntut m.jejak().kosong?()
+
+            tuntut m.rincian() == "Masalah: masalah"
+        })
+
+        uji("mengutus jejak jika ada", fn () {
+            ada bermasalah = fn () { 1 + nil }
+            ada m
+
+            coba { bermasalah() } tahan (e) { m = e }
+
+            tuntut m.rincian().berisi?("Jejak pemanggilan")
+            tuntut !m.pesan().kosong?()
+        })
+    })
+})

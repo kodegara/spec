@@ -1,0 +1,234 @@
+$m.sidang("Peta", fn (uji) {
+    // todo: biar variabel tidak berubah-ubah setiap jalannya tes/independen
+    // var("kFungsi") { {} } equal to -> var("kFungsi", fn () { {} }) << hanya jika fungsi sebagai argumen terakhir
+    ada kFungsi = fn () {}
+    ada kPeta = {benar: "adam"}
+    ada kArr = [1, 2, 3, 4, 5]
+
+    // nilai biner nya sama
+    ada kRiil = 3.0
+    ada kRiilTigaJumlah = (1.0 + 2.0)
+
+    // nilai biner nya beda
+    ada kRiil2v1 = 0.1 * 0.2
+    ada kRiil2v2 = 0.02
+
+    ada peta = {
+        1: 1,
+        "two": 4,
+        "two": 2, // harusnya di-overwrite, meski string immutable dan lokasi memori beda, tapi kobit tetap sama
+        benar: "yes",
+        salah: "no",
+        kFungsi: "",
+        kFungsi: "fungsi",
+        nil: salah,
+        nil: benar,
+        Masalah: salah,
+        kArr: kFungsi,
+        kPeta: "x",
+        kRiil: "tigaAsli",
+        kRiilTigaJumlah: "tigaJumlah",
+        kRiil2v1: "v1",
+        kRiil2v2: "v2",
+    }
+
+    xuji(".baru() dapat membuat peta baru", fn () {
+        // tuntut Peta.baru() == {}
+    })
+
+    uji("itu Peta", fn () {
+        tuntut Peta itu Kelas
+        tuntut Peta itu Objek
+
+        tuntut peta itu Peta
+
+        tuntut !(peta itu Kelas)
+    })
+
+    uji(".balik() membalik kunci menjadi nilai dan sebaliknya", fn () {
+        ada p = {"x": 1, "y": 2, "z": benar}
+        tuntut p.balik() == {1: "x", 2: "y", benar: "z"}
+    })
+
+    uji(".berisi?() bernilai benar jika peta tidak kosong", fn () {
+        tuntut {}.berisi?() == salah
+        tuntut {1: 2}.berisi?() == benar
+        tuntut {nil: nil}.berisi?() == benar
+    })
+
+    uji(".berisi?(arg1) bernilai benar jika peta berisi nilai yang terpetakan dengan kunci arg1", fn () {
+        tuntut peta.berisi?(1) == benar
+    })
+
+    uji(".deretkan() menjadikan peta pasangan deret [kunci, nilai]", fn () {
+        tuntut peta.deretkan() == [
+            [1, 1],
+            ["two", 2],
+            [benar, "yes"],
+            [salah, "no"],
+            [kFungsi, "fungsi"],
+            [nil, benar],
+            [Masalah, salah],
+            [kArr, kFungsi],
+            [kPeta, "x"],
+            [kRiil, "tigaJumlah"],
+            [kRiil2v1, "v1"],
+            [kRiil2v2, "v2"]
+        ]
+    })
+
+    uji(".gali(arg1) menggali nilai beradasarkan deretan kunci", fn () {
+        ada p = {"a": {"b": {"c": 1}, "d": 2}, "e": 3}
+
+        tuntut p.gali(["a", "b", "c"]) == 1
+        tuntut p.gali(["a", "b"]) == {"c": 1}
+        tuntut p.gali(["a", "d"]) == 2
+        tuntut p.gali(["e"]) == 3
+        tuntut p.gali([]) == p
+    })
+
+    uji(".gali(arg1) akan menjadi masalah jika kunci tidak ditemukan", fn () {
+        ada p = {"a": {"b": {"c": 1}, "d": 2}, "e": 3}
+
+        p.gali(["a", "b", "x"]) == nil
+        p.gali(["x", "y", "z", "a", "b"]) == nil
+    })
+
+    uji(".hapusPosisi(arg1) menghapus elemen pada posisi arg1", fn () {
+        ada p = {"x": 123, "y": benar}
+
+        tuntut p["x"] == 123
+        tuntut p["y"] == benar
+
+        tuntut p.hapusPosisi("x") == 123
+        tuntut p["x"] == nil
+        tuntut p["y"] == benar
+    })
+
+    uji(".isiPosisi(arg1, arg2) mengasosiasikan elemen arg2 pada posisi arg1", fn () {
+        ada p = {}
+
+        tuntut p.kunci?("x") == salah
+        tuntut p.isiPosisi("x", benar)
+        tuntut p.kunci?("x") == benar
+        tuntut p["x"] == benar
+    })
+
+    uji(".kosong?() bernilai benar jika peta tidak berelemen", fn () {
+        tuntut {}.kosong?() == benar
+        tuntut {nil: nil}.kosong?() == salah
+    })
+
+    uji(".kunci() mengembalikan deret berisi kunci", fn () {
+        tuntut peta.kunci() == [
+            1,
+            "two",
+            benar,
+            salah,
+            kFungsi,
+            nil,
+            Masalah,
+            kArr,
+            kPeta,
+            kRiil,
+            kRiil2v1,
+            kRiil2v2
+        ]
+    })
+
+    uji(".kunci?(arg) mengecek apakah peta memiliki kunci arg", fn () {
+        tuntut peta.kunci?(1) == benar
+        tuntut peta.kunci?("two") == benar
+        tuntut peta.kunci?(benar) == benar
+        tuntut peta.kunci?(salah) == benar
+        tuntut peta.kunci?(kFungsi) == benar
+        tuntut peta.kunci?(nil) == benar
+        tuntut peta.kunci?(Masalah) == benar
+        tuntut peta.kunci?(kArr) == benar
+        tuntut peta.kunci?(kPeta) == benar
+        tuntut peta.kunci?(fn () {}) == salah
+        tuntut peta.kunci?(["1", {}]) == salah
+    })
+
+    uji(".kobit() mencetak kode bibit", fn () {
+        tuntut peta.kobit() itu Integer
+    })
+
+    uji(".nilai() mengembalikan deret berisi nilai", fn () {
+        tuntut peta.nilai() == [
+            1,
+            2,
+            "yes",
+            "no",
+            "fungsi",
+            benar,
+            salah,
+            kFungsi,
+            "x",
+            "tigaJumlah",
+            "v1",
+            "v2"
+        ]
+    })
+
+    uji(".nilai?(arg) bernilai benar jika peta memiliki nilai arg", fn () {
+        tuntut peta.nilai?(1) == benar
+        tuntut peta.nilai?(2) == benar
+        tuntut peta.nilai?("yes") == benar
+        tuntut peta.nilai?("no") == benar
+        tuntut peta.nilai?("fungsi") == benar
+        tuntut peta.nilai?(benar) == benar
+        tuntut peta.nilai?(salah) == benar
+        tuntut peta.nilai?(kFungsi) == benar
+        tuntut peta.nilai?("x") == benar
+        tuntut peta.nilai?([{}]) == salah
+    })
+
+    uji(".rapat() menghapus kunci yang terasosiasikan dengan nilai `nil`", fn () {
+        ada p = {1: nil, 2: nil, benar: nil, nil: 4, 5: 6}
+        tuntut p.rapat() == {nil: 4, 5: 6}
+        tuntut p == {1: nil, 2: nil, benar: nil, nil: 4, 5: 6}
+    })
+
+    uji(".sama?(arg) mengecek apakah peta ini memiliki pasangan kunci-nilai yang sama dalam peta arg", fn () {
+        tuntut {}.sama?({}) == benar
+        tuntut {}.sama?({nil: nil}) == salah
+        tuntut {nil: 1}.sama?({1: nil}) == salah
+        tuntut {nil: 1}.sama?({nil: 2}) == salah
+    })
+
+    uji(".temu(arg1, arg2) mengembalikan nilai yang terasosiasikan dengan arg1, jika tidak ada akan mengembalikan arg2 sebagai pengganti", fn () {
+        ada p = {1: 2, 2: benar}
+
+        tuntut p.temu(1, "xyz") == 2
+        tuntut p.temu(2, "xyz") == benar
+        tuntut p.temu(3, "xyz") == "xyz"
+    })
+
+    uji(".tanpa(arg) menepis elemen yang tidak diinginkan", fn () {
+        ada p = {"1": 1, 2: "2", "3": "3", benar: benar, salah: salah}
+        ada pBaru = p.tanpa(fn (k, n) {
+            k itu Angka || n itu Angka
+        })
+
+        tuntut p == {"1": 1, 2: "2", "3": "3", benar: benar, salah: salah}
+        tuntut pBaru == {"3": "3", benar: benar, salah: salah}
+    })
+
+    uji(".tiap(arg) mengiterasi pasangan kunci-nilai pada peta", fn () {
+        ada p = {}
+
+        peta.tiap(fn (k, n) {
+            p.isiPosisi(k, n)
+        })
+
+        tuntut p == peta
+        tuntut p.panjang() == peta.panjang()
+        tuntut p.panjang() > 0
+    })
+
+    xuji(".jadiKata() menuliskan Peta menjadi Kata", fn () {
+        // pastikan tiga hanya tertulis satu kali
+        // tuntut peta.jadiKata() == {1: 1, salah: "no", <Fungsi: @0xc00048d5e0>: "fungsi", nil: benar, 3: "tigaJumlah", "two": 2, benar: "yes", <Kelas Masalah: @0xc0001342c0>: salah, [1, 2, 3, 4, 5]: <Fungsi: @0xc00048d5e0>, {benar: "adam"}: "x"}
+    })
+})

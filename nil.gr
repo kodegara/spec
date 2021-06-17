@@ -1,0 +1,11 @@
+$m.sidang("Nil", fn (uji) {
+    ada identitas = fn (x) { x }
+
+    uji("itu Nirdefinisi", fn () {
+        tuntut Nirdefinisi itu Kelas
+        tuntut Nirdefinisi itu Objek
+
+        tuntut nil itu Nirdefinisi
+        tuntut nil itu Objek
+    })
+})

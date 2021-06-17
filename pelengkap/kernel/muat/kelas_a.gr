@@ -1,0 +1,3 @@
+kelas ADariMuat {
+    fn b() { BDariMuat.baru() }
+}

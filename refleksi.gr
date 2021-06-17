@@ -1,0 +1,10 @@
+$m.sidang(Refleksi, fn () {
+    uji("#cipta! menginisialisasi kelas", fn () {
+        tidakAda!(fn () { A })
+
+        kelas A {}
+
+        ada a = Refleksi.cipta!(A)
+        tuntut a itu A
+    })
+})

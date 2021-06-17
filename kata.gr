@@ -1,0 +1,287 @@
+$m.sidang("Kata", fn (uji) {
+    ada halo = "halo"
+    ada dunia = "dunia"
+
+    uji("#baru() dapat membuat Kata baru yang kosong", fn () {
+        tuntut Kata.baru() == ""
+    })
+
+    uji("#ordinal() mengkonversi karakter paling kanan ke nilai ordinalnya", fn () {
+        tuntut Kata.metode().berisi?("ordinal")
+        tuntut "".metode().berisi?("ordinal") == salah
+        tuntut Kata.ordinal("a") != nil
+    })
+
+    uji("itu Kata", fn () {
+        tuntut Kata itu Kelas
+        tuntut Kata itu Objek
+
+        tuntut halo itu Kata
+        tuntut dunia itu Kata
+
+        tuntut !(halo itu Kelas)
+        tuntut !("" itu Kelas)
+    })
+
+    uji("secara penuh mendukung Unicode", fn () {
+        tuntut "Ƣ" == "Ƣ"
+        tuntut "愛" == "愛"
+        tuntut "☮" == "☮"
+        tuntut "🥰" == "🥰"
+        tuntut "Ƣ" + "愛" + "☮" + "🥰" == "Ƣ愛☮🥰"
+
+        tuntut Kata.ordinal("Ƣ") == 418
+        tuntut Kata.ordinal("愛") == 24859
+        tuntut Kata.ordinal("☮") == 9774
+        tuntut Kata.ordinal("🥰") == 129392
+        tuntut Kata.ordinal("é́́") == 101 // dianggap seperti e biasa
+
+        tuntut "🇮🇩".panjang() == 2
+        tuntut "Ƣ愛☮🥰".panjang() == 4
+        tuntut "世界".panjang() == 2
+        tuntut "é́́".panjang() == 4
+
+        // meski jika terdapat 11 "karakter", yang dicetak memang benar seharusnya
+        // 12, dikarenakan terdapat 12 code point, karena karakter tangan coklat
+        // adalah gabungan dua code point/kesatuan cluster dari: 🖖 🏿
+        tuntut "Hello, 世🖖🏿🖖界".panjang() == 12
+
+        ada teks = "Ƣ愛☮🥰🐻"
+        ada teksPisah = ["Ƣ", "愛", "☮", "🥰", "🐻"]
+        tuntut teks.pisah("") == teksPisah
+
+        ada teksPisah2 = []
+        teksPisah.tiap(fn (t, idx) {
+            tuntut t == teksPisah[idx]
+            teksPisah2 << t
+        })
+        tuntut teksPisah2 == teksPisah
+    })
+
+    uji("dapat menggunakan karakter lepas dengan tanda petik", fn () {
+        ada id = fn (kata) { kata } // membantu memastikan kata dengan karakter lepas dapat digunakan sebagai argumen
+
+        ada folder = "./pelengkap/kata/petik"
+        tuntut id("\n") == File.baca(folder + "/1_baris_baru.txt")
+        tuntut id("\\n") == File.baca(folder + "/bukan_1_baris_baru.txt")
+        tuntut id("\"a\"") == File.baca(folder + "/1_dalam_petik.txt")
+        tuntut id("\"") == File.baca(folder + "/1_petik_tanpa_tutup.txt")
+        tuntut id("\"\"") == File.baca(folder + "/1_petik.txt")
+        tuntut id("\t\n") == File.baca(folder + "/1_tab.txt")
+    })
+
+    uji("dapat membentang beberapa baris", fn () {
+        ada abjad = "
+        abc
+        def
+        ghi
+        jkl
+        "
+
+        tuntut abjad.pisah("\n") == [
+            "",
+            "        abc",
+            "        def",
+            "        ghi",
+            "        jkl",
+            "        "
+        ]
+    })
+
+    uji(".berisi?(arg1) mengecek apakah Kata berisi Kata lain", fn () {
+        tuntut coba { "".berisi?(nil) } tahan (e) { e itu MasalahArgumen } == benar
+        tuntut coba { "".berisi?(1) } tahan (e) { e itu MasalahArgumen } == benar
+        tuntut coba { "".berisi?([]) } tahan (e) { e itu MasalahArgumen } == benar
+        tuntut coba { "".berisi?({}) } tahan (e) { e itu MasalahArgumen } == benar
+        tuntut coba { "".berisi?(1, 2) } tahan (e) { e itu MasalahArgumen } == benar
+
+        tuntut "foobar".berisi?("") == benar
+        tuntut "foobar".berisi?("foo") == benar
+        tuntut "foobar".berisi?("bar") == benar
+        tuntut "foobar".berisi?("oob") == benar
+        tuntut "foobar".berisi?("f") == benar
+        tuntut "foobar".berisi?("r") == benar
+        tuntut "foobar".berisi?("foobax") == salah
+    })
+
+    uji(".besar() menjadikan seluruh karakter berhuruf besar", fn () {
+        tuntut coba { "".besar(1) } tahan (e) { e itu MasalahArgumen } == benar
+
+        tuntut "".besar() == ""
+        tuntut "-1 derajat".besar() == "-1 DERAJAT"
+    })
+
+    uji(".cari(arg1) menemukan posisi dimana Kata dapat ditemukan dalam Kata untuk pertama kalinya", fn () {
+        tuntut coba { "".cari(1) } tahan (e) { e.pesan().berisi?("tidak dapat menerima Integer") }
+        tuntut coba { "".cari("1", "2") } tahan (e) { e.pesan().berisi?("`cari` hanya bisa dipanggil dengan 1 argumen") }
+
+        tuntut "foobar".cari("") == 0
+        tuntut "foobar".cari("foo") == 0
+        tuntut "foobar".cari("bar") == 3
+        tuntut "foobar".cari("oob") == 1
+        tuntut "foobar".cari("f") == 0
+        tuntut "foobar".cari("r") == 5
+        tuntut "foobar".cari("foobax") == nil
+    })
+
+    uji(".cuil(arg1, arg2) mengutus Kata pada posisi dari arg1 sampai ke arg2 inklusif", fn () {
+        ada kata = "ini adalah sebuah kata"
+
+        tuntut kata.cuil(0, 2) == "ini"
+        tuntut kata.cuil(4, 9) == "adalah"
+        tuntut kata.cuil(11, 16) == "sebuah"
+        tuntut kata.cuil(18, 21) == "kata"
+        tuntut kata.cuil(18, 100) == "kata"
+        tuntut kata.cuil(21, 21) == "a"
+        tuntut kata.cuil(21, 22) == "a"
+        tuntut kata.cuil(21, 100) == "a"
+        tuntut kata.cuil(22, 22) == nil
+        tuntut kata.cuil(22, 23) == nil
+        tuntut kata.cuil(18, 100) == "kata"
+    })
+
+    uji(".diawali?(arg1) mengecek apakah kata diawali dengan kata lain", fn () {
+        tuntut coba { "".diawali?(1) } tahan (e) { e.pesan().berisi?("tidak dapat menerima Integer") }
+
+        tuntut "Gara".diawali?("Gar")
+        tuntut "Gara".diawali?("a") == salah
+        tuntut "Gara".diawali?("gar") == salah
+    })
+
+    uji(".diakhiri?(arg1) mengecek apakah kata diakhiri dengan kata lain", fn () {
+        tuntut coba { "".diakhiri?(1) } tahan (e) { e.pesan().berisi?("arg itu Kata") }
+
+        tuntut "Ini Gara".diakhiri?("ara")
+        tuntut "Ini Gara".diakhiri?("ra")
+        tuntut "Ini Gara".diakhiri?("a")
+        tuntut "Ini Gara".diakhiri?("")
+        tuntut "".diakhiri?("")
+    })
+
+    uji(".tambah(arg1) menyambung arg1 ke kata secara non-destruktif", fn () {
+        ada tul1 = "a"
+        ada tul2 = "b"
+
+        tuntut coba { tul1.tambah() } tahan (e) { e itu Masalah }
+        tuntut coba { tul1.tambah(1, 2) } tahan (e) { e itu Masalah }
+
+        tuntut tul1.tambah(tul2) == "ab"
+        tuntut tul1 == "a"
+        tuntut tul2 == "b"
+
+        tuntut tul1.tambah(1) == "a1"
+        tuntut tul1.tambah([1, 2, 3]) == "a[1, 2, 3]"
+        tuntut tul1.tambah({benar: 1}) == "a{benar: 1}"
+        tuntut tul1.tambah(benar) == "abenar"
+        tuntut tul1.tambah(salah) == "asalah"
+        tuntut tul1.tambah(nil) == "anil"
+    })
+
+    uji(".ganda(arg) mencetak kata sebanyak arg", fn () {
+        tuntut "a".ganda(4) == "aaaa"
+        tuntut "a".ganda(1) == "a"
+        tuntut "a".ganda(0) == ""
+        tuntut "a".ganda(-1) == ""
+
+        tuntut "a" * 4 == "aaaa"
+    })
+
+    uji(".kecil() menjadikan seluruh karakter berhuruf kecil", fn () {
+        tuntut coba { "".kecil(1) } tahan (e) { cetak(e.pesan()); e.pesan().berisi?("`kecil` hanya bisa dipanggil dengan tanpa argumen") }
+
+        tuntut "ABC".kecil() == "abc"
+        tuntut "Abc".kecil() == "abc"
+        tuntut "abc DEF".kecil() == "abc def"
+        tuntut "ABC DEF".kecil() == "abc def"
+    })
+
+    uji(".kobit() mencetak kode bibit", fn () {
+        tuntut "a".kobit() != "b".kobit()
+        tuntut "ab".kobit() != "ac".kobit()
+        tuntut "".kobit() != " ".kobit()
+        tuntut "12345".kobit() != 12345.kobit()
+    })
+
+    tentang(".kosong()", fn () {
+        uji("mengutus `benar` jika tak berisi apapun", fn () {
+            tuntut "".kosong?() == benar
+        })
+
+        uji("mengutus `benar` jika hanya berisi spasi", fn () {
+            tuntut "    ".kosong?() == benar
+        })
+
+        uji("mengutus `benar` jika hanya berisi tab", fn () {
+            tuntut "\t\t\t\t".kosong?() == benar
+        })
+
+        uji("mengutus `benar` jika hanya berisi garis baru", fn () {
+            tuntut "\n\n\n\n".kosong?() == benar
+        })
+
+        uji("mengutus `benar` jika hanya berisi berbagai macam spasi", fn () {
+            tuntut "\t\n \t\n".kosong?() == benar
+        })
+
+        uji("mengutus `salah` jika terdapat karakter lain non-spasi", fn () {
+            tuntut "\ta\t".kosong?() == salah
+        })
+    })
+
+    uji(".panjang() memberi informasi jumlah karakter dalam kata", fn () {
+        tuntut coba { "".panjang(1) } tahan (e) { e.pesan().berisi?("`panjang` hanya bisa dipanggil dengan tanpa argumen") }
+
+        tuntut "".panjang() == 0
+        tuntut "1".panjang() == 1
+        tuntut "abc".panjang() == 3
+    })
+
+    uji(".pisah() memisah kata kata-per-kata", fn () {
+        tuntut "pada suatu hari".pisah() == ["pada", "suatu", "hari"]
+        tuntut "pada".pisah() == ["pada"]
+        tuntut "pada ".pisah() == ["pada"]
+        tuntut "pada    ".pisah() == ["pada"]
+        tuntut "pada    suatu".pisah() == ["pada", "suatu"]
+        tuntut "pada . $    1  x @ 123  54.1 12,3".pisah() == ["pada", ".", "$", "1", "x", "@", "123", "54.1", "12,3"]
+        tuntut "".pisah() == []
+    })
+
+    uji(".pisah(arg1) dengan argumen Kata kosong menghasilkan deret yang berisi setiap karakter dalam Kata tersebut", fn () {
+        tuntut "abc def".pisah("") == ["a", "b", "c", " ", "d", "e", "f"]
+        tuntut "".pisah("") == []
+        tuntut "   xyz    ".pisah("") == [" ", " ", " ", "x", "y", "z", " ", " ", " ", " "]
+    })
+
+    uji(".pisah(arg1) memisahkan Kata setiap menemui suatu subkata", fn () {
+        tuntut "a,b,c".pisah(",") == ["a", "b", "c"]
+        tuntut "sebuah buku ada dalam sebuah lemari".pisah("sebuah") == ["", " buku ada dalam ", " lemari"]
+    })
+
+    uji(".rapi() menghapus seluruh karakter spasi diawal dan diakhir Kata", fn () {
+        tuntut coba { "".rapi(1) } tahan (e) { e.pesan().berisi?("`rapi` hanya bisa dipanggil dengan tanpa argumen") }
+
+        tuntut "   Gara   ".rapi() == "Gara"
+        tuntut "  G a r a   ".rapi() == "G a r a"
+        tuntut "".rapi() == ""
+        tuntut "    ".rapi() == ""
+    })
+
+    uji(".sesuai?(arg) mengecek apakah Kata sesuai dengan ekspresi regular", fn () {
+        tuntut "Gara".sesuai?(#r{(G|g)a}) == benar
+    })
+
+    uji(".jadiKata() mengembalikan diri sendiri", fn () {
+        tuntut "gara".jadiKata() == "gara"
+    })
+
+    uji(".ganti(arg1, arg2) mengubah setiap kemunculan arg1 menjadi arg2 dalam Kata yang baru", fn () {
+        ada tul = "aaa bbbcc dd ee abcdee"
+
+        tuntut tul.ganti("a", "x") == "xxx bbbcc dd ee xbcdee"
+        tuntut tul.ganti("a", "") == " bbbcc dd ee bcdee"
+        tuntut tul.ganti("", "x") == "xaxaxax xbxbxbxcxcx xdxdx xexex xaxbxcxdxexex"
+        tuntut tul.ganti("bc", "YY") == "aaa bbYYc dd ee aYYdee"
+        tuntut tul.ganti("a b", "-") == "aa-bbcc dd ee abcdee"
+        tuntut tul.ganti("ee", "123456") == "aaa bbbcc dd 123456 abcd123456"
+    })
+})

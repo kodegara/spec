@@ -1,0 +1,52 @@
+$m.sidang(EkspresiRegular, fn () {
+    uji("bisa dibuat melalui literal khusus `#r`", fn () {
+        ada r = #r{}
+        tuntut r itu EkspresiRegular
+        tuntut r.literal() == ""
+
+        ada r = #r{Gara}
+        tuntut r itu EkspresiRegular
+        tuntut r.literal() == "Gara"
+    })
+
+    uji("jika tidak bisa menginisialisasi, akan melempar Masalah", fn () {
+        tuntut coba {
+            #r{[]}
+            salah
+        } tahan (e) {
+            tuntut e itu MasalahArgumen
+            tuntut e.pesan() == "tidak dapat memproses ekspresi regular: []"
+            benar
+        } == benar
+    })
+
+    uji(".jadiKata() menuliskan ekspresi regular", fn () {
+        tuntut #r{ga}.jadiKata() == "#r{ga}"
+    })
+
+    uji(".literal() mengembalikan literal yang digunakan sebagai ekspresi regular", fn () {
+        tuntut #r{ga}.literal() == "ga"
+        tuntut #r{^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$}.literal() == "^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
+    })
+
+    uji(".sama?(arg) bernilai benar jika kedua ekspresi regular memiliki literal yang sama", fn () {
+        tuntut #r{ga} == #r{ga}
+        tuntut #r{^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$} == #r{^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$}
+    })
+
+    uji(".sesuai?(arg) mengecek apakah arg memenuhi ekspresi regular", fn () {
+        ada gaER = #r{ga}
+        tuntut gaER.sesuai?("ga")
+        tuntut gaER.sesuai?("gara")
+        tuntut gaER.sesuai?("gardu")
+        tuntut gaER.sesuai?("Gara") == salah
+
+        gaER = #r{(g|G)a}
+        tuntut gaER.sesuai?("gara")
+        tuntut gaER.sesuai?("Gara")
+
+        ada emailER = #r{^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$}
+        tuntut emailER.sesuai?("gara@kodegara.net")
+        tuntut emailER.sesuai?("adam") == salah
+    })
+})

@@ -1,0 +1,84 @@
+$m.sidang("Kata kunci selama", fn (uji) {
+    uji("melakukan iterasi selama nilai bernilai benar", fn () {
+        ada der = []
+        ada i = 0
+
+        selama (i < 10) {
+            der << i
+            i += 1
+        }
+
+        tuntut der == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    })
+
+    uji("jika kondisi sudah salah, tidak akan melakukan apapun", fn () {
+        ada x
+
+        selama (salah) {
+            x = 1
+        }
+
+        tuntut x == nil
+    })
+
+    uji("bisa keluar dari dalam menggunakan utus", fn () {
+        ada nilai = 1
+
+        selama (benar) {
+            nilai += 1
+            utus nil
+            nilai += 1
+        }
+
+        tuntut nilai == 2
+    })
+
+    uji("jika ada kesalahan dalam blok, otomatis keluar", fn () {
+        ada pernahDalamSelama = salah
+
+        coba {
+            selama (benar) {
+                pernahDalamSelama = benar
+                5 + benar
+            }
+        } tahan { }
+
+        tuntut pernahDalamSelama == benar
+    })
+
+    uji("bisa bersarang", fn () {
+        ada deret = []
+
+        ada i = 0
+        selama (i < 5) {
+            deret << i
+
+            ada j = i + 1
+            ada deretJ = []
+            selama (j < 5) {
+                deretJ << j
+
+                ada k = j + 1
+                ada deretK = []
+                selama (k < 5) {
+                    deretK << k
+                    k += 1
+                }
+
+                deretJ << deretK
+                j += 1
+            }
+
+            deret << deretJ
+            i += 1
+        }
+
+        tuntut deret == [
+            0, [1, [2, 3, 4], 2, [3, 4], 3, [4], 4, []],
+            1, [2, [3, 4], 3, [4], 4, []],
+            2, [3, [4], 4, []],
+            3, [4, []],
+            4, []
+        ]
+    })
+})

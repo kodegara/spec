@@ -1,0 +1,30 @@
+$m.sidang("Boolean", fn (uji) {
+    uji("itu Boolean", fn () {
+        tuntut Boolean itu Kelas
+        tuntut Boolean itu Objek
+
+        tuntut benar itu Boolean
+        tuntut salah itu Boolean
+        tuntut benar itu Objek
+        tuntut salah itu Objek
+
+        tuntut !(benar itu Kelas)
+        tuntut !(salah itu Kelas)
+    })
+
+    uji("kedudukan", fn () {
+        // test tingkatan kedudukan operator (precedence)
+        // NOT > && > ||
+
+        tuntut benar || salah && salah == benar
+        tuntut (benar || salah) && salah == salah
+        tuntut !salah && benar == benar
+        tuntut !salah && benar || salah == benar
+        tuntut !salah || benar && salah == benar
+        tuntut !benar || benar && salah == salah
+    })
+
+    uji(".kobit() mencetak kode bibit", fn () {
+        tuntut benar.kobit() != salah.kobit()
+    })
+})

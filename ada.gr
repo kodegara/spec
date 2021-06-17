@@ -1,0 +1,216 @@
+$m.sidang("Kata kunci ada", fn (uji) {
+    uji("bernilai nil sedia kala", fn () {
+        ada x
+        tuntut x == nil
+    })
+
+    uji("tidak boleh menjadi variabel sistem", fn () {
+        tuntut coba {
+            ada __XYZ__ = 12
+            salah
+        } tahan (e) {
+            tuntut e.pesan() == "dilarang mendefinisikan konstanta sistem"
+            benar
+        } == benar
+
+        tuntut coba {
+            tuntut __PATH__ != nil
+            __PATH__ = 123
+        } tahan (e) {
+            tuntut e.pesan() == "dilarang mendefinisikan konstanta sistem"
+            benar
+        }
+    })
+
+    uji("tidak boleh berakhiran `!`", fn () {
+        tuntut coba {
+            ada a! = 12
+            salah
+        } tahan (e) {
+            tuntut e itu MasalahPengenal
+            tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `!` kecuali sebagai metode dalam kelas"
+            benar
+        } == benar
+
+        tuntut coba {
+            ada a! = fn () {}
+            salah
+        } tahan (e) {
+            tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `!` kecuali sebagai metode dalam kelas"
+            benar
+        } == benar
+
+        tuntut coba {
+            kelas A {
+                ada a! = 12
+            }
+            salah
+        } tahan (e) {
+            tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `!` kecuali sebagai metode dalam kelas"
+            benar
+        } == benar
+    })
+
+    uji("tidak boleh berakhiran `?`", fn () {
+        tuntut coba {
+            ada a? = 12
+            salah
+        } tahan (e) {
+            tuntut e itu MasalahPengenal
+            tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `?` kecuali sebagai metode dalam kelas"
+            benar
+        } == benar
+
+        tuntut coba {
+            ada a? = fn () {}
+            salah
+        } tahan (e) {
+            tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `?` kecuali sebagai metode dalam kelas"
+            benar
+        } == benar
+
+        tuntut coba {
+            kelas A {
+                ada a? = 12
+            }
+            salah
+        } tahan (e) {
+            tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `?` kecuali sebagai metode dalam kelas"
+            benar
+        } == benar
+    })
+
+    uji("tidak boleh berakhiran `=`", fn () {
+        tuntut coba {
+            ada a= = 12
+            salah
+        } tahan (e) {
+            tuntut e itu MasalahPengenal
+            tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `=` kecuali sebagai metode dalam kelas"
+            benar
+        } == benar
+
+        tuntut coba {
+            ada a= = fn () {}
+            salah
+        } tahan (e) {
+            tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `=` kecuali sebagai metode dalam kelas"
+            benar
+        } == benar
+
+        tuntut coba {
+            kelas A {
+                ada a= = 12
+            }
+            salah
+        } tahan (e) {
+            tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `=` kecuali sebagai metode dalam kelas"
+            benar
+        } == benar
+    })
+
+    uji("bisa menganggap pengenal variabel berakhiran `=` sebagai assignment jika tidak ditemui `=` lainnya", fn () {
+        ada a= 12
+        tuntut a == 12
+    })
+
+    uji("bisa berakhiran titik koma", fn () {
+        ada a = 12;
+        tuntut a == 12;
+
+        ada b;
+        tuntut b == nil
+    })
+
+    xuji("tidak boleh mendefinisikan variabel statis diluar kelas", fn () {
+        // setelah punya eval
+        // tuntut coba {
+        //     ada sta x = 12
+        //     salah
+        // } tahan (e) {
+        //     tuntut e.pesan() == "identitas statis hanya bisa digunakan didalam kelas"
+        //     benar
+        // } == benar
+    })
+
+    // uji("tidak dapat diawali dengan angka", fn () {
+    //     tuntut coba {
+    //         ada 123a = 12
+    //         salah
+    //     } tahan (e) {
+    //         cetak(e.pesan())
+    //         tuntut e.pesan().berisi?("x")
+    //     } == benar
+    // })
+
+    uji("variabel yang tidak ada tidak terdefinisikan", fn () {
+        tuntut coba {
+            x + 123
+            salah
+        } tahan (e) {
+            tuntut e.pesan() == "identitas tidak ditemukan: x"
+        } == benar
+    })
+
+    uji("variabel yang tidak ada, tidak dapat didefinisikan", fn () {
+        tuntut coba {
+            x = 123
+        } tahan (e) {
+            tuntut e.pesan() == "identitas belum terdefinisikan: x"
+        } == benar
+    })
+
+    tentang("baris multi-variabel", fn () {
+        uji("bisa semuanya tak bernilai", fn () {
+            ada x, y, z
+
+            tuntut x == nil
+            tuntut y == nil
+            tuntut z == nil
+        })
+
+        uji("bisa semuanya berisi nilai", fn () {
+            ada x = 1, y = fn () {}, z = [1, 2, 3, 4]
+
+            tuntut x == 1
+            tuntut y itu Fungsi
+            tuntut z == [1, 2, 3, 4]
+        })
+
+        uji("bisa salah satunya bernilai", fn () {
+            ada x, y = {}, z = fn () {}
+            ada a, b, c = "aloha"
+
+            tuntut x == nil
+            tuntut y == {}
+            tuntut z itu Fungsi
+            tuntut a == nil
+            tuntut b == nil
+            tuntut c == "aloha"
+        })
+
+        uji("bisa mengambil nilai dari variabel lain", fn () {
+            ada x = 1, y = 2, z = 3
+            ada a = z, b = y, c = x
+
+            tuntut a == 3
+            tuntut b == 2
+            tuntut c == 1
+        })
+
+        uji("bisa diakhiri titik koma", fn () {
+            ada a = 1, b = 2, c = 3;
+
+            tuntut a == 1
+            tuntut b == 2
+            tuntut c == 3
+        })
+
+        uji("koma harus bertemu identitas", fn () {
+            // setelah eval: error masalah kode
+            // ada x,
+            // ada x, 1
+            // ada x, []
+        })
+    })
+})

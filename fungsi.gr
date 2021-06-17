@@ -1,0 +1,165 @@
+$m.sidang("Fungsi", fn () {
+    ada fungsi = fn () {}
+
+    uji("itu Fungsi", fn () {
+        tuntut Fungsi itu Kelas
+        tuntut Fungsi itu Objek
+
+        tuntut fungsi itu Fungsi
+        tuntut fungsi itu Objek
+
+        tuntut !(fungsi itu Kelas)
+    })
+
+    uji("merupakan closure", fn () {
+        ada fungsiPenambah = fn (x) {
+            utus fn (y) { x + y }
+        }
+
+        ada tambah5 = fungsiPenambah(5)
+        ada tambah7 = fungsiPenambah(7)
+
+        tuntut tambah5(5) == 10
+        tuntut tambah5(tambah7(3)) == 15
+    })
+
+    uji("bisa diasosiasikan dengan pengenal", fn () {
+        ada tambah = fn (x, y) { x + y }
+
+        tuntut tambah(5, 5) == 10
+        tuntut tambah(5 + 5, tambah(5, 5)) == 20
+    })
+
+    uji("bisa memiliki nama", fn () {
+        ada fn1 = fn fn2(x) { x + 1 }
+
+        tuntut fn1 == fn2
+        tuntut fn1(1) == 2
+        tuntut fn2(1) == 2
+    })
+
+    uji("pengenal tidak boleh diawali dengan tanda $", fn () {
+        tuntut coba {
+            fn $abc() {}
+            salah
+        } tahan (e) {
+            tuntut e.pesan() == "nama fungsi tidak boleh diawali dengan `$`"
+            benar
+        } == benar
+
+        tuntut coba {
+            kelas ABC {
+                fn $abc() {}
+            }
+            salah
+        } tahan (e) {
+            tuntut e.pesan() == "nama fungsi tidak boleh diawali dengan `$`"
+            benar
+        } == benar
+    })
+
+    uji("pengenal tidak boleh diawali dengan huruf besar", fn () {
+        tuntut coba {
+            fn SebuahFungsi() {}
+            salah
+        } tahan (e) {
+            tuntut e.pesan() == "nama fungsi tidak boleh menyerupai nama kelas SebuahFungsi"
+            benar
+        } == benar
+
+        tuntut coba {
+            kelas ABC {
+                fn SebuahFungsi() {}
+                salah
+            }
+        } tahan (e) {
+            tuntut e.pesan() == "nama fungsi tidak boleh menyerupai nama kelas SebuahFungsi"
+            benar
+        } == benar
+    })
+
+    uji("pengenal tidak boleh berakhiran `=`", fn () {
+        tuntut coba {
+            fn x=() {}
+            salah
+        } tahan (e) {
+            tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `=` kecuali sebagai metode dalam kelas"
+            benar
+        } == benar
+
+        tuntut coba {
+            ada x= = fn () {}
+            salah
+        } tahan (e) {
+            tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `=` kecuali sebagai metode dalam kelas"
+            benar
+        } == benar
+    })
+
+    uji("bisa mengeksekusi fungsi tanpa pengenal", fn () {
+        tuntut fn () {
+            benar
+        }() == benar
+    })
+
+    uji("fungsi yang tak mengutus apapun, secara otomatis mengutus nil", fn () {
+       tuntut fn (){}() == nil
+    })
+
+    uji(".kobit() mencetak kode bibit", fn () {
+        tuntut (fn(){}).kobit() != (fn(){}).kobit()
+    })
+
+    uji("memanggil fungsi yang belum didefinisikan menghasilkan `MasalahEksekusi`", fn () {
+        tuntut coba {
+            abcdef()
+        } tahan (e) {
+            tuntut e.pesan().berisi?("identitas tidak ditemukan: abcdef")
+            benar
+        } == benar
+    })
+
+    xuji("memanggil fungsi dengan argumen kurang dari dubutuhkan menghasilkan MasalahArgumen", fn () {
+        ada tambah = fn (x, y) { x + y }
+        tambah(5)
+    })
+
+    xuji("argumen tidak dipengaruhi oleh variabel lokal yang memiliki nama yang sama", fn () {
+        ada iterasikan = fn (deret, fnPengiterasi) {
+            dari (ada i = 0; i < deret.panjang(); i += 1) {
+                fnPengiterasi(deret[i])
+            }
+        }
+
+        ada deret = []
+
+        iterasikan([1, 2, 3], fn (i) {
+            deret << i
+        })
+
+        tuntut deret == [1, 2, 3]
+    })
+
+    xuji("tidak boleh mendefinisikan fungsi bebas dengan kata kunci `sta`", fn () {
+        // ada x = fn sta
+    })
+
+//     uji("fungsi yang mengakibatkan stack overflow tidak menggagalkan sistem", fn () {
+//        fn x () {
+//            x()
+//        }
+//     })
+
+//    uji("bisa rekursif", fn () {
+//        ada isi = fn (awal, akhir, elemen, sekarang) {
+//            jika (sekarang >= akhir) {
+//                elemen << akhir
+//                return elemen
+//            } else {
+//                elemen << isi(awal, akhir, elemen, sekarang + 1)
+//            }
+//        }
+
+//        //ada angka = isi(0, 5, [], 0)
+//     })
+})
