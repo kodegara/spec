@@ -295,5 +295,8 @@ sidang(Kata, fn () {
         tuntut tul.ganti("bc", "YY") == "aaa bbYYc dd ee aYYdee"
         tuntut tul.ganti("a b", "-") == "aa-bbcc dd ee abcdee"
         tuntut tul.ganti("ee", "123456") == "aaa bbbcc dd 123456 abcd123456"
+        tuntut tul.ganti(#r{b{2}}, "") == "aaa bcc dd ee abcdee"
+
+        tuntut tul == "aaa bbbcc dd ee abcdee" // imutabilitas
     })
 })
