@@ -1,4 +1,4 @@
-$m.sidang("Komentar", fn (uji) {
+sidang("Komentar", fn () {
     uji("boleh dekat dengan kata kunci", fn() {
         // ada nilai = 0
     })

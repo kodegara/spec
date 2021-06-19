@@ -1,0 +1,18 @@
+sidang("Kata kunci `itu`", fn () {
+    uji("bernilai benar jika suatu objek adalah instansi kelas yang benar", fn () {
+        tuntut [] itu Deret
+        tuntut [] itu Objek
+    })
+
+    uji("tuntutan hanya bisa dilakukan dengan kelas", fn () {
+       ada a = "BukanKelas"
+
+       coba {
+           tuntut "" itu a
+           salah
+       } tahan (e) {
+           tuntut e.pesan() == "seharusnya bertipe Kelas, tapi menerima Kata"
+           tuntut e itu MasalahEksekusi
+       }
+    })
+})

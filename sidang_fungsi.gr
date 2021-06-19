@@ -1,4 +1,4 @@
-$m.sidang("Fungsi", fn () {
+sidang(Fungsi, fn () {
     ada fungsi = fn () {}
 
     uji("itu Fungsi", fn () {
@@ -119,47 +119,92 @@ $m.sidang("Fungsi", fn () {
         } == benar
     })
 
-    xuji("memanggil fungsi dengan argumen kurang dari dubutuhkan menghasilkan MasalahArgumen", fn () {
-        ada tambah = fn (x, y) { x + y }
-        tambah(5)
+    tentang("argumen", fn () {
+        uji("memanggil fungsi dengan argumen kurang dari dubutuhkan menghasilkan MasalahArgumen", fn () {
+            ada tambah = fn (x, y) { x + y }
+            tuntut coba {
+                tambah(5)
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahArgumen
+                tuntut e.pesan() == "hanya bisa dipanggil dengan 2 argumen"
+            } == benar
+        })
+
+        xuji("argumen tidak dipengaruhi oleh variabel lokal yang memiliki nama yang sama", fn () {
+            ada iterasikan = fn (deret, fnPengiterasi) {
+                cetak(deret)
+                dari (ada i = 0; i < deret.panjang(); i += 1) {
+                    fnPengiterasi(deret[i])
+                }
+            }
+
+            ada deret = []
+
+            cetak(deret)
+            iterasikan([1, 2, 3], fn (i) {
+                deret << i
+            })
+
+            tuntut deret == [1, 2, 3]
+        })
+
+        uji("argumen bersifat pass-by-reference", fn () {
+            kelas A {
+                ada a
+                fn a () { a }
+                fn a=(x) { a = x }
+            }
+
+            ada ubah = fn (a, b) { a.a = b }
+
+            ada a = A.baru()
+            tuntut a.a() == nil
+
+            ubah(a, 12)
+            tuntut a.a() == 12
+        })
     })
 
-    xuji("argumen tidak dipengaruhi oleh variabel lokal yang memiliki nama yang sama", fn () {
-        ada iterasikan = fn (deret, fnPengiterasi) {
-            dari (ada i = 0; i < deret.panjang(); i += 1) {
-                fnPengiterasi(deret[i])
+    uji("tidak boleh mendefinisikan fungsi bebas dengan kata kunci `sta`", fn () {
+        tuntut coba {
+            eval!("ada x = fn sta () {}")
+            salah
+        } tahan (e) {
+            tuntut e itu MasalahKode
+            tuntut e.pesan() == "fungsi bebas tidak dapat menjadi fungsi statis"
+            benar
+        } == benar
+    })
+
+    uji("fungsi yang mengakibatkan stack overflow tidak menggagalkan sistem", fn () {
+        tuntut coba {
+            fn x() { x() }
+            x()
+            salah
+        } tahan (e) {
+            tuntut e itu MasalahLuapanTumpukan
+            tuntut e.pesan() == "terlalu banyak fungsi dalam tumpukan (stack overflow)"
+        } == benar
+    })
+
+    uji("bisa rekursif", fn () {
+        ada fib = fn (n) {
+            jika (n <= 1) {
+                utus n
+            } lain {
+                fib(n-1) + fib(n-2)
             }
         }
 
-        ada deret = []
-
-        iterasikan([1, 2, 3], fn (i) {
-            deret << i
-        })
-
-        tuntut deret == [1, 2, 3]
+        tuntut fib(1) == 1
+        tuntut fib(2) == 1
+        tuntut fib(3) == 2
+        tuntut fib(4) == 3
+        tuntut fib(5) == 5
+        tuntut fib(6) == 8
+        tuntut fib(7) == 13
+        tuntut fib(8) == 21
+        tuntut fib(9) == 34
     })
-
-    xuji("tidak boleh mendefinisikan fungsi bebas dengan kata kunci `sta`", fn () {
-        // ada x = fn sta
-    })
-
-//     uji("fungsi yang mengakibatkan stack overflow tidak menggagalkan sistem", fn () {
-//        fn x () {
-//            x()
-//        }
-//     })
-
-//    uji("bisa rekursif", fn () {
-//        ada isi = fn (awal, akhir, elemen, sekarang) {
-//            jika (sekarang >= akhir) {
-//                elemen << akhir
-//                return elemen
-//            } else {
-//                elemen << isi(awal, akhir, elemen, sekarang + 1)
-//            }
-//        }
-
-//        //ada angka = isi(0, 5, [], 0)
-//     })
 })

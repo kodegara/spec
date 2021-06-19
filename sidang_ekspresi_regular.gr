@@ -1,4 +1,4 @@
-$m.sidang(EkspresiRegular, fn () {
+sidang(EkspresiRegular, fn () {
     uji("bisa dibuat melalui literal khusus `#r`", fn () {
         ada r = #r{}
         tuntut r itu EkspresiRegular

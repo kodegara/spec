@@ -1,8 +1,8 @@
-$m.sidang("Masalah", fn (uji) {
+sidang(Masalah, fn () {
     uji(".baru() bisa membuat objek masalah tanpa pesan", fn () {
         ada msl = Masalah.baru()
         tuntut msl itu Masalah
-        // tuntut msl.pesan() == ""
+        tuntut msl.pesan() == ""
     })
 
     uji(".baru() bisa membuat objek masalah dengan pesan", fn () {

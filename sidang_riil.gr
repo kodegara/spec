@@ -1,4 +1,4 @@
-$m.sidang("Riil", fn () {
+sidang("Riil", fn () {
     uji("memiliki beberapa konstanta", fn () {
         tuntut Riil.NAN.nan?() == benar
         tuntut Riil.ANANTA == fAnanta
@@ -6,12 +6,12 @@ $m.sidang("Riil", fn () {
         tuntut Riil.PI >= 3.14
     })
 
-    uji(".abs() mengutus nilai riil yang tidak negatif", fn () {
-        tuntut fNaN.abs().nan?() == benar
-        tuntut fAnanta.abs() == fAnanta
-        tuntut -fAnanta.abs() == -fAnanta
-        tuntut -5.0.abs() == 5.0
-        tuntut 5.0.abs() == 5.0
+    uji(".mutlak() mengutus nilai riil yang tidak negatif", fn () {
+        tuntut fNaN.mutlak().nan?() == benar
+        tuntut fAnanta.mutlak() == fAnanta
+        tuntut -fAnanta.mutlak() == -fAnanta
+        tuntut -5.0.mutlak() == 5.0
+        tuntut 5.0.mutlak() == 5.0
     })
 
     uji(".bulat() mengutus nilai Integer terdekat yang menjauhi 0", fn () {

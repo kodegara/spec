@@ -1,4 +1,4 @@
-$m.sidang("Kata", fn (uji) {
+sidang(Kata, fn () {
     ada halo = "halo"
     ada dunia = "dunia"
 
@@ -6,10 +6,22 @@ $m.sidang("Kata", fn (uji) {
         tuntut Kata.baru() == ""
     })
 
-    uji("#ordinal() mengkonversi karakter paling kanan ke nilai ordinalnya", fn () {
-        tuntut Kata.metode().berisi?("ordinal")
-        tuntut "".metode().berisi?("ordinal") == salah
-        tuntut Kata.ordinal("a") != nil
+    tentang("#ordinal", fn () {
+        uji("mengkonversi karakter paling kanan ke nilai ordinalnya", fn () {
+            tuntut Kata.metode().berisi?("ordinal")
+            tuntut "".metode().berisi?("ordinal") == salah
+            tuntut Kata.ordinal("a") != nil
+        })
+
+        uji("menjadi masalah jika argumen bukanlah Kata", fn () {
+            tuntut coba {
+                Kata.ordinal([])
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "tidak dapat menerima Kelas"
+                benar
+            } == benar
+        })
     })
 
     uji("itu Kata", fn () {
@@ -140,22 +152,22 @@ $m.sidang("Kata", fn (uji) {
         tuntut kata.cuil(18, 100) == "kata"
     })
 
-    uji(".diawali?(arg1) mengecek apakah kata diawali dengan kata lain", fn () {
-        tuntut coba { "".diawali?(1) } tahan (e) { e.pesan().berisi?("tidak dapat menerima Integer") }
+    uji(".awal?(arg1) mengecek apakah kata diawali dengan kata lain", fn () {
+        tuntut coba { "".awal?(1) } tahan (e) { e.pesan().berisi?("tidak dapat menerima Integer") }
 
-        tuntut "Gara".diawali?("Gar")
-        tuntut "Gara".diawali?("a") == salah
-        tuntut "Gara".diawali?("gar") == salah
+        tuntut "Gara".awal?("Gar")
+        tuntut "Gara".awal?("a") == salah
+        tuntut "Gara".awal?("gar") == salah
     })
 
-    uji(".diakhiri?(arg1) mengecek apakah kata diakhiri dengan kata lain", fn () {
-        tuntut coba { "".diakhiri?(1) } tahan (e) { e.pesan().berisi?("arg itu Kata") }
+    uji(".akhir?(arg1) mengecek apakah kata diakhiri dengan kata lain", fn () {
+        tuntut coba { "".akhir?(1) } tahan (e) { e.pesan().berisi?("arg itu Kata") }
 
-        tuntut "Ini Gara".diakhiri?("ara")
-        tuntut "Ini Gara".diakhiri?("ra")
-        tuntut "Ini Gara".diakhiri?("a")
-        tuntut "Ini Gara".diakhiri?("")
-        tuntut "".diakhiri?("")
+        tuntut "Ini Gara".akhir?("ara")
+        tuntut "Ini Gara".akhir?("ra")
+        tuntut "Ini Gara".akhir?("a")
+        tuntut "Ini Gara".akhir?("")
+        tuntut "".akhir?("")
     })
 
     uji(".tambah(arg1) menyambung arg1 ke kata secara non-destruktif", fn () {
@@ -187,7 +199,7 @@ $m.sidang("Kata", fn (uji) {
     })
 
     uji(".kecil() menjadikan seluruh karakter berhuruf kecil", fn () {
-        tuntut coba { "".kecil(1) } tahan (e) { cetak(e.pesan()); e.pesan().berisi?("`kecil` hanya bisa dipanggil dengan tanpa argumen") }
+        tuntut coba { "".kecil(1) } tahan (e) { e.pesan().berisi?("`kecil` hanya bisa dipanggil dengan tanpa argumen") }
 
         tuntut "ABC".kecil() == "abc"
         tuntut "Abc".kecil() == "abc"

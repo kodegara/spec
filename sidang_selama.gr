@@ -1,4 +1,4 @@
-$m.sidang("Kata kunci selama", fn (uji) {
+sidang("Kata kunci selama", fn () {
     uji("melakukan iterasi selama nilai bernilai benar", fn () {
         ada der = []
         ada i = 0

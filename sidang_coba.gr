@@ -1,4 +1,4 @@
-$m.sidang("Ekspresi coba", fn (uji) {
+sidang("Ekspresi coba", fn () {
     fn jumlah(angka1, angka2) {
         angka1 + angka2
     }
@@ -90,9 +90,8 @@ $m.sidang("Ekspresi coba", fn (uji) {
             masalah2 = m
         }
 
-        // todo:
-        // tuntut masalah1.pesan() == "XYZ"
-        // tuntut masalah2.pesan() == "XYZ"
+        tuntut masalah1.pesan() == "objek tipe Kelas tidak memiliki metode `baru` yang bisa dipanggil"
+        tuntut masalah2.pesan() == "hanya bisa dipanggil dengan 1 argumen"
     })
 
     uji("variabel pengenal pada blok penahan bisa shadowing variabel dengan pengenal yang sama", fn () {

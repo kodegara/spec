@@ -1,0 +1,64 @@
+sidang(Objek, fn () {
+    tentang(".metode()", fn () {
+        uji("mengutus Deret seluruh fungsi yang bisa dipanggil", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                fn a() {}
+                fn sta b () {}
+            }
+
+            ada a = A.baru()
+
+            tuntut a.metode().berisi?("a") == benar
+            tuntut a.metode().berisi?("b") == salah
+            tuntut A.metode().berisi?("a") == salah
+            tuntut A.metode().berisi?("b") == benar
+        })
+
+        uji("memiliki metode yang diturunkan dari kelas super", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {}
+            ada a = A.baru()
+
+            tuntut a.metode().berisi?("kobit") == benar
+        })
+
+        uji("tidak memiliki metode dari kelas Kelas", fn () {
+            kelas Kelas {
+                fn hanyaDiKelas() {}
+            }
+
+            tuntut Kelas.metode().berisi?("hanyaDiKelas") == benar
+            tuntut Integer.metode().berisi?("hanyaDiKelas") == benar
+            tuntut 1.metode().berisi?("hanyaDiKelas") == salah
+        })
+    })
+
+    uji(".nil?() mengecek apakah objek ini `nil`", fn () {
+        tuntut nil.nil?() == benar
+        tuntut 1.nil?() == salah
+        tuntut "".nil?() == salah
+        tuntut [].nil?() == salah
+        tuntut {}.nil?() == salah
+    })
+
+    tentang(".sambut()", fn () {
+        uji("mengutus `benar` jika objek dapat menyambut pesan tersebut", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                fn a() {}
+                fn sta b () {}
+            }
+
+            ada a = A.baru()
+
+            tuntut a.sambut?("a") == benar
+            tuntut a.sambut?("b") == salah
+            tuntut A.sambut?("a") == salah
+            tuntut A.sambut?("b") == benar
+        })
+    })
+})

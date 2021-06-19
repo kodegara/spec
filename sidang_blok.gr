@@ -1,6 +1,6 @@
-$m.sidang("Blok", fn (uji) {
+sidang("Blok", fn () {
     tentang("Variabel", fn () {
-        xuji("bisa diubah dari dalam fungsi", fn () {
+        uji("bisa diubah dari dalam fungsi", fn () {
             ada a = 1
             ada b = 2
 
@@ -28,10 +28,17 @@ $m.sidang("Blok", fn (uji) {
 
             tuntut a == 3
             tuntut b == 4
-            tuntut coba { c } tahan { benar } == benar
+
+            tuntut coba {
+                c
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "identitas tidak ditemukan: c"
+                benar
+            } == benar
         })
 
-        xuji("tidak berubah jika diidentifikasi ulang dari dalam fungsi", fn () {
+        uji("tidak berubah jika diidentifikasi ulang dari dalam fungsi", fn () {
             ada a = 1
             ada b = 2
 
@@ -54,13 +61,20 @@ $m.sidang("Blok", fn (uji) {
                 }()
 
                 tuntut a == 3
-                tuntut b == 7
-                tuntut c == 3
+                tuntut b == 8
+                tuntut c == 5
             }()
 
             tuntut a == 3
-            tuntut b == 2
-            tuntut coba { c } tahan { benar } == benar
+            tuntut b == 8
+
+            tuntut coba {
+                c
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "identitas tidak ditemukan: c"
+                benar
+            } == benar
         })
     })
 
@@ -118,22 +132,8 @@ $m.sidang("Blok", fn (uji) {
 
         tuntut kelasA itu Kelas
         tuntut kelasB itu Kelas
-        // tuntut m.takTerdefinisi(A)
-        // tuntut m.takTerdefinisi(B)
-    })
-
-    xuji("dari iterasi dalam fungsi yang berbeda, `utus` bisa keluar dari seluruh iterasi", fn () {
-        ada tiap = fn (data, fungsi) {
-            dari (ada i = 0; i < data.panjang(); i += 1) {
-                fungsi(data[i])
-            }
-        }
-
-        ada data2 = []
-        tuntut tiap([1,2,3,4], fn (x) {
-            data2 << x
-            utus "dari dalam"
-        }) == "dari dalam"
+        tuntut tidakAda!(fn () { A })
+        tuntut tidakAda!(fn () { B })
     })
 
     uji("kelas memiliki bloknya sendiri yang tidak merembet keluar", fn () {
@@ -154,6 +154,50 @@ $m.sidang("Blok", fn (uji) {
         ada sesuatu = Sesuatu.baru()
         tuntut sesuatu.angka() == 2
         tuntut sesuatu.fn1() == 2
+    })
+
+    uji("kelas memiliki bloknya sendiri yang dari luar tidak bisa merembet kedalam", fn () {
+        ada angka = 1
+
+        tidakAda!(fn () { A })
+        kelas A {}
+
+        fn () {
+            ada a = 1
+            tuntut a == 1
+
+            kelas A {
+                fn a() { a }
+            }
+
+            tuntut coba {
+                tuntut A.baru().a() == 1
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahPengenal
+                tuntut e.pesan() == "identitas tidak ditemukan: a"
+                benar
+            } == benar
+        }()
+
+        kelas A {
+            ada a = 12
+
+            kelas B {
+                fn a() { a }
+            }
+        }
+
+        tuntut A.baru().a() == 12
+
+        tuntut coba {
+            tuntut A::B.baru().a() == 12
+            salah
+        } tahan (e) {
+            tuntut e itu MasalahPengenal
+            tuntut e.pesan() == "identitas tidak ditemukan: a"
+            benar
+        } == benar
     })
 
     uji("variabel akan selalu diresolve terlebih dahulu kecuali untuk pemanggilan fungsi", fn () {

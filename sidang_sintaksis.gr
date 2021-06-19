@@ -1,0 +1,189 @@
+sidang("Sintaksis", fn () {
+    uji("yang mengakibatkan MasalahKode", fn () {
+        tuntut coba {
+            eval!("ada a = fn() {}\na: 1: 2")
+            salah
+        } tahan (e) {
+            tuntut e.pesan() == "tidak diperbolehkan adanya `:` pada posisi tersebut"
+            tuntut e itu MasalahKode
+            benar
+        } == benar
+    })
+
+    tentang("pemanggilan fungsi", fn () {
+        tentang("ketika fungsi", fn () {
+            uji("bisa dipanggil", fn () {
+                ada a = fn () {}
+                fn b () {}
+
+                tuntut a() == nil
+                tuntut b() == nil
+            })
+        })
+
+        tentang("ketika Kata, akan menjadi masalah", fn () {
+            tuntut coba {
+                "2"()
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahEksekusi
+                tuntut e.pesan() == "bukan fungsi: 2"
+            }
+        })
+
+        tentang("ketika Angka, akan menjadi masalah", fn () {
+            tuntut coba {
+                2()
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahEksekusi
+                tuntut e.pesan() == "bukan fungsi: 2"
+            }
+        })
+
+        tentang("ketika nil", fn () {
+            tuntut coba {
+                nil()
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahEksekusi
+                tuntut e.pesan() == "bukan fungsi: nil"
+            }
+        })
+
+        tentang("ketika objek", fn () {
+            kelas A {}
+
+            tuntut coba {
+                ada a = A.baru()
+                a()
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahEksekusi
+                tuntut e.pesan() == "bukan fungsi: a"
+            }
+        })
+    })
+
+    tentang("sintaksis `:`", fn () {
+        uji("bisa digunakan sebagai pemisah tuntutan dan pesan", fn () {
+            tuntut fn () {} itu Fungsi: "fungsi!"
+
+            tuntut coba {
+                tuntut [] itu Fungsi: "salah"
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "salah"
+                benar
+            } == benar
+
+            tuntut coba {
+                tuntut salah: "salah"
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "salah"
+                benar
+            } == benar
+        })
+
+        tentang(". sebagai pemanggilan fungsi", fn () {
+            uji("dapat dipisah dengan baris baru", fn () {
+                ada d = [1, 2, 3]
+                    .jelma(fn (d) { d + 1 })
+                tuntut d == [2, 3, 4]
+            })
+        })
+
+        tentang("dengan `:` satu lagi sebagai namespace", fn () {
+            tentang("penggunaan sebagai pengenal kelas", fn () {
+                uji("harus diulang dua kali", fn () {
+                    tuntut coba {
+                        A::B
+                        salah
+                    } tahan (e) {
+                        tuntut e itu MasalahKode == salah
+                        benar
+                    } == benar
+                })
+
+                uji("tidak boleh mengambang", fn () {
+                    tuntut coba {
+                        eval!("A::")
+                        salah
+                    } tahan (e) {
+                        tuntut e.pesan().berisi?("tidak dimengerti:")
+                        benar
+                    } == benar
+
+                    tuntut coba {
+                        eval!("kelas A:: {}")
+                        salah
+                    } tahan (e) {
+                        tuntut e.pesan() == "seharusnya menjumpai `IDENTITAS`, tapi malah ` `"
+                        benar
+                    } == benar
+                })
+
+                uji("tidak boleh berdiri sendiri", fn () {
+                    tuntut coba {
+                        eval!("A:B")
+                        salah
+                    } tahan (e) {
+                        tuntut e itu MasalahKode
+                        tuntut e.pesan().berisi?("tidak dimengerti:")
+                        benar
+                    } == benar
+                })
+
+                uji("tidak boleh diulang sebanyak lebih dari 2 kali", fn () {
+                    tuntut coba {
+                        eval!("A:::")
+                        salah
+                    } tahan (e) {
+                        tuntut e itu MasalahKode
+                        tuntut e.pesan() == "tidak dimengerti: `:`"
+                        benar
+                    } == benar
+
+                    tuntut coba {
+                        eval!("A::::B")
+                        salah
+                    } tahan (e) {
+                        tuntut e itu MasalahKode
+                        tuntut e.pesan() == "tidak dimengerti: `:`"
+                        benar
+                    } == benar
+                })
+            })
+
+            uji("tidak diperkenankan penggunaan sebagai pengenal variabel", fn () {
+                tuntut coba {
+                    eval!("a::b")
+                    salah
+                } tahan (e) {
+                    tuntut e itu MasalahKode
+                    tuntut e.pesan() == "tidak dimengerti: `b`"
+                    benar
+                } == benar
+
+                tuntut coba {
+                    eval!("ada a:: = 12")
+                    salah
+                } tahan (e) {
+                    tuntut e itu MasalahKode
+                    tuntut e.pesan() == "tidak dimengerti: ` `"
+                    benar
+                } == benar
+
+                tuntut coba {
+                    eval!("ada a::b = 12")
+                    salah
+                } tahan (e) {
+                    tuntut e itu MasalahKode
+                    tuntut e.pesan() == "tidak dimengerti: `b`"
+                    benar
+                } == benar
+            })
+        })
+    })
+})

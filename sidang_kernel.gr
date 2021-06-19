@@ -1,4 +1,4 @@
-$m.sidang(Kernel, fn () {
+sidang(Kernel, fn () {
     uji("#cetak mencetak pesan", fn () {
         Kernel.cetak("mencetak dari kernel")
 

@@ -1,0 +1,55 @@
+sidang(Dir, fn () {
+    tentang("#pindai(arg)", fn () {
+        ada alamat = "./pelengkap/dir"
+        ada d = Dir.pindai(alamat)
+
+        uji("menghasilkan Dir::Entri", fn () {
+            tuntut d.semua?(Dir::Entri) == benar
+        })
+
+        uji("hanya berisi file dan direktori", fn () {
+            ada isiDirektori = [".rahasia", "dalam", "teks1.txt"]
+            // implementasikan ubah terlebih dahulu
+
+            ada nama = d.jelma(fn (entri) { entri.nama() })
+            tuntut nama == isiDirektori
+        })
+
+        uji("tanpa direktori dalam", fn () {
+            ada nama = d.jelma(fn (entri) { entri.nama() })
+            tuntut nama.berisi?("teks2.txt") == salah
+
+            tuntut Dir.pindai(alamat + "/dalam")
+                .jelma(fn (e) { e.nama() })
+                .berisi?("teks2.txt") == benar
+        })
+
+        tentang(Dir::Entri, fn () {
+            uji(".nama() tidak mengutus nilai kosong", fn () {
+                tuntut d.semua?(fn (e) { !e.nama().kosong?() }) == benar
+            })
+
+            uji(".dir?() mengutus nilai Boolean", fn () {
+                tuntut d.semua?(fn (e) { e.dir?().tipe() == Boolean }) == benar
+            })
+
+            uji(".file?() mengutus nilai Boolean", fn () {
+                tuntut d.semua?(fn (e) { e.file?().tipe() == Boolean }) == benar
+            })
+
+            uji(".symlink?() mengutus nilai Boolean", fn () {
+                tuntut d.semua?(fn (e) { e.symlink?().tipe() == Boolean }) == benar
+            })
+
+            uji(".unixSocket?() mengutus nilai Boolean", fn () {
+                tuntut d.semua?(fn (e) { e.unixSocket?().tipe() == Boolean }) == benar
+            })
+
+            uji(".alamat() mengutus nama yang bersifat alamat absolut", fn () {
+                tuntut d.semua?(fn (e) {
+                    e.alamat().berisi?(e.nama())
+                }) == benar
+            })
+        })
+    })
+})

@@ -1,4 +1,4 @@
-$m.sidang("Operator", fn () {
+sidang("Operator", fn () {
     ada identitas = fn (x) { x }
 
     tentang("++ (naikSetignkat)", fn () {
@@ -22,14 +22,15 @@ $m.sidang("Operator", fn () {
             a == 2
         })
 
-        xuji("hanya bisa digunakan dengan pengenal", fn () {
-            // tuntut coba {
-            //     1++ // setelah punya eval
-            //     salah
-            // } tahan (e) {
-            //     tuntut e.pesan() == "operasi hanya bisa dilakukan dengan suatu variabel/fungsi"
-            //     benar
-            // } == benar
+        uji("hanya bisa digunakan dengan pengenal", fn () {
+            tuntut coba {
+                eval!("1++")
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahKode
+                tuntut e.pesan() == "seharusnya menjumpai `IDENTITAS`, tapi malah `INTEGER`"
+                benar
+            } == benar
         })
 
         uji("pada Integer akan menambahkan 1 pada diri sendiri", fn () {
@@ -74,14 +75,15 @@ $m.sidang("Operator", fn () {
             a == 0
         })
 
-        xuji("hanya bisa digunakan dengan pengenal", fn () {
-            // tuntut coba {
-            //     1-- // setelah punya eval
-            //     salah
-            // } tahan (e) {
-            //     tuntut e.pesan() == "operasi hanya bisa dilakukan dengan suatu variabel/fungsi"
-            //     benar
-            // } == benar
+        uji("hanya bisa digunakan dengan pengenal", fn () {
+            tuntut coba {
+                eval!("1--")
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahKode
+                tuntut e.pesan() == "seharusnya menjumpai `IDENTITAS`, tapi malah `INTEGER`"
+                benar
+            } == benar
         })
 
         uji("pada Integer akan mengurangi 1 dari diri sendiri", fn () {
@@ -200,6 +202,19 @@ $m.sidang("Operator", fn () {
                 tuntut -fAnanta == -fAnanta
                 tuntut (-fNaN).nan?() == benar
             })
+        })
+    })
+
+    tentang("=", fn () {
+        uji("tidak boleh melakukan penempatan nilai ke variabel kelas", fn () {
+            tuntut coba {
+                Kelas = 123
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahPengenal
+                tuntut e.pesan() == "pengenal kelas tidak dapat menerima penempatan nilai baru"
+                benar
+            } == benar
         })
     })
 
@@ -623,8 +638,11 @@ $m.sidang("Operator", fn () {
         })
 
         tentang("pada Kata", fn () {
-            xuji("menggandakan Kata sebanyak sisi kanan", fn () {
-
+            uji("menggandakan Kata sebanyak sisi kanan", fn () {
+                tuntut "a" * 1 == "a"
+                tuntut "a" * 2 == "aa"
+                tuntut "a" * 3 == "aaa"
+                tuntut fn () { "ab" }() * 2 == "abab"
             })
         })
 

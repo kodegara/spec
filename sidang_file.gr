@@ -1,4 +1,4 @@
-$m.sidang(File, fn (uji) {
+sidang(File, fn () {
     tentang("#baca()", fn () {
         ada folder = "./pelengkap/file"
 

@@ -1,4 +1,4 @@
-$m.sidang("Kata kunci `lewat`", fn () {
+sidang("Kata kunci `lewat`", fn () {
     uji("akan menjadi masalah eksekusi jika dipanggil diluar iterasi", fn () {
         tuntut coba {
             lewat

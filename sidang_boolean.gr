@@ -1,4 +1,4 @@
-$m.sidang("Boolean", fn (uji) {
+sidang(Boolean, fn () {
     uji("itu Boolean", fn () {
         tuntut Boolean itu Kelas
         tuntut Boolean itu Objek

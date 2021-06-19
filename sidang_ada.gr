@@ -1,4 +1,4 @@
-$m.sidang("Kata kunci ada", fn (uji) {
+sidang("Kata kunci ada", fn () {
     uji("bernilai nil sedia kala", fn () {
         ada x
         tuntut x == nil
@@ -122,26 +122,24 @@ $m.sidang("Kata kunci ada", fn (uji) {
         tuntut b == nil
     })
 
-    xuji("tidak boleh mendefinisikan variabel statis diluar kelas", fn () {
-        // setelah punya eval
-        // tuntut coba {
-        //     ada sta x = 12
-        //     salah
-        // } tahan (e) {
-        //     tuntut e.pesan() == "identitas statis hanya bisa digunakan didalam kelas"
-        //     benar
-        // } == benar
+    uji("tidak boleh mendefinisikan variabel statis diluar kelas", fn () {
+        tuntut coba {
+            eval!("ada sta x = 12")
+            salah
+        } tahan (e) {
+            tuntut e.pesan() == "pengenal statis hanya bisa digunakan di luar metode di dalam kelas"
+            benar
+        } == benar
     })
 
-    // uji("tidak dapat diawali dengan angka", fn () {
-    //     tuntut coba {
-    //         ada 123a = 12
-    //         salah
-    //     } tahan (e) {
-    //         cetak(e.pesan())
-    //         tuntut e.pesan().berisi?("x")
-    //     } == benar
-    // })
+    uji("tidak dapat diawali dengan angka", fn () {
+        tuntut coba {
+            eval!("ada 123a = 12")
+            salah
+        } tahan (e) {
+            tuntut e.pesan() == "seharusnya menjumpai `IDENTITAS`, tapi malah `INTEGER`"
+        } == benar
+    })
 
     uji("variabel yang tidak ada tidak terdefinisikan", fn () {
         tuntut coba {

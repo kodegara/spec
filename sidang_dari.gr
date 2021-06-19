@@ -1,4 +1,4 @@
-$m.sidang("Statemen dari", fn () {
+sidang("Statemen dari", fn () {
     uji("melakukan iterasi hingga variabel pengontrol bernilai salah", fn () {
         ada der = []
         ada i = 0

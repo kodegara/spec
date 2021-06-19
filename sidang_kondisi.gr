@@ -1,4 +1,4 @@
-$m.sidang("Ekspresi Kondisi", fn (uji) {
+sidang("Ekspresi Kondisi", fn () {
     uji("saat benar dan hanya memiliki blok kebenaran", fn() {
         ada nilai = 0
         tuntut nilai == 0
@@ -73,15 +73,20 @@ $m.sidang("Ekspresi Kondisi", fn (uji) {
     })
 
     tentang("dengan berbagai cabang alternatif berkondisi", fn () {
-        xuji("tidak boleh menggunakan cabang alternatif berkondisi setelah cabang alternatif tak berkondisi", fn () {
+        uji("tidak boleh menggunakan cabang alternatif berkondisi setelah cabang alternatif tak berkondisi", fn () {
             // setelah memiliki fungsi eval() & multi-line string
-            // coba {
-            //     jika (benar) { }
-            //     lain { }
-            //     lain jika (salah) { }
-            // } tahan (e) {
-
-            // }
+            coba {
+                eval!("
+                jika (benar) { }
+                lain { }
+                lain jika (salah) { }
+                ")
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahKode
+                tuntut e.pesan() == "tidak diperbolehkan adanya `lain` pada posisi tersebut"
+                benar
+            } == benar
         })
 
         tentang("cabang utama bernilai benar", fn () {

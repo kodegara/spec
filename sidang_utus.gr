@@ -1,4 +1,4 @@
-$m.sidang("Kata kunci `utus`", fn () {
+sidang("Kata kunci `utus`", fn () {
     uji("bisa mengutus nilai dari dalam blok selama (benar)", fn () {
         ada nilaiLain = fn () {
             ada i = 0

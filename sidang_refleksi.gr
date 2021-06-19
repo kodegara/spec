@@ -1,4 +1,4 @@
-$m.sidang(Refleksi, fn () {
+sidang(Refleksi, fn () {
     uji("#cipta! menginisialisasi kelas", fn () {
         tidakAda!(fn () { A })
 

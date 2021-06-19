@@ -1,4 +1,4 @@
-$m.sidang("Peta", fn (uji) {
+sidang(Peta, fn () {
     // todo: biar variabel tidak berubah-ubah setiap jalannya tes/independen
     // var("kFungsi") { {} } equal to -> var("kFungsi", fn () { {} }) << hanya jika fungsi sebagai argumen terakhir
     ada kFungsi = fn () {}
@@ -32,8 +32,8 @@ $m.sidang("Peta", fn (uji) {
         kRiil2v2: "v2",
     }
 
-    xuji(".baru() dapat membuat peta baru", fn () {
-        // tuntut Peta.baru() == {}
+    uji(".baru() dapat membuat peta baru", fn () {
+        tuntut Peta.baru() == {}
     })
 
     uji("itu Peta", fn () {
@@ -227,8 +227,7 @@ $m.sidang("Peta", fn (uji) {
         tuntut p.panjang() > 0
     })
 
-    xuji(".jadiKata() menuliskan Peta menjadi Kata", fn () {
-        // pastikan tiga hanya tertulis satu kali
-        // tuntut peta.jadiKata() == {1: 1, salah: "no", <Fungsi: @0xc00048d5e0>: "fungsi", nil: benar, 3: "tigaJumlah", "two": 2, benar: "yes", <Kelas Masalah: @0xc0001342c0>: salah, [1, 2, 3, 4, 5]: <Fungsi: @0xc00048d5e0>, {benar: "adam"}: "x"}
+    uji(".jadiKata() menuliskan Peta menjadi Kata", fn () {
+        tuntut peta.jadiKata() itu Kata
     })
 })
