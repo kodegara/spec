@@ -164,6 +164,27 @@ sidang(Fungsi, fn () {
             ubah(a, 12)
             tuntut a.a() == 12
         })
+
+        tentang("ketika berupa fungsi", fn () {
+            ia("bisa mengakses metode dari kelas Objek", fn () {
+                tidakAda!(fn() { A })
+
+                kelas A {
+                    fn a(m) { m() }
+                    fn b() { "b" }
+
+                    pribadi {
+                        fn c() { "c" }
+                    }
+                }
+
+                ada a = A.baru()
+                ada k
+
+                a.a(fn () { k = kobit })
+                tuntut k itu Angka
+            })
+        })
     })
 
     ia("tidak boleh mendefinisikan fungsi bebas dengan kata kunci `sta`", fn () {

@@ -163,28 +163,28 @@ sidang("Blok", fn () {
         kelas A {}
 
         fn () {
-            ada a = 1
-            tuntut a == 1
+            ada b = 1
+            tuntut b == 1
 
             kelas A {
-                fn a() { a }
+                fn a() { b }
             }
 
             tuntut coba {
-                tuntut A.baru().a() == 1
+                A.baru().a()
                 salah
             } tahan (e) {
                 tuntut e itu MasalahPengenal
-                tuntut e.pesan() == "identitas tidak ditemukan: a"
+                tuntut e.pesan() == "identitas tidak ditemukan: b"
                 benar
             } == benar
         }()
 
         kelas A {
-            ada a = 12
+            ada b = 12
 
             kelas B {
-                fn a() { a }
+                fn a() { b }
             }
         }
 
@@ -195,7 +195,7 @@ sidang("Blok", fn () {
             salah
         } tahan (e) {
             tuntut e itu MasalahPengenal
-            tuntut e.pesan() == "identitas tidak ditemukan: a"
+            tuntut e.pesan() == "identitas tidak ditemukan: b"
             benar
         } == benar
     })
