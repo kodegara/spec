@@ -1,11 +1,11 @@
 sidang(Masalah, fn () {
-    uji(".baru() bisa membuat objek masalah tanpa pesan", fn () {
+    ia(".baru() bisa membuat objek masalah tanpa pesan", fn () {
         ada msl = Masalah.baru()
         tuntut msl itu Masalah
         tuntut msl.pesan() == ""
     })
 
-    uji(".baru() bisa membuat objek masalah dengan pesan", fn () {
+    ia(".baru() bisa membuat objek masalah dengan pesan", fn () {
         ada msl = MasalahKode.baru("ada kesalahan dalam kode")
 
         tuntut msl itu MasalahKode
@@ -15,7 +15,7 @@ sidang(Masalah, fn () {
     })
 
     tentang(".jejak()", fn () {
-        uji("mencetak jejak eksekusi dalam metode yang bermasalah", fn () {
+        ia("mencetak jejak eksekusi dalam metode yang bermasalah", fn () {
             tidakAda!(fn () { A })
 
             kelas A {
@@ -32,7 +32,7 @@ sidang(Masalah, fn () {
         })
     })
 
-    uji(".pesan=(arg) menyetel isi pesan masalah", fn () {
+    ia(".pesan=(arg) menyetel isi pesan masalah", fn () {
         ada msl = Masalah.baru("bermasalah")
         tuntut msl.pesan() == "bermasalah"
 
@@ -41,7 +41,7 @@ sidang(Masalah, fn () {
     })
 
     tentang(".rincian()", fn () {
-        uji("mengutus `nil` jika `pesan()` dan `jejak()` kosong", fn () {
+        ia("mengutus `nil` jika `pesan()` dan `jejak()` kosong", fn () {
             ada m = Masalah.baru()
 
             tuntut m.pesan().kosong?()
@@ -50,7 +50,7 @@ sidang(Masalah, fn () {
             tuntut m.rincian() == nil
         })
 
-        uji("mengutus pesan jika hanya `pesan()` yang bernilai", fn () {
+        ia("mengutus pesan jika hanya `pesan()` yang bernilai", fn () {
             ada m = Masalah.baru("masalah")
 
             tuntut m.pesan() != nil
@@ -59,7 +59,7 @@ sidang(Masalah, fn () {
             tuntut m.rincian() == "Masalah: masalah"
         })
 
-        uji("mengutus jejak jika ada", fn () {
+        ia("mengutus jejak jika ada", fn () {
             ada bermasalah = fn () { 1 + nil }
             ada m
 

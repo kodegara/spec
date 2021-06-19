@@ -1,5 +1,5 @@
 sidang("Statemen dari", fn () {
-    uji("melakukan iterasi hingga variabel pengontrol bernilai salah", fn () {
+    ia("melakukan iterasi hingga variabel pengontrol bernilai salah", fn () {
         ada der = []
         ada i = 0
 
@@ -11,7 +11,7 @@ sidang("Statemen dari", fn () {
         tuntut i == 10
     })
 
-    uji("tanpa variabel pengontrol terdefinisikan, bisa looping jika menggunakan `ada`", fn () {
+    ia("tanpa variabel pengontrol terdefinisikan, bisa looping jika menggunakan `ada`", fn () {
         ada der = []
 
         dari (ada i = 0; i < 10; i += 1) {
@@ -22,7 +22,19 @@ sidang("Statemen dari", fn () {
         tuntut coba { i == 10 } tahan (e) { -1 } == -1
     })
 
-    uji("variabel pengontrol tidak membayangi variabel luar dengan nama yang sama jika tidak menggunakan `ada`", fn () {
+    ia("bisa melakukan iterasi dengan sintaksis tanpa tanda kurung", fn () {
+        ada der = []
+
+        tuntut der == []
+
+        dari ada i = 0; i < 10; i++ {
+            der << i
+        }
+
+        tuntut der == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    })
+
+    ia("variabel pengontrol tidak membayangi variabel luar dengan nama yang sama jika tidak menggunakan `ada`", fn () {
         ada der = []
         ada i = 100
 
@@ -36,7 +48,7 @@ sidang("Statemen dari", fn () {
         tuntut i == 10
     })
 
-    uji("variabel pengontrol membayangi variabel luar dengan nama yang sama jika menggunakan `ada`", fn () {
+    ia("variabel pengontrol membayangi variabel luar dengan nama yang sama jika menggunakan `ada`", fn () {
         ada der = []
         ada i = 100
 
@@ -49,7 +61,7 @@ sidang("Statemen dari", fn () {
         tuntut i == 100
     })
 
-    uji("melempar masalah jika variabel pengontrol tidak terdefinisikan", fn () {
+    ia("melempar masalah jika variabel pengontrol tidak terdefinisikan", fn () {
         ada tertahan = salah
 
         coba {
@@ -61,7 +73,7 @@ sidang("Statemen dari", fn () {
         tuntut tertahan == benar
     })
 
-    uji("akan melempar masalah jika bagian pengondisian bermasalah", fn () {
+    ia("akan melempar masalah jika bagian pengondisian bermasalah", fn () {
         ada tertahan = coba {
             dari (ada i = 0; i < 10 + nil; i += 1) { }
         } tahan (e) {
@@ -71,7 +83,7 @@ sidang("Statemen dari", fn () {
         tuntut tertahan == benar
     })
 
-    uji("akan melempar masalah jika bagian pengubah bermasalah", fn () {
+    ia("akan melempar masalah jika bagian pengubah bermasalah", fn () {
         ada tertahan = coba {
             dari (ada i = 0; i < 10; i += 1 + nil) { }
         } tahan (e) {
@@ -81,7 +93,7 @@ sidang("Statemen dari", fn () {
         tuntut tertahan == benar
     })
 
-    uji("bisa bersarang", fn () {
+    ia("bisa bersarang", fn () {
         ada deret = []
 
         dari (ada i = 0; i < 5; i += 1) {

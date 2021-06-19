@@ -1,17 +1,17 @@
 sidang("Komentar", fn () {
-    uji("boleh dekat dengan kata kunci", fn() {
+    ia("boleh dekat dengan kata kunci", fn() {
         // ada nilai = 0
     })
 
-    uji("boleh dekat dengan operator", fn() {
+    ia("boleh dekat dengan operator", fn() {
         // a == 0
     })
 
-    uji("boleh berentetan sebaris", fn () {
+    ia("boleh berentetan sebaris", fn () {
         // //
     })
 
-    uji("boleh berentetan banyak baris", fn () {
+    ia("boleh berentetan banyak baris", fn () {
         // a
         // b
         // c
@@ -19,5 +19,25 @@ sidang("Komentar", fn () {
         //
         //
         //
+    })
+
+    ia("bisa digunakan untuk mengomentasi kode berdekatan dengan `ini`", fn () {
+        kelas A {
+            ada a
+
+            fn a() {
+                // aadadadsad
+                ini.a
+            }
+
+            fn b () {
+                // asdadad
+                ini.a()
+                a()
+            }
+        }
+
+        A.baru().a()
+        A.baru().b()
     })
 })

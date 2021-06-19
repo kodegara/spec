@@ -2,7 +2,7 @@ sidang(File, fn () {
     tentang("#baca()", fn () {
         ada folder = "./pelengkap/file"
 
-        uji("membaca isi file lalu mengutus Kata", fn () {
+        ia("membaca isi file lalu mengutus Kata", fn () {
             ada kata = File.baca(folder + "/kata.txt")
             ada angka = File.baca(folder + "/angka.txt")
 
@@ -10,7 +10,7 @@ sidang(File, fn () {
             tuntut angka itu Kata
         })
 
-        uji("jika file tidak ditemukan, akan menjadi masalah", fn () {
+        ia("jika file tidak ditemukan, akan menjadi masalah", fn () {
             tuntut coba {
                 File.baca(folder + "/tidakada.txt")
                 salah
@@ -21,7 +21,7 @@ sidang(File, fn () {
             } == benar
         })
 
-        uji("jika file adalah folder, akan menjadi masalah", fn () {
+        ia("jika file adalah folder, akan menjadi masalah", fn () {
             tuntut coba {
                 File.baca(folder)
                 salah

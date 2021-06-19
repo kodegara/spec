@@ -1,5 +1,5 @@
 sidang(Kernel, fn () {
-    uji("#cetak mencetak pesan", fn () {
+    ia("#cetak mencetak pesan", fn () {
         Kernel.cetak("mencetak dari kernel")
 
         // bisa resolve metode dengan nama yang sama dengan yang dari Kernel
@@ -17,12 +17,12 @@ sidang(Kernel, fn () {
     })
 
     tentang("#eval!(arg)", fn () {
-        uji("bisa mengevaluasi argumen sebagai kode", fn () {
+        ia("bisa mengevaluasi argumen sebagai kode", fn () {
             tuntut eval!("1 + 1") == 2
             tuntut eval!("fn(){\"dari eval\"}()") == "dari eval"
         })
 
-        uji("bisa meresolusi pengenal dari blok yang sama", fn () {
+        ia("bisa meresolusi pengenal dari blok yang sama", fn () {
             ada a = "a"
             ada b = "a"
 
@@ -33,7 +33,7 @@ sidang(Kernel, fn () {
             tuntut eval!("b").beralamatSamaDalamMemori?(b) == benar
         })
 
-        uji("bisa mengubah pengenal dari blok yang sama", fn () {
+        ia("bisa mengubah pengenal dari blok yang sama", fn () {
             ada a = []
 
             tuntut eval!("a << 1") == a
@@ -41,7 +41,7 @@ sidang(Kernel, fn () {
         })
     })
 
-    uji("#muat memuat dan mengevaluasi file sebagai inti Kernel", fn () {
+    ia("#muat memuat dan mengevaluasi file sebagai inti Kernel", fn () {
         tidakAda!(fn () { ADariMuat })
         tidakAda!(fn () { BDariMuat })
         tidakAda!(fn () { ADariBlok })

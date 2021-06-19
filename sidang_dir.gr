@@ -3,11 +3,11 @@ sidang(Dir, fn () {
         ada alamat = "./pelengkap/dir"
         ada d = Dir.pindai(alamat)
 
-        uji("menghasilkan Dir::Entri", fn () {
+        ia("menghasilkan Dir::Entri", fn () {
             tuntut d.semua?(Dir::Entri) == benar
         })
 
-        uji("hanya berisi file dan direktori", fn () {
+        ia("hanya berisi file dan direktori", fn () {
             ada isiDirektori = [".rahasia", "dalam", "teks1.txt"]
             // implementasikan ubah terlebih dahulu
 
@@ -15,7 +15,7 @@ sidang(Dir, fn () {
             tuntut nama == isiDirektori
         })
 
-        uji("tanpa direktori dalam", fn () {
+        ia("tanpa direktori dalam", fn () {
             ada nama = d.jelma(fn (entri) { entri.nama() })
             tuntut nama.berisi?("teks2.txt") == salah
 
@@ -25,27 +25,27 @@ sidang(Dir, fn () {
         })
 
         tentang(Dir::Entri, fn () {
-            uji(".nama() tidak mengutus nilai kosong", fn () {
+            ia(".nama() tidak mengutus nilai kosong", fn () {
                 tuntut d.semua?(fn (e) { !e.nama().kosong?() }) == benar
             })
 
-            uji(".dir?() mengutus nilai Boolean", fn () {
+            ia(".dir?() mengutus nilai Boolean", fn () {
                 tuntut d.semua?(fn (e) { e.dir?().tipe() == Boolean }) == benar
             })
 
-            uji(".file?() mengutus nilai Boolean", fn () {
+            ia(".file?() mengutus nilai Boolean", fn () {
                 tuntut d.semua?(fn (e) { e.file?().tipe() == Boolean }) == benar
             })
 
-            uji(".symlink?() mengutus nilai Boolean", fn () {
+            ia(".symlink?() mengutus nilai Boolean", fn () {
                 tuntut d.semua?(fn (e) { e.symlink?().tipe() == Boolean }) == benar
             })
 
-            uji(".unixSocket?() mengutus nilai Boolean", fn () {
+            ia(".unixSocket?() mengutus nilai Boolean", fn () {
                 tuntut d.semua?(fn (e) { e.unixSocket?().tipe() == Boolean }) == benar
             })
 
-            uji(".alamat() mengutus nama yang bersifat alamat absolut", fn () {
+            ia(".alamat() mengutus nama yang bersifat alamat absolut", fn () {
                 tuntut d.semua?(fn (e) {
                     e.alamat().berisi?(e.nama())
                 }) == benar

@@ -1,5 +1,5 @@
 sidang("Ekspresi Kondisi", fn () {
-    uji("saat benar dan hanya memiliki blok kebenaran", fn() {
+    ia("saat benar dan hanya memiliki blok kebenaran", fn() {
         ada nilai = 0
         tuntut nilai == 0
 
@@ -10,7 +10,7 @@ sidang("Ekspresi Kondisi", fn () {
         tuntut nilai == 1
     })
 
-    uji("saat salah dan hanya memiliki blok kebenaran", fn() {
+    ia("saat salah dan hanya memiliki blok kebenaran", fn() {
         ada nilai = 0
 
         jika (salah) {
@@ -20,7 +20,7 @@ sidang("Ekspresi Kondisi", fn () {
         tuntut nilai == 0
     })
 
-    uji("saat nil dan hanya memiliki blok kebenaran", fn() {
+    ia("saat nil dan hanya memiliki blok kebenaran", fn() {
         ada nilai = 0
 
         jika (nil) {
@@ -30,7 +30,7 @@ sidang("Ekspresi Kondisi", fn () {
         tuntut nilai == 0
     })
 
-    uji("saat bernilai sebenar dan hanya memiliki blok kebenaran", fn() {
+    ia("saat bernilai sebenar dan hanya memiliki blok kebenaran", fn() {
         ada nilai = 0
 
         jika (1) {
@@ -44,7 +44,7 @@ sidang("Ekspresi Kondisi", fn () {
         tuntut nilai == 1
     })
 
-    uji("bisa mengutus dari blok paling dalam", fn () {
+    ia("bisa mengutus dari blok paling dalam", fn () {
         ada a
 
         a = fn () {
@@ -60,7 +60,7 @@ sidang("Ekspresi Kondisi", fn () {
         tuntut a == 1
     })
 
-    uji("saat salah dan memiliki blok lain", fn () {
+    ia("saat salah dan memiliki blok lain", fn () {
         ada a
 
         jika (salah) {
@@ -73,7 +73,7 @@ sidang("Ekspresi Kondisi", fn () {
     })
 
     tentang("dengan berbagai cabang alternatif berkondisi", fn () {
-        uji("tidak boleh menggunakan cabang alternatif berkondisi setelah cabang alternatif tak berkondisi", fn () {
+        ia("tidak boleh menggunakan cabang alternatif berkondisi setelah cabang alternatif tak berkondisi", fn () {
             // setelah memiliki fungsi eval() & multi-line string
             coba {
                 eval!("
@@ -90,7 +90,7 @@ sidang("Ekspresi Kondisi", fn () {
         })
 
         tentang("cabang utama bernilai benar", fn () {
-            uji("hanya mengeksekusi cabang utama meski terdapat 1 cabang alternatif berkondisi", fn () {
+            ia("hanya mengeksekusi cabang utama meski terdapat 1 cabang alternatif berkondisi", fn () {
                 ada a
                 tuntut a == nil
 
@@ -116,7 +116,7 @@ sidang("Ekspresi Kondisi", fn () {
                 tuntut a == 1
             })
 
-            uji("hanya mengeksekusi cabang utama meski terdapat 2 cabang alternatif berkondisi", fn () {
+            ia("hanya mengeksekusi cabang utama meski terdapat 2 cabang alternatif berkondisi", fn () {
                 ada a
                 tuntut a == nil
 
@@ -139,7 +139,7 @@ sidang("Ekspresi Kondisi", fn () {
         })
 
         tentang("cabang utama bernilai salah", fn () {
-            uji("mengeksekusi cabang alternatif berkondisi pertama yang bernilai benar", fn () {
+            ia("mengeksekusi cabang alternatif berkondisi pertama yang bernilai benar", fn () {
                 ada a
 
                 jika (salah) { a = 1 }
@@ -170,7 +170,7 @@ sidang("Ekspresi Kondisi", fn () {
                 tuntut a == 3
             })
 
-            uji("mengeksekusi cabang alternatif tak berkondisi jika ada dengan catatan seluruh cabang yang berkondisi bernilai salah", fn () {
+            ia("mengeksekusi cabang alternatif tak berkondisi jika ada dengan catatan seluruh cabang yang berkondisi bernilai salah", fn () {
                 ada a
 
                 jika (salah) { a = 1 }
@@ -182,7 +182,7 @@ sidang("Ekspresi Kondisi", fn () {
                 tuntut a == 5
             })
 
-            uji("tidak mengeksekusi blok manapung jika tidak ada cabang yang bernilai sebenar", fn () {
+            ia("tidak mengeksekusi blok manapung jika tidak ada cabang yang bernilai sebenar", fn () {
                 ada a
 
                 jika (salah) { a = 1 }

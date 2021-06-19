@@ -2,7 +2,7 @@ sidang(Integer, fn () {
     ada satu = 1
     ada dua = 2
 
-    uji("itu Integer", fn () {
+    ia("itu Integer", fn () {
         tuntut Integer itu Kelas
         tuntut Integer itu Objek
 
@@ -14,12 +14,12 @@ sidang(Integer, fn () {
         tuntut !(satu itu Kelas)
     })
 
-    uji(".mutlak() mengutus nilai non-negatif", fn () {
+    ia(".mutlak() mengutus nilai non-negatif", fn () {
         tuntut 5.mutlak() == 5
         tuntut -5.mutlak() == 5
     })
 
-    uji(".antara(arg1, arg2) mengecek apakah suatu Integer berada dalam rentang arg1 ke arg2, inklusif", fn () {
+    ia(".antara(arg1, arg2) mengecek apakah suatu Integer berada dalam rentang arg1 ke arg2, inklusif", fn () {
         tuntut 1.antara?(1, 2)
         tuntut 2.antara?(1, 2)
         tuntut 1.antara?(0, 2)
@@ -28,11 +28,11 @@ sidang(Integer, fn () {
         tuntut -1.antara?(-2, 0)
     })
 
-    uji(".kali() mengutus deret berisi Integer dari 0 hingga n", fn () {
+    ia(".kali() mengutus deret berisi Integer dari 0 hingga n", fn () {
         tuntut 3.kali() == [0, 1, 2]
     })
 
-    uji(".kali(arg) menjalankan arg selama n-kali", fn () {
+    ia(".kali(arg) menjalankan arg selama n-kali", fn () {
         ada a = []
 
         3.kali(fn () {
@@ -42,12 +42,12 @@ sidang(Integer, fn () {
         tuntut a == [benar, benar, benar]
     })
 
-    uji(".kobit() mencetak kode bibit sebagai kunci peta", fn () {
+    ia(".kobit() mencetak kode bibit sebagai kunci peta", fn () {
         tuntut 1.kobit() != nil
         tuntut -2.kobit() != nil
     })
 
-    uji(".negatif?() mengecek apakah suatu bilangan negatif atau positif", fn () {
+    ia(".negatif?() mengecek apakah suatu bilangan negatif atau positif", fn () {
         tuntut -1.negatif?() == benar
         tuntut -0.negatif?() == salah
         tuntut 0.negatif?() == salah

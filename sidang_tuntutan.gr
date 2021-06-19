@@ -1,5 +1,5 @@
 sidang("Kata kunci `tuntutan`", fn () {
-    uji("tuntutan adalah pernyataan bukan ekspresi", fn () {
+    ia("tuntutan adalah pernyataan bukan ekspresi", fn () {
         tuntut coba {
             eval!("ada x = tuntut benar")
             salah
@@ -10,11 +10,11 @@ sidang("Kata kunci `tuntutan`", fn () {
         } == benar
     })
 
-    uji("tuntut jika menemui kebenaran tidak melakukan apa-apa", fn () {
+    ia("tuntut jika menemui kebenaran tidak melakukan apa-apa", fn () {
         tuntut benar == benar
     })
 
-    uji("tuntut jika menemui kesalahan akan menjadi masalah", fn () {
+    ia("tuntut jika menemui kesalahan akan menjadi masalah", fn () {
         coba {
             tuntut salah
             salah
@@ -26,7 +26,7 @@ sidang("Kata kunci `tuntutan`", fn () {
     })
 
     tentang("dengan pesan sendiri", fn () {
-        uji("diperbolehkan jika Kata", fn () {
+        ia("diperbolehkan jika Kata", fn () {
             coba {
                 tuntut salah: "pesan tersendiri"
                 salah
@@ -37,7 +37,7 @@ sidang("Kata kunci `tuntutan`", fn () {
             } == benar
         })
 
-        uji("dilarang jika ekspresi tidak menghasilkan Kata", fn () {
+        ia("dilarang jika ekspresi tidak menghasilkan Kata", fn () {
             coba {
                 eval!("tuntut salah: fn () { \"pesan tersendiri \"}()")
                 salah

@@ -1,5 +1,5 @@
 sidang(EkspresiRegular, fn () {
-    uji("bisa dibuat melalui literal khusus `#r`", fn () {
+    ia("bisa dibuat melalui literal khusus `#r`", fn () {
         ada r = #r{}
         tuntut r itu EkspresiRegular
         tuntut r.literal() == ""
@@ -9,7 +9,7 @@ sidang(EkspresiRegular, fn () {
         tuntut r.literal() == "Gara"
     })
 
-    uji("jika tidak bisa menginisialisasi, akan melempar Masalah", fn () {
+    ia("jika tidak bisa menginisialisasi, akan melempar Masalah", fn () {
         tuntut coba {
             #r{[]}
             salah
@@ -20,21 +20,21 @@ sidang(EkspresiRegular, fn () {
         } == benar
     })
 
-    uji(".jadiKata() menuliskan ekspresi regular", fn () {
+    ia(".jadiKata() menuliskan ekspresi regular", fn () {
         tuntut #r{ga}.jadiKata() == "#r{ga}"
     })
 
-    uji(".literal() mengembalikan literal yang digunakan sebagai ekspresi regular", fn () {
+    ia(".literal() mengembalikan literal yang digunakan sebagai ekspresi regular", fn () {
         tuntut #r{ga}.literal() == "ga"
         tuntut #r{^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$}.literal() == "^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
     })
 
-    uji(".sama?(arg) bernilai benar jika kedua ekspresi regular memiliki literal yang sama", fn () {
+    ia(".sama?(arg) bernilai benar jika kedua ekspresi regular memiliki literal yang sama", fn () {
         tuntut #r{ga} == #r{ga}
         tuntut #r{^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$} == #r{^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$}
     })
 
-    uji(".sesuai?(arg) mengecek apakah arg memenuhi ekspresi regular", fn () {
+    ia(".sesuai?(arg) mengecek apakah arg memenuhi ekspresi regular", fn () {
         ada gaER = #r{ga}
         tuntut gaER.sesuai?("ga")
         tuntut gaER.sesuai?("gara")

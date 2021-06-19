@@ -2,18 +2,18 @@ sidang(Kata, fn () {
     ada halo = "halo"
     ada dunia = "dunia"
 
-    uji("#baru() dapat membuat Kata baru yang kosong", fn () {
+    ia("#baru() dapat membuat Kata baru yang kosong", fn () {
         tuntut Kata.baru() == ""
     })
 
     tentang("#ordinal", fn () {
-        uji("mengkonversi karakter paling kanan ke nilai ordinalnya", fn () {
+        ia("mengkonversi karakter paling kanan ke nilai ordinalnya", fn () {
             tuntut Kata.metode().berisi?("ordinal")
             tuntut "".metode().berisi?("ordinal") == salah
             tuntut Kata.ordinal("a") != nil
         })
 
-        uji("menjadi masalah jika argumen bukanlah Kata", fn () {
+        ia("menjadi masalah jika argumen bukanlah Kata", fn () {
             tuntut coba {
                 Kata.ordinal([])
                 salah
@@ -24,7 +24,7 @@ sidang(Kata, fn () {
         })
     })
 
-    uji("itu Kata", fn () {
+    ia("itu Kata", fn () {
         tuntut Kata itu Kelas
         tuntut Kata itu Objek
 
@@ -35,7 +35,7 @@ sidang(Kata, fn () {
         tuntut !("" itu Kelas)
     })
 
-    uji("secara penuh mendukung Unicode", fn () {
+    ia("secara penuh mendukung Unicode", fn () {
         tuntut "Ƣ" == "Ƣ"
         tuntut "愛" == "愛"
         tuntut "☮" == "☮"
@@ -70,7 +70,7 @@ sidang(Kata, fn () {
         tuntut teksPisah2 == teksPisah
     })
 
-    uji("dapat menggunakan karakter lepas dengan tanda petik", fn () {
+    ia("dapat menggunakan karakter lepas dengan tanda petik", fn () {
         ada id = fn (kata) { kata } // membantu memastikan kata dengan karakter lepas dapat digunakan sebagai argumen
 
         ada folder = "./pelengkap/kata/petik"
@@ -82,7 +82,7 @@ sidang(Kata, fn () {
         tuntut id("\t\n") == File.baca(folder + "/1_tab.txt")
     })
 
-    uji("dapat membentang beberapa baris", fn () {
+    ia("dapat membentang beberapa baris", fn () {
         ada abjad = "
         abc
         def
@@ -100,7 +100,7 @@ sidang(Kata, fn () {
         ]
     })
 
-    uji(".berisi?(arg1) mengecek apakah Kata berisi Kata lain", fn () {
+    ia(".berisi?(arg1) mengecek apakah Kata berisi Kata lain", fn () {
         tuntut coba { "".berisi?(nil) } tahan (e) { e itu MasalahArgumen } == benar
         tuntut coba { "".berisi?(1) } tahan (e) { e itu MasalahArgumen } == benar
         tuntut coba { "".berisi?([]) } tahan (e) { e itu MasalahArgumen } == benar
@@ -116,14 +116,14 @@ sidang(Kata, fn () {
         tuntut "foobar".berisi?("foobax") == salah
     })
 
-    uji(".besar() menjadikan seluruh karakter berhuruf besar", fn () {
+    ia(".besar() menjadikan seluruh karakter berhuruf besar", fn () {
         tuntut coba { "".besar(1) } tahan (e) { e itu MasalahArgumen } == benar
 
         tuntut "".besar() == ""
         tuntut "-1 derajat".besar() == "-1 DERAJAT"
     })
 
-    uji(".cari(arg1) menemukan posisi dimana Kata dapat ditemukan dalam Kata untuk pertama kalinya", fn () {
+    ia(".cari(arg1) menemukan posisi dimana Kata dapat ditemukan dalam Kata untuk pertama kalinya", fn () {
         tuntut coba { "".cari(1) } tahan (e) { e.pesan().berisi?("tidak dapat menerima Integer") }
         tuntut coba { "".cari("1", "2") } tahan (e) { e.pesan().berisi?("`cari` hanya bisa dipanggil dengan 1 argumen") }
 
@@ -136,7 +136,7 @@ sidang(Kata, fn () {
         tuntut "foobar".cari("foobax") == nil
     })
 
-    uji(".cuil(arg1, arg2) mengutus Kata pada posisi dari arg1 sampai ke arg2 inklusif", fn () {
+    ia(".cuil(arg1, arg2) mengutus Kata pada posisi dari arg1 sampai ke arg2 inklusif", fn () {
         ada kata = "ini adalah sebuah kata"
 
         tuntut kata.cuil(0, 2) == "ini"
@@ -152,7 +152,7 @@ sidang(Kata, fn () {
         tuntut kata.cuil(18, 100) == "kata"
     })
 
-    uji(".awal?(arg1) mengecek apakah kata diawali dengan kata lain", fn () {
+    ia(".awal?(arg1) mengecek apakah kata diawali dengan kata lain", fn () {
         tuntut coba { "".awal?(1) } tahan (e) { e.pesan().berisi?("tidak dapat menerima Integer") }
 
         tuntut "Gara".awal?("Gar")
@@ -160,7 +160,7 @@ sidang(Kata, fn () {
         tuntut "Gara".awal?("gar") == salah
     })
 
-    uji(".akhir?(arg1) mengecek apakah kata diakhiri dengan kata lain", fn () {
+    ia(".akhir?(arg1) mengecek apakah kata diakhiri dengan kata lain", fn () {
         tuntut coba { "".akhir?(1) } tahan (e) { e.pesan().berisi?("arg itu Kata") }
 
         tuntut "Ini Gara".akhir?("ara")
@@ -170,7 +170,7 @@ sidang(Kata, fn () {
         tuntut "".akhir?("")
     })
 
-    uji(".tambah(arg1) menyambung arg1 ke kata secara non-destruktif", fn () {
+    ia(".tambah(arg1) menyambung arg1 ke kata secara non-destruktif", fn () {
         ada tul1 = "a"
         ada tul2 = "b"
 
@@ -189,7 +189,7 @@ sidang(Kata, fn () {
         tuntut tul1.tambah(nil) == "anil"
     })
 
-    uji(".ganda(arg) mencetak kata sebanyak arg", fn () {
+    ia(".ganda(arg) mencetak kata sebanyak arg", fn () {
         tuntut "a".ganda(4) == "aaaa"
         tuntut "a".ganda(1) == "a"
         tuntut "a".ganda(0) == ""
@@ -198,7 +198,7 @@ sidang(Kata, fn () {
         tuntut "a" * 4 == "aaaa"
     })
 
-    uji(".kecil() menjadikan seluruh karakter berhuruf kecil", fn () {
+    ia(".kecil() menjadikan seluruh karakter berhuruf kecil", fn () {
         tuntut coba { "".kecil(1) } tahan (e) { e.pesan().berisi?("`kecil` hanya bisa dipanggil dengan tanpa argumen") }
 
         tuntut "ABC".kecil() == "abc"
@@ -207,7 +207,7 @@ sidang(Kata, fn () {
         tuntut "ABC DEF".kecil() == "abc def"
     })
 
-    uji(".kobit() mencetak kode bibit", fn () {
+    ia(".kobit() mencetak kode bibit", fn () {
         tuntut "a".kobit() != "b".kobit()
         tuntut "ab".kobit() != "ac".kobit()
         tuntut "".kobit() != " ".kobit()
@@ -215,32 +215,32 @@ sidang(Kata, fn () {
     })
 
     tentang(".kosong()", fn () {
-        uji("mengutus `benar` jika tak berisi apapun", fn () {
+        ia("mengutus `benar` jika tak berisi apapun", fn () {
             tuntut "".kosong?() == benar
         })
 
-        uji("mengutus `benar` jika hanya berisi spasi", fn () {
+        ia("mengutus `benar` jika hanya berisi spasi", fn () {
             tuntut "    ".kosong?() == benar
         })
 
-        uji("mengutus `benar` jika hanya berisi tab", fn () {
+        ia("mengutus `benar` jika hanya berisi tab", fn () {
             tuntut "\t\t\t\t".kosong?() == benar
         })
 
-        uji("mengutus `benar` jika hanya berisi garis baru", fn () {
+        ia("mengutus `benar` jika hanya berisi garis baru", fn () {
             tuntut "\n\n\n\n".kosong?() == benar
         })
 
-        uji("mengutus `benar` jika hanya berisi berbagai macam spasi", fn () {
+        ia("mengutus `benar` jika hanya berisi berbagai macam spasi", fn () {
             tuntut "\t\n \t\n".kosong?() == benar
         })
 
-        uji("mengutus `salah` jika terdapat karakter lain non-spasi", fn () {
+        ia("mengutus `salah` jika terdapat karakter lain non-spasi", fn () {
             tuntut "\ta\t".kosong?() == salah
         })
     })
 
-    uji(".panjang() memberi informasi jumlah karakter dalam kata", fn () {
+    ia(".panjang() memberi informasi jumlah karakter dalam kata", fn () {
         tuntut coba { "".panjang(1) } tahan (e) { e.pesan().berisi?("`panjang` hanya bisa dipanggil dengan tanpa argumen") }
 
         tuntut "".panjang() == 0
@@ -248,7 +248,7 @@ sidang(Kata, fn () {
         tuntut "abc".panjang() == 3
     })
 
-    uji(".pisah() memisah kata kata-per-kata", fn () {
+    ia(".pisah() memisah kata kata-per-kata", fn () {
         tuntut "pada suatu hari".pisah() == ["pada", "suatu", "hari"]
         tuntut "pada".pisah() == ["pada"]
         tuntut "pada ".pisah() == ["pada"]
@@ -258,18 +258,18 @@ sidang(Kata, fn () {
         tuntut "".pisah() == []
     })
 
-    uji(".pisah(arg1) dengan argumen Kata kosong menghasilkan deret yang berisi setiap karakter dalam Kata tersebut", fn () {
+    ia(".pisah(arg1) dengan argumen Kata kosong menghasilkan deret yang berisi setiap karakter dalam Kata tersebut", fn () {
         tuntut "abc def".pisah("") == ["a", "b", "c", " ", "d", "e", "f"]
         tuntut "".pisah("") == []
         tuntut "   xyz    ".pisah("") == [" ", " ", " ", "x", "y", "z", " ", " ", " ", " "]
     })
 
-    uji(".pisah(arg1) memisahkan Kata setiap menemui suatu subkata", fn () {
+    ia(".pisah(arg1) memisahkan Kata setiap menemui suatu subkata", fn () {
         tuntut "a,b,c".pisah(",") == ["a", "b", "c"]
         tuntut "sebuah buku ada dalam sebuah lemari".pisah("sebuah") == ["", " buku ada dalam ", " lemari"]
     })
 
-    uji(".rapi() menghapus seluruh karakter spasi diawal dan diakhir Kata", fn () {
+    ia(".rapi() menghapus seluruh karakter spasi diawal dan diakhir Kata", fn () {
         tuntut coba { "".rapi(1) } tahan (e) { e.pesan().berisi?("`rapi` hanya bisa dipanggil dengan tanpa argumen") }
 
         tuntut "   Gara   ".rapi() == "Gara"
@@ -278,15 +278,15 @@ sidang(Kata, fn () {
         tuntut "    ".rapi() == ""
     })
 
-    uji(".sesuai?(arg) mengecek apakah Kata sesuai dengan ekspresi regular", fn () {
+    ia(".sesuai?(arg) mengecek apakah Kata sesuai dengan ekspresi regular", fn () {
         tuntut "Gara".sesuai?(#r{(G|g)a}) == benar
     })
 
-    uji(".jadiKata() mengembalikan diri sendiri", fn () {
+    ia(".jadiKata() mengembalikan diri sendiri", fn () {
         tuntut "gara".jadiKata() == "gara"
     })
 
-    uji(".ganti(arg1, arg2) mengubah setiap kemunculan arg1 menjadi arg2 dalam Kata yang baru", fn () {
+    ia(".ganti(arg1, arg2) mengubah setiap kemunculan arg1 menjadi arg2 dalam Kata yang baru", fn () {
         ada tul = "aaa bbbcc dd ee abcdee"
 
         tuntut tul.ganti("a", "x") == "xxx bbbcc dd ee xbcdee"

@@ -1,5 +1,5 @@
 sidang("Kata kunci `putus`", fn () {
-    uji("akan menjadi masalah eksekusi jika dipanggil diluar iterasi", fn () {
+    ia("akan menjadi masalah eksekusi jika dipanggil diluar iterasi", fn () {
         tuntut coba {
             putus
         } tahan (e) {
@@ -9,7 +9,7 @@ sidang("Kata kunci `putus`", fn () {
         } == benar
     })
 
-    uji("dapat memutus iterasi `selama`", fn () {
+    ia("dapat memutus iterasi `selama`", fn () {
         ada deret = []
         ada i = 0
 
@@ -26,7 +26,7 @@ sidang("Kata kunci `putus`", fn () {
         tuntut deret == [0, 1, 2, 3, 4]
     })
 
-    uji("dapat memutus iterasi `dari`", fn () {
+    ia("dapat memutus iterasi `dari`", fn () {
         ada deret = []
 
         dari (ada i = 0; i < 100; i += 1) {
@@ -41,7 +41,7 @@ sidang("Kata kunci `putus`", fn () {
         tuntut deret == [0, 1, 2, 3, 4, 5]
     })
 
-    uji("dapat memutus iterasi `selama` yang selalu `benar`", fn () {
+    ia("dapat memutus iterasi `selama` yang selalu `benar`", fn () {
         ada deret = []
         ada i = 0
 
@@ -58,7 +58,7 @@ sidang("Kata kunci `putus`", fn () {
         tuntut deret == [0, 1, 2, 3, 4]
     })
 
-    uji("dapat memutus iterasi `dari` yang selalu `benar`", fn () {
+    ia("dapat memutus iterasi `dari` yang selalu `benar`", fn () {
         ada nilaiLain = fn () {
             ada d = []
             dari (ada i = 0; benar; i += 1) {
@@ -74,7 +74,7 @@ sidang("Kata kunci `putus`", fn () {
         tuntut nilaiLain() == [0, 1, 2, 3, 4, 5]
     })
 
-    uji("dapat memutus iterasi dari fungsi pengiterasi", fn () {
+    ia("dapat memutus iterasi dari fungsi pengiterasi", fn () {
         ada iterasikan = fn (x, fnPengiterasi) {
             dari (ada i = 0; i < x.panjang(); i += 1) {
                 fnPengiterasi(x[i])
@@ -94,7 +94,7 @@ sidang("Kata kunci `putus`", fn () {
         tuntut deret == [1, 2, 3, 4, 5]
     })
 
-    uji("hanya memutus iterasi paling dekat", fn () {
+    ia("hanya memutus iterasi paling dekat", fn () {
         ada deret = []
 
         dari (ada i = 0; i < 3; i += 1) {

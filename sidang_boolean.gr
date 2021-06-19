@@ -1,5 +1,5 @@
 sidang(Boolean, fn () {
-    uji("itu Boolean", fn () {
+    ia("itu Boolean", fn () {
         tuntut Boolean itu Kelas
         tuntut Boolean itu Objek
 
@@ -12,7 +12,7 @@ sidang(Boolean, fn () {
         tuntut !(salah itu Kelas)
     })
 
-    uji("kedudukan", fn () {
+    ia("kedudukan", fn () {
         // test tingkatan kedudukan operator (precedence)
         // NOT > && > ||
 
@@ -24,7 +24,7 @@ sidang(Boolean, fn () {
         tuntut !benar || benar && salah == salah
     })
 
-    uji(".kobit() mencetak kode bibit", fn () {
+    ia(".kobit() mencetak kode bibit", fn () {
         tuntut benar.kobit() != salah.kobit()
     })
 })

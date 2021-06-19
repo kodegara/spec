@@ -1,6 +1,6 @@
 sidang(Objek, fn () {
     tentang(".metode()", fn () {
-        uji("mengutus Deret seluruh fungsi yang bisa dipanggil", fn () {
+        ia("mengutus Deret seluruh fungsi yang bisa dipanggil", fn () {
             tidakAda!(fn () { A })
 
             kelas A {
@@ -16,7 +16,7 @@ sidang(Objek, fn () {
             tuntut A.metode().berisi?("b") == benar
         })
 
-        uji("memiliki metode yang diturunkan dari kelas super", fn () {
+        ia("memiliki metode yang diturunkan dari kelas super", fn () {
             tidakAda!(fn () { A })
 
             kelas A {}
@@ -25,7 +25,7 @@ sidang(Objek, fn () {
             tuntut a.metode().berisi?("kobit") == benar
         })
 
-        uji("tidak memiliki metode dari kelas Kelas", fn () {
+        ia("tidak memiliki metode dari kelas Kelas", fn () {
             kelas Kelas {
                 fn hanyaDiKelas() {}
             }
@@ -36,7 +36,7 @@ sidang(Objek, fn () {
         })
     })
 
-    uji(".nil?() mengecek apakah objek ini `nil`", fn () {
+    ia(".nil?() mengecek apakah objek ini `nil`", fn () {
         tuntut nil.nil?() == benar
         tuntut 1.nil?() == salah
         tuntut "".nil?() == salah
@@ -45,7 +45,7 @@ sidang(Objek, fn () {
     })
 
     tentang(".sambut()", fn () {
-        uji("mengutus `benar` jika objek dapat menyambut pesan tersebut", fn () {
+        ia("mengutus `benar` jika objek dapat menyambut pesan tersebut", fn () {
             tidakAda!(fn () { A })
 
             kelas A {

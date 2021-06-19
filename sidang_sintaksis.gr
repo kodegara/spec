@@ -1,5 +1,5 @@
 sidang("Sintaksis", fn () {
-    uji("yang mengakibatkan MasalahKode", fn () {
+    ia("yang mengakibatkan MasalahKode", fn () {
         tuntut coba {
             eval!("ada a = fn() {}\na: 1: 2")
             salah
@@ -12,7 +12,7 @@ sidang("Sintaksis", fn () {
 
     tentang("pemanggilan fungsi", fn () {
         tentang("ketika fungsi", fn () {
-            uji("bisa dipanggil", fn () {
+            ia("bisa dipanggil", fn () {
                 ada a = fn () {}
                 fn b () {}
 
@@ -66,7 +66,7 @@ sidang("Sintaksis", fn () {
     })
 
     tentang("sintaksis `:`", fn () {
-        uji("bisa digunakan sebagai pemisah tuntutan dan pesan", fn () {
+        ia("bisa digunakan sebagai pemisah tuntutan dan pesan", fn () {
             tuntut fn () {} itu Fungsi: "fungsi!"
 
             tuntut coba {
@@ -87,7 +87,7 @@ sidang("Sintaksis", fn () {
         })
 
         tentang(". sebagai pemanggilan fungsi", fn () {
-            uji("dapat dipisah dengan baris baru", fn () {
+            ia("dapat dipisah dengan baris baru", fn () {
                 ada d = [1, 2, 3]
                     .jelma(fn (d) { d + 1 })
                 tuntut d == [2, 3, 4]
@@ -96,7 +96,7 @@ sidang("Sintaksis", fn () {
 
         tentang("dengan `:` satu lagi sebagai namespace", fn () {
             tentang("penggunaan sebagai pengenal kelas", fn () {
-                uji("harus diulang dua kali", fn () {
+                ia("harus diulang dua kali", fn () {
                     tuntut coba {
                         A::B
                         salah
@@ -106,7 +106,7 @@ sidang("Sintaksis", fn () {
                     } == benar
                 })
 
-                uji("tidak boleh mengambang", fn () {
+                ia("tidak boleh mengambang", fn () {
                     tuntut coba {
                         eval!("A::")
                         salah
@@ -124,7 +124,7 @@ sidang("Sintaksis", fn () {
                     } == benar
                 })
 
-                uji("tidak boleh berdiri sendiri", fn () {
+                ia("tidak boleh berdiri sendiri", fn () {
                     tuntut coba {
                         eval!("A:B")
                         salah
@@ -135,7 +135,7 @@ sidang("Sintaksis", fn () {
                     } == benar
                 })
 
-                uji("tidak boleh diulang sebanyak lebih dari 2 kali", fn () {
+                ia("tidak boleh diulang sebanyak lebih dari 2 kali", fn () {
                     tuntut coba {
                         eval!("A:::")
                         salah
@@ -156,7 +156,7 @@ sidang("Sintaksis", fn () {
                 })
             })
 
-            uji("tidak diperkenankan penggunaan sebagai pengenal variabel", fn () {
+            ia("tidak diperkenankan penggunaan sebagai pengenal variabel", fn () {
                 tuntut coba {
                     eval!("a::b")
                     salah

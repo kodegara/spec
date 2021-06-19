@@ -1,12 +1,12 @@
 sidang("Riil", fn () {
-    uji("memiliki beberapa konstanta", fn () {
+    ia("memiliki beberapa konstanta", fn () {
         tuntut Riil.NAN.nan?() == benar
         tuntut Riil.ANANTA == fAnanta
         tuntut Riil.NEG_ANANTA == -fAnanta
         tuntut Riil.PI >= 3.14
     })
 
-    uji(".mutlak() mengutus nilai riil yang tidak negatif", fn () {
+    ia(".mutlak() mengutus nilai riil yang tidak negatif", fn () {
         tuntut fNaN.mutlak().nan?() == benar
         tuntut fAnanta.mutlak() == fAnanta
         tuntut -fAnanta.mutlak() == -fAnanta
@@ -14,7 +14,7 @@ sidang("Riil", fn () {
         tuntut 5.0.mutlak() == 5.0
     })
 
-    uji(".bulat() mengutus nilai Integer terdekat yang menjauhi 0", fn () {
+    ia(".bulat() mengutus nilai Integer terdekat yang menjauhi 0", fn () {
         tuntut 2.5.bulat() == 3
         tuntut -2.5.bulat() == -3
 
@@ -35,7 +35,7 @@ sidang("Riil", fn () {
         tuntut fAnanta.bulat() == fAnanta
     })
 
-    uji(".kobit() mencetak kode bibit", fn () {
+    ia(".kobit() mencetak kode bibit", fn () {
         tuntut 1.0.kobit() itu Integer
         tuntut 1.0.kobit() == 74872343809228800
         tuntut -1.0.kobit() == 75153818785939456
@@ -44,7 +44,7 @@ sidang("Riil", fn () {
         tuntut fNaN.kobit() == -1182712812731
     })
 
-    uji(".jadiKata() menuliskan representasi bilangan riil yang mudah dibaca manusia", fn () {
+    ia(".jadiKata() menuliskan representasi bilangan riil yang mudah dibaca manusia", fn () {
         tuntut 0.3.jadiKata() == "0.3"
         tuntut (0.1 + 0.2).jadiKata() == "0.3"
         tuntut (2 ** 2.5).jadiKata() == "5.65685424949238"
@@ -53,19 +53,19 @@ sidang("Riil", fn () {
         tuntut fNaN.jadiKata() == "fNaN"
     })
 
-    uji(".jadiKataPersis() menuliskan representasi bilangan riil secara akurat dan lengkap", fn () {
+    ia(".jadiKataPersis() menuliskan representasi bilangan riil secara akurat dan lengkap", fn () {
         tuntut 0.3.jadiKataPersis() == "0.3000000000000000000108420217248550443400745280086994171142578125"
         tuntut fAnanta.jadiKataPersis() == "fAnanta"
         tuntut -fAnanta.jadiKataPersis() == "-fAnanta"
         tuntut fNaN.jadiKataPersis() == "fNaN"
     })
 
-    uji(".negatif?() mengecek apakah suatu bilangan negatif atau positif", fn () {
+    ia(".negatif?() mengecek apakah suatu bilangan negatif atau positif", fn () {
         tuntut 0.0.negatif?() == salah
         tuntut -0.0.negatif?() == benar
     })
 
-    uji(".potong() memotong nilai desimal dibelakang koma", fn () {
+    ia(".potong() memotong nilai desimal dibelakang koma", fn () {
         tuntut 0.123.potong() == 0
         tuntut 1.123.potong() == 1
         tuntut 1.32894723984732947329472897493274298.potong() == 1
@@ -75,7 +75,7 @@ sidang("Riil", fn () {
         tuntut 12345.32894723984732947329472897493274298.potong() == 12345
     })
 
-    uji(".potong(arg) memotong nilai desimal sesuai jumlah digit dibelakang koma", fn () {
+    ia(".potong(arg) memotong nilai desimal sesuai jumlah digit dibelakang koma", fn () {
         tuntut 0.123.potong(0.1) == 0.1
         tuntut 0.123.potong(0.01) == 0.12
         tuntut 0.123.potong(0.001) == 0.123

@@ -32,11 +32,11 @@ sidang(Peta, fn () {
         kRiil2v2: "v2",
     }
 
-    uji(".baru() dapat membuat peta baru", fn () {
+    ia(".baru() dapat membuat peta baru", fn () {
         tuntut Peta.baru() == {}
     })
 
-    uji("itu Peta", fn () {
+    ia("itu Peta", fn () {
         tuntut Peta itu Kelas
         tuntut Peta itu Objek
 
@@ -45,22 +45,22 @@ sidang(Peta, fn () {
         tuntut !(peta itu Kelas)
     })
 
-    uji(".balik() membalik kunci menjadi nilai dan sebaliknya", fn () {
+    ia(".balik() membalik kunci menjadi nilai dan sebaliknya", fn () {
         ada p = {"x": 1, "y": 2, "z": benar}
         tuntut p.balik() == {1: "x", 2: "y", benar: "z"}
     })
 
-    uji(".berisi?() bernilai benar jika peta tidak kosong", fn () {
+    ia(".berisi?() bernilai benar jika peta tidak kosong", fn () {
         tuntut {}.berisi?() == salah
         tuntut {1: 2}.berisi?() == benar
         tuntut {nil: nil}.berisi?() == benar
     })
 
-    uji(".berisi?(arg1) bernilai benar jika peta berisi nilai yang terpetakan dengan kunci arg1", fn () {
+    ia(".berisi?(arg1) bernilai benar jika peta berisi nilai yang terpetakan dengan kunci arg1", fn () {
         tuntut peta.berisi?(1) == benar
     })
 
-    uji(".deretkan() menjadikan peta pasangan deret [kunci, nilai]", fn () {
+    ia(".deretkan() menjadikan peta pasangan deret [kunci, nilai]", fn () {
         tuntut peta.deretkan() == [
             [1, 1],
             ["two", 2],
@@ -77,7 +77,7 @@ sidang(Peta, fn () {
         ]
     })
 
-    uji(".gali(arg1) menggali nilai beradasarkan deretan kunci", fn () {
+    ia(".gali(arg1) menggali nilai beradasarkan deretan kunci", fn () {
         ada p = {"a": {"b": {"c": 1}, "d": 2}, "e": 3}
 
         tuntut p.gali(["a", "b", "c"]) == 1
@@ -87,14 +87,14 @@ sidang(Peta, fn () {
         tuntut p.gali([]) == p
     })
 
-    uji(".gali(arg1) akan menjadi masalah jika kunci tidak ditemukan", fn () {
+    ia(".gali(arg1) akan menjadi masalah jika kunci tidak ditemukan", fn () {
         ada p = {"a": {"b": {"c": 1}, "d": 2}, "e": 3}
 
         p.gali(["a", "b", "x"]) == nil
         p.gali(["x", "y", "z", "a", "b"]) == nil
     })
 
-    uji(".hapusPosisi(arg1) menghapus elemen pada posisi arg1", fn () {
+    ia(".hapusPosisi(arg1) menghapus elemen pada posisi arg1", fn () {
         ada p = {"x": 123, "y": benar}
 
         tuntut p["x"] == 123
@@ -105,7 +105,7 @@ sidang(Peta, fn () {
         tuntut p["y"] == benar
     })
 
-    uji(".isiPosisi(arg1, arg2) mengasosiasikan elemen arg2 pada posisi arg1", fn () {
+    ia(".isiPosisi(arg1, arg2) mengasosiasikan elemen arg2 pada posisi arg1", fn () {
         ada p = {}
 
         tuntut p.kunci?("x") == salah
@@ -114,12 +114,12 @@ sidang(Peta, fn () {
         tuntut p["x"] == benar
     })
 
-    uji(".kosong?() bernilai benar jika peta tidak berelemen", fn () {
+    ia(".kosong?() bernilai benar jika peta tidak berelemen", fn () {
         tuntut {}.kosong?() == benar
         tuntut {nil: nil}.kosong?() == salah
     })
 
-    uji(".kunci() mengembalikan deret berisi kunci", fn () {
+    ia(".kunci() mengembalikan deret berisi kunci", fn () {
         tuntut peta.kunci() == [
             1,
             "two",
@@ -136,7 +136,7 @@ sidang(Peta, fn () {
         ]
     })
 
-    uji(".kunci?(arg) mengecek apakah peta memiliki kunci arg", fn () {
+    ia(".kunci?(arg) mengecek apakah peta memiliki kunci arg", fn () {
         tuntut peta.kunci?(1) == benar
         tuntut peta.kunci?("two") == benar
         tuntut peta.kunci?(benar) == benar
@@ -150,11 +150,11 @@ sidang(Peta, fn () {
         tuntut peta.kunci?(["1", {}]) == salah
     })
 
-    uji(".kobit() mencetak kode bibit", fn () {
+    ia(".kobit() mencetak kode bibit", fn () {
         tuntut peta.kobit() itu Integer
     })
 
-    uji(".nilai() mengembalikan deret berisi nilai", fn () {
+    ia(".nilai() mengembalikan deret berisi nilai", fn () {
         tuntut peta.nilai() == [
             1,
             2,
@@ -171,7 +171,7 @@ sidang(Peta, fn () {
         ]
     })
 
-    uji(".nilai?(arg) bernilai benar jika peta memiliki nilai arg", fn () {
+    ia(".nilai?(arg) bernilai benar jika peta memiliki nilai arg", fn () {
         tuntut peta.nilai?(1) == benar
         tuntut peta.nilai?(2) == benar
         tuntut peta.nilai?("yes") == benar
@@ -184,20 +184,20 @@ sidang(Peta, fn () {
         tuntut peta.nilai?([{}]) == salah
     })
 
-    uji(".rapat() menghapus kunci yang terasosiasikan dengan nilai `nil`", fn () {
+    ia(".rapat() menghapus kunci yang terasosiasikan dengan nilai `nil`", fn () {
         ada p = {1: nil, 2: nil, benar: nil, nil: 4, 5: 6}
         tuntut p.rapat() == {nil: 4, 5: 6}
         tuntut p == {1: nil, 2: nil, benar: nil, nil: 4, 5: 6}
     })
 
-    uji(".sama?(arg) mengecek apakah peta ini memiliki pasangan kunci-nilai yang sama dalam peta arg", fn () {
+    ia(".sama?(arg) mengecek apakah peta ini memiliki pasangan kunci-nilai yang sama dalam peta arg", fn () {
         tuntut {}.sama?({}) == benar
         tuntut {}.sama?({nil: nil}) == salah
         tuntut {nil: 1}.sama?({1: nil}) == salah
         tuntut {nil: 1}.sama?({nil: 2}) == salah
     })
 
-    uji(".temu(arg1, arg2) mengembalikan nilai yang terasosiasikan dengan arg1, jika tidak ada akan mengembalikan arg2 sebagai pengganti", fn () {
+    ia(".temu(arg1, arg2) mengembalikan nilai yang terasosiasikan dengan arg1, jika tidak ada akan mengembalikan arg2 sebagai pengganti", fn () {
         ada p = {1: 2, 2: benar}
 
         tuntut p.temu(1, "xyz") == 2
@@ -205,7 +205,7 @@ sidang(Peta, fn () {
         tuntut p.temu(3, "xyz") == "xyz"
     })
 
-    uji(".tanpa(arg) menepis elemen yang tidak diinginkan", fn () {
+    ia(".tanpa(arg) menepis elemen yang tidak diinginkan", fn () {
         ada p = {"1": 1, 2: "2", "3": "3", benar: benar, salah: salah}
         ada pBaru = p.tanpa(fn (k, n) {
             k itu Angka || n itu Angka
@@ -215,7 +215,7 @@ sidang(Peta, fn () {
         tuntut pBaru == {"3": "3", benar: benar, salah: salah}
     })
 
-    uji(".tiap(arg) mengiterasi pasangan kunci-nilai pada peta", fn () {
+    ia(".tiap(arg) mengiterasi pasangan kunci-nilai pada peta", fn () {
         ada p = {}
 
         peta.tiap(fn (k, n) {
@@ -227,7 +227,7 @@ sidang(Peta, fn () {
         tuntut p.panjang() > 0
     })
 
-    uji(".jadiKata() menuliskan Peta menjadi Kata", fn () {
+    ia(".jadiKata() menuliskan Peta menjadi Kata", fn () {
         tuntut peta.jadiKata() itu Kata
     })
 })

@@ -1,10 +1,10 @@
 sidang("Kata kunci ada", fn () {
-    uji("bernilai nil sedia kala", fn () {
+    ia("bernilai nil sedia kala", fn () {
         ada x
         tuntut x == nil
     })
 
-    uji("tidak boleh menjadi variabel sistem", fn () {
+    ia("tidak boleh menjadi variabel sistem", fn () {
         tuntut coba {
             ada __XYZ__ = 12
             salah
@@ -22,7 +22,7 @@ sidang("Kata kunci ada", fn () {
         }
     })
 
-    uji("tidak boleh berakhiran `!`", fn () {
+    ia("tidak boleh berakhiran `!`", fn () {
         tuntut coba {
             ada a! = 12
             salah
@@ -51,7 +51,7 @@ sidang("Kata kunci ada", fn () {
         } == benar
     })
 
-    uji("tidak boleh berakhiran `?`", fn () {
+    ia("tidak boleh berakhiran `?`", fn () {
         tuntut coba {
             ada a? = 12
             salah
@@ -80,7 +80,7 @@ sidang("Kata kunci ada", fn () {
         } == benar
     })
 
-    uji("tidak boleh berakhiran `=`", fn () {
+    ia("tidak boleh berakhiran `=`", fn () {
         tuntut coba {
             ada a= = 12
             salah
@@ -109,12 +109,12 @@ sidang("Kata kunci ada", fn () {
         } == benar
     })
 
-    uji("bisa menganggap pengenal variabel berakhiran `=` sebagai assignment jika tidak ditemui `=` lainnya", fn () {
+    ia("bisa menganggap pengenal variabel berakhiran `=` sebagai assignment jika tidak ditemui `=` lainnya", fn () {
         ada a= 12
         tuntut a == 12
     })
 
-    uji("bisa berakhiran titik koma", fn () {
+    ia("bisa berakhiran titik koma", fn () {
         ada a = 12;
         tuntut a == 12;
 
@@ -122,7 +122,7 @@ sidang("Kata kunci ada", fn () {
         tuntut b == nil
     })
 
-    uji("tidak boleh mendefinisikan variabel statis diluar kelas", fn () {
+    ia("tidak boleh mendefinisikan variabel statis diluar kelas", fn () {
         tuntut coba {
             eval!("ada sta x = 12")
             salah
@@ -132,7 +132,7 @@ sidang("Kata kunci ada", fn () {
         } == benar
     })
 
-    uji("tidak dapat diawali dengan angka", fn () {
+    ia("tidak dapat diawali dengan angka", fn () {
         tuntut coba {
             eval!("ada 123a = 12")
             salah
@@ -141,7 +141,7 @@ sidang("Kata kunci ada", fn () {
         } == benar
     })
 
-    uji("variabel yang tidak ada tidak terdefinisikan", fn () {
+    ia("variabel yang tidak ada tidak terdefinisikan", fn () {
         tuntut coba {
             x + 123
             salah
@@ -150,7 +150,7 @@ sidang("Kata kunci ada", fn () {
         } == benar
     })
 
-    uji("variabel yang tidak ada, tidak dapat didefinisikan", fn () {
+    ia("variabel yang tidak ada, tidak dapat didefinisikan", fn () {
         tuntut coba {
             x = 123
         } tahan (e) {
@@ -159,7 +159,7 @@ sidang("Kata kunci ada", fn () {
     })
 
     tentang("baris multi-variabel", fn () {
-        uji("bisa semuanya tak bernilai", fn () {
+        ia("bisa semuanya tak bernilai", fn () {
             ada x, y, z
 
             tuntut x == nil
@@ -167,7 +167,7 @@ sidang("Kata kunci ada", fn () {
             tuntut z == nil
         })
 
-        uji("bisa semuanya berisi nilai", fn () {
+        ia("bisa semuanya berisi nilai", fn () {
             ada x = 1, y = fn () {}, z = [1, 2, 3, 4]
 
             tuntut x == 1
@@ -175,7 +175,7 @@ sidang("Kata kunci ada", fn () {
             tuntut z == [1, 2, 3, 4]
         })
 
-        uji("bisa salah satunya bernilai", fn () {
+        ia("bisa salah satunya bernilai", fn () {
             ada x, y = {}, z = fn () {}
             ada a, b, c = "aloha"
 
@@ -187,7 +187,7 @@ sidang("Kata kunci ada", fn () {
             tuntut c == "aloha"
         })
 
-        uji("bisa mengambil nilai dari variabel lain", fn () {
+        ia("bisa mengambil nilai dari variabel lain", fn () {
             ada x = 1, y = 2, z = 3
             ada a = z, b = y, c = x
 
@@ -196,7 +196,7 @@ sidang("Kata kunci ada", fn () {
             tuntut c == 1
         })
 
-        uji("bisa diakhiri titik koma", fn () {
+        ia("bisa diakhiri titik koma", fn () {
             ada a = 1, b = 2, c = 3;
 
             tuntut a == 1
@@ -204,7 +204,7 @@ sidang("Kata kunci ada", fn () {
             tuntut c == 3
         })
 
-        uji("koma harus bertemu identitas", fn () {
+        ia("koma harus bertemu identitas", fn () {
             // setelah eval: error masalah kode
             // ada x,
             // ada x, 1

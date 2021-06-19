@@ -1,5 +1,5 @@
 sidang(Kelas, fn () {
-    uji("harus diawali huruf kapital", fn () {
+    ia("harus diawali huruf kapital", fn () {
         tuntut coba {
             kelas a {}
             salah
@@ -8,7 +8,7 @@ sidang(Kelas, fn () {
         } == benar
     })
 
-    uji("itu Kelas", fn () {
+    ia("itu Kelas", fn () {
         kelas Siswa {}
 
         tuntut Siswa itu Kelas
@@ -17,7 +17,7 @@ sidang(Kelas, fn () {
         tuntut Siswa.baru() itu Siswa
     })
 
-    uji(".baru() bisa membuat objek dari kelas tersebut", fn () {
+    ia(".baru() bisa membuat objek dari kelas tersebut", fn () {
         kelas Siswa {}
 
         ada siswa = Siswa.baru()
@@ -27,7 +27,7 @@ sidang(Kelas, fn () {
         tuntut siswa itu Objek
     })
 
-    uji(".nama() mengutus nama kelas sebagai Kata", fn () {
+    ia(".nama() mengutus nama kelas sebagai Kata", fn () {
         tuntut Masalah.nama() == "Masalah"
 
         kelas Siswa {}
@@ -40,7 +40,7 @@ sidang(Kelas, fn () {
         tuntut 12.5.metode().berisi?("nama") == salah
     })
 
-    uji(".tipe() bisa lebih spesifik dari `itu`", fn () {
+    ia(".tipe() bisa lebih spesifik dari `itu`", fn () {
         kelas Siswa {}
 
         tuntut Siswa.baru().tipe() == Siswa
@@ -51,7 +51,7 @@ sidang(Kelas, fn () {
     })
 
     tentang("metode", fn () {
-        uji("tidak merembet keluar", fn () {
+        ia("tidak merembet keluar", fn () {
             ada penghitungTanggalLahir
 
             kelas Tanggalanku {
@@ -75,7 +75,7 @@ sidang(Kelas, fn () {
             tuntut tidakTerdefinisikan == benar
         })
 
-        uji("tidak bisa diresolusi seperti pengenal variabel", fn () {
+        ia("tidak bisa diresolusi seperti pengenal variabel", fn () {
             tidakAda!(fn () { A })
 
             kelas A {
@@ -90,7 +90,7 @@ sidang(Kelas, fn () {
             tuntut a.b() == "a"
         })
 
-        uji("bisa berakhiran `=`", fn () {
+        ia("bisa berakhiran `=`", fn () {
             kelas A {
                 ada a
 
@@ -108,7 +108,7 @@ sidang(Kelas, fn () {
             tuntut a.a() == 13
         })
 
-        uji("bisa bernama mirip dengan variabel tapi tidak boleh menutup akses ke variabel tersebut", fn () {
+        ia("bisa bernama mirip dengan variabel tapi tidak boleh menutup akses ke variabel tersebut", fn () {
             kelas Data {
                 ada nilai = 1
                 fn nilai() { nilai }
@@ -117,7 +117,7 @@ sidang(Kelas, fn () {
             tuntut Data.baru().nilai() == 1
         })
 
-        uji("dapat berpolimorfis", fn () {
+        ia("dapat berpolimorfis", fn () {
             kelas Penyapa {
                 fn sapa(nama) {
                     "Hai, " + nama
@@ -133,7 +133,7 @@ sidang(Kelas, fn () {
             tuntut penyapa.sapa("Yo! ", "Gara") == "Yo! Gara"
         })
 
-        uji("tidak dianggap sebagai fungsi statis", fn () {
+        ia("tidak dianggap sebagai fungsi statis", fn () {
             tidakAda!(fn () { A })
 
             kelas A {
@@ -149,7 +149,7 @@ sidang(Kelas, fn () {
             } == benar
         })
 
-        uji("bisa bernama sama dengan metode kelas bawaan", fn () {
+        ia("bisa bernama sama dengan metode kelas bawaan", fn () {
             ada a = 1
             a.tambah(1) == 2
 
@@ -161,7 +161,7 @@ sidang(Kelas, fn () {
         })
     })
 
-    uji("bisa diperkaya meski telah didefinisikan", fn () {
+    ia("bisa diperkaya meski telah didefinisikan", fn () {
         kelas Siswa {
             fn namaKapital() { "GARA" }
         }
@@ -187,7 +187,7 @@ sidang(Kelas, fn () {
         tuntut siswa.fungsiBaruYangBelumAda() == benar
     })
 
-    uji("pemerkayaan bersifat global dan permanen", fn () {
+    ia("pemerkayaan bersifat global dan permanen", fn () {
         kelas X1 {
         }
 
@@ -203,7 +203,7 @@ sidang(Kelas, fn () {
         tuntut x1Lama.x1() == 1
     })
 
-    uji("dapat memperkaya kelas bawaan", fn () {
+    ia("dapat memperkaya kelas bawaan", fn () {
         kelas Deret {
             ada dataBaru
 
@@ -228,13 +228,180 @@ sidang(Kelas, fn () {
     })
 
     tentang("variabel instansi", fn () {
-        uji("dapat memiliki variabel instansi yang bernilai beda tiap objek", fn () {
+        tentang("pemberian nilai", fn () {
+            tentang("saat bersifat umum", fn () {
+                tentang("tanpa metode penyetel", fn () {
+                    ia("bisa dilakukan jika variabel instansi bersifat umum", fn () {
+                        tidakAda!(fn () { A })
+
+                        kelas A {
+                            ada a
+                            fn a() { a }
+
+                            fn sta baru(x) {
+                                ada obj = baru()
+                                obj.a = x
+                                obj
+                            }
+                        }
+
+                        ada a = A.baru(12)
+                        tuntut a.a() == 12
+
+                        a.a = 13
+                        tuntut a.a() == 13
+                    })
+                })
+
+                tentang("dengan metode penyetel", fn () {
+                    ia("bisa dilakukan dimanapun", fn () {
+                        tidakAda!(fn () { A })
+
+                        kelas A {
+                            ada a
+                            fn a() { a }
+                            fn a=(x) { a = x + 1 } // + 1 memastikan bahwa yang digunakan adalah penyetel
+
+                            fn sta baru(x) {
+                                ada obj = baru()
+                                obj.a = x
+                                obj
+                            }
+                        }
+
+                        ada a = A.baru(12)
+                        tuntut a.a() == 13
+
+                        a.a = 13
+                        tuntut a.a() == 14
+                    })
+                })
+            })
+
+            tentang("saat bersifat pribadi", fn () {
+                tentang("tanpa metode penyetel", fn () {
+                    ia("hanya bisa dilakukan dalam kelas yang sama", fn () {
+                        tidakAda!(fn () { A })
+
+                        kelas A {
+                            fn sta baru(x) {
+                                ada obj = baru()
+                                obj.a = x
+                                obj
+                            }
+
+                            fn a () { a }
+
+                            pribadi {
+                                ada a
+                            }
+                        }
+
+                        tuntut A.baru(123).a() == 123
+                        tuntut A.baru(456).a() == 456
+                    })
+                })
+
+                tentang("dengan metode penyetel", fn () {
+                    ia("bisa dilakukan dimanapun", fn () {
+                        tidakAda!(fn () { A })
+
+                        kelas A {
+                            fn a=(n) { ini.a = n }
+                            fn a() { a }
+
+                            pribadi {
+                                ada a
+                            }
+                        }
+
+                        ada a = A.baru()
+                        tuntut a.a() == nil
+                        a.a = 12
+                        tuntut a.a() == 12
+                    })
+                })
+            })
+        })
+
+        tentang("pengambilan nilai", fn () {
+            tentang("saat bersifat umum", fn () {
+                tentang("tanpa metode pembaca", fn () {
+                    ia("tetap bisa dibaca", fn () {
+                        tidakAda!(fn () { A })
+
+                        kelas A {
+                            ada a = 123
+                        }
+
+                        tuntut A.baru().a() == 123
+                    })
+
+                    ia("bisa dieksekusi hampir mirip metode jika berisi fungsi", fn () {
+                        tidakAda!(fn () { A })
+
+                        kelas A {
+                            ada ivarLain = 123
+
+                            ada a1 = fn aa1 () { "a" }
+
+                            // gagal, karena bukan metode
+                            ada a2 = fn aa2 () {
+                                ini.iVarLain = "XYZ"
+                            }
+
+                            pribadi {
+                                ada b1 = fn b2 () { "b" }
+                            }
+                        }
+
+                        ada a = A.baru()
+                        tuntut a.a1()() == "a"
+
+                        tuntut coba {
+                            a.a2()()
+                            salah
+                        } tahan (e) {
+                            tuntut e.pesan() == "identitas belum terdefinisikan: iVarLain"
+                            benar
+                        } == benar
+                    })
+                })
+            })
+
+            tentang("saat bersifat pribadi", fn () {
+                ia("hanya bisa dibaca dari dalam", fn () {
+                    tidakAda!(fn () { A })
+
+                    kelas A {
+                        fn a1() { a }
+
+                        pribadi {
+                            ada a = 123
+                        }
+                    }
+
+                    ada a = A.baru()
+                    tuntut a.a1() == 123
+
+                    tuntut coba {
+                        a.a
+                        salah
+                    } tahan (e) {
+                        tuntut e.pesan() == "tidak dapat meresolusi `a` dalam objek bertipe A"
+                        benar
+                    } == benar
+                })
+            })
+        })
+
+        ia("dapat memiliki variabel instansi yang bernilai beda tiap objek", fn () {
             kelas Penghitung {
                 ada angka
 
                 // pengambil dan pengisi
                 fn angka() { angka }
-                fn angka(angka) { cetak("MENGATUR: " + angka); ini.angka = angka }
+                fn angka(angka) { ini.angka = angka }
 
                 fn tambah(angka) { ini.angka += angka }
                 fn kurang(angka) { ini.angka -= angka }
@@ -246,7 +413,6 @@ sidang(Kelas, fn () {
 
             p1.angka(0)
             p2.angka(1)
-            cetak("P1 ANGKA: " + p1.angka())
             tuntut p1.angka() == 0
             tuntut p2.angka() == 1
             tuntut p3.angka() == nil
@@ -265,11 +431,10 @@ sidang(Kelas, fn () {
 
             tuntut p1.angka() != 0
             p1.angka(0)
-            cetak("P1 ANGKA: " + p1.angka())
             tuntut p1.angka() == 0
         })
 
-        uji("dapat memiliki variabel instansi dengan nilai awal sesuai definisi", fn () {
+        ia("dapat memiliki variabel instansi dengan nilai awal sesuai definisi", fn () {
             kelas Penghitung {
                 ada angka1 = 5
                 ada angka2 = 10
@@ -297,7 +462,7 @@ sidang(Kelas, fn () {
             tuntut p2.bagi() == 3
         })
 
-        uji("`ini` dapat menyasar variabel intansi tanpa ambiguitas", fn () {
+        ia("`ini` dapat menyasar variabel intansi tanpa ambiguitas", fn () {
             kelas A {
                 ada a
 
@@ -320,7 +485,7 @@ sidang(Kelas, fn () {
             tuntut a.a() == 5 + 2 + 5 + 5
         })
 
-        uji("dapat merefer ke variabel instansi atau metode tanpa `ini` selama tidak ambigu", fn () {
+        ia("dapat merefer ke variabel instansi atau metode tanpa `ini` selama tidak ambigu", fn () {
             kelas Penilai {
                 ada nilai = 10
 
@@ -344,7 +509,7 @@ sidang(Kelas, fn () {
             tuntut p.nilai() == 530 // 111 + 104 + (215 + 100)
         })
 
-        uji("variabel instansi yang bernilai fungsi tidak boleh dianggap sebagai metode", fn () {
+        ia("variabel instansi yang bernilai fungsi tidak boleh dianggap sebagai metode", fn () {
             kelas A {
                 ada a1 = fn a2 () { "a" }
 
@@ -357,15 +522,6 @@ sidang(Kelas, fn () {
             }
 
             ada a = A.baru()
-
-            // karena menjadi variabel instansi
-            tuntut coba {
-                a.a1()
-                salah
-            } tahan (e) {
-                tuntut e.pesan() == "objek tipe A tidak memiliki metode `a1` tak berargumen yang bisa dipanggil"
-                benar
-            } == benar
 
             tuntut coba {
                 a.a2()
@@ -405,7 +561,7 @@ sidang(Kelas, fn () {
         })
 
         tentang("ketika bernilai Fungsi", fn () {
-            uji("tidak bisa bertingkah seperti metode", fn () {
+            ia("tidak bisa bertingkah seperti metode", fn () {
                 tidakAda!(fn () { A })
 
                 kelas A {
@@ -466,7 +622,7 @@ sidang(Kelas, fn () {
         })
     })
 
-    uji("`ini` dapat menyasar fungsi dari instansi tanpa ambiguitas", fn () {
+    ia("`ini` dapat menyasar fungsi dari instansi tanpa ambiguitas", fn () {
         kelas Penyapa {
             ada nilai
 
@@ -489,7 +645,7 @@ sidang(Kelas, fn () {
         tuntut p.nilai() == "Halo, Gara"
     })
 
-    uji("`ini` dapat meresolusi pesan berantai", fn () {
+    ia("`ini` dapat meresolusi pesan berantai", fn () {
         kelas Alamat {
             ada kota
             ada jalan
@@ -540,7 +696,7 @@ sidang(Kelas, fn () {
         tuntut s.alamat().jalan() == "Jalan Usman Sadar"
     })
 
-    uji("`ini` dapat digunakan berdampingan dengan berbagai macam operator", fn () {
+    ia("`ini` dapat digunakan berdampingan dengan berbagai macam operator", fn () {
         kelas Koleksi {
             ada nilai = []
             ada checksum = 0
@@ -587,7 +743,7 @@ sidang(Kelas, fn () {
         tuntut k.checksum() == 1300
     })
 
-    uji("metode dari suatu kelas, tidak seperti fungsi, tidak dapat diutus keluar", fn () {
+    ia("metode dari suatu kelas, tidak seperti fungsi, tidak dapat diutus keluar", fn () {
         kelas Penyapa {
             ada penyapa = fn () { "Halo!" }
             fn fungsiPenyapa() { penyapa }
@@ -609,7 +765,7 @@ sidang(Kelas, fn () {
         //tuntut p.fungsiSelamatPagi() == nil
     })
 
-    uji("mengakses metode yang tidak ada", fn () {
+    ia("mengakses metode yang tidak ada", fn () {
         kelas A {
             fn a(x) { ini.y = x }
             fn b(x) { y = x }
@@ -629,7 +785,7 @@ sidang(Kelas, fn () {
 
     // todo: add test about `ini` on the interpreter level when setReceivingObject is nil `ini.number = `1` directly as a statement
 
-    uji("`ini` dapat merujuk ke variabel instansi atau metode yang sesuai", fn () {
+    ia("`ini` dapat merujuk ke variabel instansi atau metode yang sesuai", fn () {
         kelas A {
             ada a = "variabel"
             fn a() { "metode" }
@@ -653,14 +809,14 @@ sidang(Kelas, fn () {
         tuntut a.dapatkanMetodeDenganIni() == nilaiMet
     })
 
-    uji(".kobit() mencetak kode bibit", fn () {
+    ia(".kobit() mencetak kode bibit", fn () {
         tuntut Kelas.kobit() != Masalah.kobit()
         tuntut Masalah.kobit() != MasalahArgumen.kobit()
         tuntut MasalahArgumen.kobit() != MasalahMetode.kobit()
     })
 
     tentang("blok `pribadi`", fn () {
-        uji("bisa mendefinisikan metode yang bersifat pribadi", fn () {
+        ia("bisa mendefinisikan metode yang bersifat pribadi", fn () {
             kelas Penyapa {
                 fn selamatPagi(nama) {
                     sapa(nama) + ". Selamat pagi."
@@ -688,7 +844,7 @@ sidang(Kelas, fn () {
             tuntut p.metode().berisi?("sapa") == salah
         })
 
-        uji("bisa mendefinisikan variabel instansi yang tidak tercetak saat inspeksi", fn () {
+        ia("bisa mendefinisikan variabel instansi yang tidak tercetak saat inspeksi", fn () {
             kelas A {
                 ada a = 123
 
@@ -707,7 +863,7 @@ sidang(Kelas, fn () {
             tuntut a.b() == "b"
         })
 
-        uji("bisa mendefinisikan variabel instansi yang memiliki fungsi yang bisa dipanggil", fn () {
+        ia("bisa mendefinisikan variabel instansi yang memiliki fungsi yang bisa dipanggil", fn () {
             tidakAda!(fn () { A }) // todo: ubah ke: belumAda! { "A" }
 
             kelas A {
@@ -724,7 +880,7 @@ sidang(Kelas, fn () {
 
     tentang("penggunaan kata kunci `sta`", fn () {
         tentang("variabel", fn () {
-            uji("tidak bercampur dengan pengenal statis dari kelas-kelas lain", fn () {
+            ia("tidak bercampur dengan pengenal statis dari kelas-kelas lain", fn () {
                 kelas A {
                     ada sta a
                 }
@@ -737,7 +893,7 @@ sidang(Kelas, fn () {
                 tuntut coba { B.a; salah } tahan (e) { tuntut e.pesan() == "tidak dapat meresolusi identitas statis `a`"; benar } == benar
             })
 
-            uji("tidak dapat diubah dari luar kelas", fn () {
+            ia("tidak dapat diubah dari luar kelas", fn () {
                 tidakAda!(fn () { A })
 
                 kelas A {
@@ -755,7 +911,7 @@ sidang(Kelas, fn () {
                 tuntut A.NILAI == 1
             })
 
-            uji("dapat mengambil nilai dari variabel statis lain", fn () {
+            ia("dapat mengambil nilai dari variabel statis lain", fn () {
                 kelas A {
                     ada sta nilaiLama = 123
                     ada sta nilai = nilaiLama
@@ -765,7 +921,7 @@ sidang(Kelas, fn () {
                 tuntut A.nilai == 123
             })
 
-            uji("hanya dapat mengambil nilai dari pengenal variabel", fn () {
+            ia("hanya dapat mengambil nilai dari pengenal variabel", fn () {
                 kelas A {
                     ada sta a = "a1"
                     ada sta staA = a
@@ -789,7 +945,7 @@ sidang(Kelas, fn () {
                 } == benar
             })
 
-            uji("tidak dapat diakses dari suatu instansi", fn () {
+            ia("tidak dapat diakses dari suatu instansi", fn () {
                 kelas A {
                     fn sta a() {}
                 }
@@ -805,7 +961,7 @@ sidang(Kelas, fn () {
                 } == benar
             })
 
-            uji("dapat memiliki nilai awal", fn () {
+            ia("dapat memiliki nilai awal", fn () {
                 kelas A {
                     ada sta nilai = "a"
                     ada sta a = "a"
@@ -827,7 +983,7 @@ sidang(Kelas, fn () {
                 tuntut B.kelasA.nilai == "a"
             })
 
-            uji("dapat bersifat statis dan pribadi", fn () {
+            ia("dapat bersifat statis dan pribadi", fn () {
                 kelas A {
                     pribadi {
                         ada sta nilaiPribadi = "ap"
@@ -849,7 +1005,7 @@ sidang(Kelas, fn () {
                 } == benar
             })
 
-            uji("jika tidak dapat diresolusi akan menjadi masalah", fn () {
+            ia("jika tidak dapat diresolusi akan menjadi masalah", fn () {
                 kelas A {}
 
                 tuntut coba {
@@ -861,7 +1017,7 @@ sidang(Kelas, fn () {
                 } == benar
             })
 
-            uji("tidak bisa didefinisikan di dalam sebuah metode", fn () {
+            ia("tidak bisa didefinisikan di dalam sebuah metode", fn () {
                 tuntut coba {
                     kelas A {
                         fn a() {
@@ -876,7 +1032,7 @@ sidang(Kelas, fn () {
                 } == benar
             })
 
-            uji("tidak dapat dieksekusi seperti metode kecuali jika fungsi", fn () {
+            ia("tidak dapat dieksekusi seperti metode kecuali jika fungsi", fn () {
                 tidakAda!(fn () { A })
 
                 kelas A {
@@ -914,7 +1070,7 @@ sidang(Kelas, fn () {
         })
 
         tentang("fungsi", fn () {
-            uji("bermasalah jika fungsi statis tidak terdefinisikan", fn () {
+            ia("bermasalah jika fungsi statis tidak terdefinisikan", fn () {
                 tidakAda!(fn () { A })
 
                 kelas A {}
@@ -936,7 +1092,7 @@ sidang(Kelas, fn () {
                 } == benar
             })
 
-            uji("bisa mendefinisikan fungsi statis", fn () {
+            ia("bisa mendefinisikan fungsi statis", fn () {
                 tidakAda!(fn () { A })
 
                 kelas A {
@@ -952,7 +1108,7 @@ sidang(Kelas, fn () {
                 } == benar
             })
 
-            uji("bisa bernama sama dengan metode", fn () {
+            ia("bisa bernama sama dengan metode", fn () {
                 tidakAda!(fn () { A })
 
                 kelas A {
@@ -965,7 +1121,7 @@ sidang(Kelas, fn () {
                 tuntut A.a() == "statis"
             })
 
-            uji("fungsi statis bisa memiliki argumen yang bernama sama dengan identitas fungsi", fn () {
+            ia("fungsi statis bisa memiliki argumen yang bernama sama dengan identitas fungsi", fn () {
                 tidakAda!(fn () { A })
 
                 kelas A {
@@ -976,7 +1132,7 @@ sidang(Kelas, fn () {
                 tuntut A.x([1,2,3]) == [1,2,3].jadiKata()
             })
 
-            uji("bisa memanggil fungsi statis", fn () {
+            ia("bisa memanggil fungsi statis", fn () {
                 tidakAda!(fn () { A })
 
                 kelas A {
@@ -1001,7 +1157,7 @@ sidang(Kelas, fn () {
                 tuntut A.abcx(123) == "abc123"
             })
 
-            uji("bisa diresolusi dengan atau tanpa menggunakan identitas kelas", fn () {
+            ia("bisa diresolusi dengan atau tanpa menggunakan identitas kelas", fn () {
                 tidakAda!(fn () { A })
 
                 kelas A {
@@ -1012,7 +1168,7 @@ sidang(Kelas, fn () {
                 tuntut A.aa() == "aa"
             })
 
-            uji("bisa diresolusi meski multi-bentuk", fn () {
+            ia("bisa diresolusi meski multi-bentuk", fn () {
                 tidakAda!(fn () { A })
 
                 kelas A {
@@ -1026,7 +1182,7 @@ sidang(Kelas, fn () {
                 tuntut A.a() == 4
             })
 
-            uji("tidak dianggap metode kelas", fn () {
+            ia("tidak dianggap metode kelas", fn () {
                 tidakAda!(fn () { A })
 
                 kelas A {
@@ -1045,7 +1201,7 @@ sidang(Kelas, fn () {
                 } == benar
             })
 
-            uji("tidak dianggap sebagai variabel", fn () {
+            ia("tidak dianggap sebagai variabel", fn () {
                 kelas A {
                     fn sta a() { "a" }
                 }
@@ -1061,7 +1217,7 @@ sidang(Kelas, fn () {
                 tuntut A.a() == "a"
             })
 
-            uji("bisa bersifat pribadi", fn () {
+            ia("bisa bersifat pribadi", fn () {
                 kelas A {
                     fn sta a() { "a" }
                     fn sta ab() { a() + b() }
@@ -1084,7 +1240,7 @@ sidang(Kelas, fn () {
             })
 
             tentang("fungsi statis `#baru()`", fn () {
-                uji("harus mengutus objek dengan kelas yang sama", fn () {
+                ia("harus mengutus objek dengan kelas yang sama", fn () {
                     tidakAda!(fn () { A })
 
                     kelas A {
@@ -1132,7 +1288,7 @@ sidang(Kelas, fn () {
                     } == benar
                 })
 
-                uji("bisa menjadi fungsi statis pribadi", fn () {
+                ia("bisa menjadi fungsi statis pribadi", fn () {
                     tidakAda!(fn () { A })
 
                     kelas A {
@@ -1164,7 +1320,7 @@ sidang(Kelas, fn () {
                     } == benar
                 })
 
-                uji("dapat mendefinisikan fungsi statis `.baru()` dengan varian argumen lain", fn () {
+                ia("dapat mendefinisikan fungsi statis `.baru()` dengan varian argumen lain", fn () {
                     tidakAda!(fn () { A })
 
                     kelas A {
@@ -1183,7 +1339,7 @@ sidang(Kelas, fn () {
                     tuntut a.a() == "aa"
                 })
 
-                uji("dapat menjadikan pribadi fungsi `baru` yang tanpa argumen", fn () {
+                ia("dapat menjadikan pribadi fungsi `baru` yang tanpa argumen", fn () {
                     tidakAda!(fn () { A })
 
                     kelas A {
@@ -1211,7 +1367,7 @@ sidang(Kelas, fn () {
     })
 
     tentang("kelas dalam namespace", fn () {
-        uji("bisa didefinisikan dan diresolusi menggunakan `::`", fn () {
+        ia("bisa didefinisikan dan diresolusi menggunakan `::`", fn () {
             tidakAda!(fn () { A })
             tidakAda!(fn () { A::B })
             tidakAda!(fn () { A::C })
@@ -1240,7 +1396,7 @@ sidang(Kelas, fn () {
             tidakAda!(fn () { A::B::C })
         })
 
-        uji("menyatakan nama kelas fully-qualified tanpa `::` jika tidak ditemukan", fn () {
+        ia("menyatakan nama kelas fully-qualified tanpa `::` jika tidak ditemukan", fn () {
             tidakAda!(fn () { A })
 
             tuntut coba {
@@ -1260,7 +1416,7 @@ sidang(Kelas, fn () {
             tuntut A == A
         })
 
-        uji("bisa menjangkau kelas dengan nama yang sama yang berada di luar", fn () {
+        ia("bisa menjangkau kelas dengan nama yang sama yang berada di luar", fn () {
             kelas A {}
 
             kelas B {
@@ -1283,7 +1439,7 @@ sidang(Kelas, fn () {
             tuntut B.aNya() itu A
         })
 
-        uji("pengenal kelas tidak boleh diawali dengan `::`", fn () {
+        ia("pengenal kelas tidak boleh diawali dengan `::`", fn () {
             tuntut coba {
                 kelas ::A {}
                 salah
@@ -1303,7 +1459,7 @@ sidang(Kelas, fn () {
             } == benar
         })
 
-        uji("bisa diresolusi dengan benar meski ada kelas dengan nama yang mirip tapi dalam namespace yang berbeda", fn () {
+        ia("bisa diresolusi dengan benar meski ada kelas dengan nama yang mirip tapi dalam namespace yang berbeda", fn () {
             tidakAda!(fn () { Koneksi })
             tidakAda!(fn () { Sertifikat })
             tidakAda!(fn () { HTTP::Koneksi })
@@ -1350,7 +1506,7 @@ sidang(Kelas, fn () {
             tuntut A::B itu Kelas
         })
 
-        uji("tidak bisa didefinisikan jika hirarki kelas sebelumnya belum terdefinisikan", fn () {
+        ia("tidak bisa didefinisikan jika hirarki kelas sebelumnya belum terdefinisikan", fn () {
             tuntut coba {
                 kelas A::B {}
                 salah
@@ -1380,7 +1536,7 @@ sidang(Kelas, fn () {
             } == benar
         })
 
-        uji("jika kelas utama bersifat sementara, maka kelas dalam kelas juga bersifat sementara", fn () {
+        ia("jika kelas utama bersifat sementara, maka kelas dalam kelas juga bersifat sementara", fn () {
             ada cek = []
 
             fn () {

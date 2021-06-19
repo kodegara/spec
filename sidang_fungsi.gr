@@ -1,7 +1,7 @@
 sidang(Fungsi, fn () {
     ada fungsi = fn () {}
 
-    uji("itu Fungsi", fn () {
+    ia("itu Fungsi", fn () {
         tuntut Fungsi itu Kelas
         tuntut Fungsi itu Objek
 
@@ -11,7 +11,7 @@ sidang(Fungsi, fn () {
         tuntut !(fungsi itu Kelas)
     })
 
-    uji("merupakan closure", fn () {
+    ia("merupakan closure", fn () {
         ada fungsiPenambah = fn (x) {
             utus fn (y) { x + y }
         }
@@ -23,14 +23,14 @@ sidang(Fungsi, fn () {
         tuntut tambah5(tambah7(3)) == 15
     })
 
-    uji("bisa diasosiasikan dengan pengenal", fn () {
+    ia("bisa diasosiasikan dengan pengenal", fn () {
         ada tambah = fn (x, y) { x + y }
 
         tuntut tambah(5, 5) == 10
         tuntut tambah(5 + 5, tambah(5, 5)) == 20
     })
 
-    uji("bisa memiliki nama", fn () {
+    ia("bisa memiliki nama", fn () {
         ada fn1 = fn fn2(x) { x + 1 }
 
         tuntut fn1 == fn2
@@ -38,7 +38,7 @@ sidang(Fungsi, fn () {
         tuntut fn2(1) == 2
     })
 
-    uji("pengenal tidak boleh diawali dengan tanda $", fn () {
+    ia("pengenal tidak boleh diawali dengan tanda $", fn () {
         tuntut coba {
             fn $abc() {}
             salah
@@ -58,7 +58,7 @@ sidang(Fungsi, fn () {
         } == benar
     })
 
-    uji("pengenal tidak boleh diawali dengan huruf besar", fn () {
+    ia("pengenal tidak boleh diawali dengan huruf besar", fn () {
         tuntut coba {
             fn SebuahFungsi() {}
             salah
@@ -78,7 +78,7 @@ sidang(Fungsi, fn () {
         } == benar
     })
 
-    uji("pengenal tidak boleh berakhiran `=`", fn () {
+    ia("pengenal tidak boleh berakhiran `=`", fn () {
         tuntut coba {
             fn x=() {}
             salah
@@ -96,21 +96,21 @@ sidang(Fungsi, fn () {
         } == benar
     })
 
-    uji("bisa mengeksekusi fungsi tanpa pengenal", fn () {
+    ia("bisa mengeksekusi fungsi tanpa pengenal", fn () {
         tuntut fn () {
             benar
         }() == benar
     })
 
-    uji("fungsi yang tak mengutus apapun, secara otomatis mengutus nil", fn () {
+    ia("fungsi yang tak mengutus apapun, secara otomatis mengutus nil", fn () {
        tuntut fn (){}() == nil
     })
 
-    uji(".kobit() mencetak kode bibit", fn () {
+    ia(".kobit() mencetak kode bibit", fn () {
         tuntut (fn(){}).kobit() != (fn(){}).kobit()
     })
 
-    uji("memanggil fungsi yang belum didefinisikan menghasilkan `MasalahEksekusi`", fn () {
+    ia("memanggil fungsi yang belum didefinisikan menghasilkan `MasalahEksekusi`", fn () {
         tuntut coba {
             abcdef()
         } tahan (e) {
@@ -120,7 +120,7 @@ sidang(Fungsi, fn () {
     })
 
     tentang("argumen", fn () {
-        uji("memanggil fungsi dengan argumen kurang dari dubutuhkan menghasilkan MasalahArgumen", fn () {
+        ia("memanggil fungsi dengan argumen kurang dari dubutuhkan menghasilkan MasalahArgumen", fn () {
             ada tambah = fn (x, y) { x + y }
             tuntut coba {
                 tambah(5)
@@ -131,7 +131,7 @@ sidang(Fungsi, fn () {
             } == benar
         })
 
-        xuji("argumen tidak dipengaruhi oleh variabel lokal yang memiliki nama yang sama", fn () {
+        xia("argumen tidak dipengaruhi oleh variabel lokal yang memiliki nama yang sama", fn () {
             ada iterasikan = fn (deret, fnPengiterasi) {
                 cetak(deret)
                 dari (ada i = 0; i < deret.panjang(); i += 1) {
@@ -149,7 +149,7 @@ sidang(Fungsi, fn () {
             tuntut deret == [1, 2, 3]
         })
 
-        uji("argumen bersifat pass-by-reference", fn () {
+        ia("argumen bersifat pass-by-reference", fn () {
             kelas A {
                 ada a
                 fn a () { a }
@@ -166,7 +166,7 @@ sidang(Fungsi, fn () {
         })
     })
 
-    uji("tidak boleh mendefinisikan fungsi bebas dengan kata kunci `sta`", fn () {
+    ia("tidak boleh mendefinisikan fungsi bebas dengan kata kunci `sta`", fn () {
         tuntut coba {
             eval!("ada x = fn sta () {}")
             salah
@@ -177,7 +177,7 @@ sidang(Fungsi, fn () {
         } == benar
     })
 
-    uji("fungsi yang mengakibatkan stack overflow tidak menggagalkan sistem", fn () {
+    ia("fungsi yang mengakibatkan stack overflow tidak menggagalkan sistem", fn () {
         tuntut coba {
             fn x() { x() }
             x()
@@ -188,7 +188,7 @@ sidang(Fungsi, fn () {
         } == benar
     })
 
-    uji("bisa rekursif", fn () {
+    ia("bisa rekursif", fn () {
         ada fib = fn (n) {
             jika (n <= 1) {
                 utus n

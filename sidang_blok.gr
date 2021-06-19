@@ -1,6 +1,6 @@
 sidang("Blok", fn () {
     tentang("Variabel", fn () {
-        uji("bisa diubah dari dalam fungsi", fn () {
+        ia("bisa diubah dari dalam fungsi", fn () {
             ada a = 1
             ada b = 2
 
@@ -38,7 +38,7 @@ sidang("Blok", fn () {
             } == benar
         })
 
-        uji("tidak berubah jika diidentifikasi ulang dari dalam fungsi", fn () {
+        ia("tidak berubah jika diidentifikasi ulang dari dalam fungsi", fn () {
             ada a = 1
             ada b = 2
 
@@ -78,7 +78,7 @@ sidang("Blok", fn () {
         })
     })
 
-    uji("dari dalam fungsi yang sama, variable dapat merembet ke luar", fn() {
+    ia("dari dalam fungsi yang sama, variable dapat merembet ke luar", fn() {
         ada nilai = 0
 
         jika (benar) {
@@ -88,7 +88,7 @@ sidang("Blok", fn () {
         tuntut nilai == 1
     })
 
-    uji("dari dalam fungsi yang berbeda, identitas merembet ke environment luar jika telah didefinisikan", fn () {
+    ia("dari dalam fungsi yang berbeda, identitas merembet ke environment luar jika telah didefinisikan", fn () {
         ada nilai = 0
         tuntut nilai == 0
 
@@ -119,7 +119,7 @@ sidang("Blok", fn () {
         tuntut coba { nilaiBaruDidefinisikan == 2 } tahan (e) { e.pesan().berisi?("identitas tidak ditemukan: nilaiBaruDidefinisikan") }
     })
 
-    uji("dari dalam fungsi yang berbeda, identitas bisa merembet jika diutus", fn () {
+    ia("dari dalam fungsi yang berbeda, identitas bisa merembet jika diutus", fn () {
         ada kelasA = fn () { kelas A {} }()
         ada kelasB = fn () {
             jika (benar) {
@@ -136,7 +136,7 @@ sidang("Blok", fn () {
         tuntut tidakAda!(fn () { B })
     })
 
-    uji("kelas memiliki bloknya sendiri yang tidak merembet keluar", fn () {
+    ia("kelas memiliki bloknya sendiri yang tidak merembet keluar", fn () {
         ada angka = 1
         ada fn1 = fn () { 1 }
 
@@ -156,7 +156,7 @@ sidang("Blok", fn () {
         tuntut sesuatu.fn1() == 2
     })
 
-    uji("kelas memiliki bloknya sendiri yang dari luar tidak bisa merembet kedalam", fn () {
+    ia("kelas memiliki bloknya sendiri yang dari luar tidak bisa merembet kedalam", fn () {
         ada angka = 1
 
         tidakAda!(fn () { A })
@@ -200,7 +200,7 @@ sidang("Blok", fn () {
         } == benar
     })
 
-    uji("variabel akan selalu diresolve terlebih dahulu kecuali untuk pemanggilan fungsi", fn () {
+    ia("variabel akan selalu diresolve terlebih dahulu kecuali untuk pemanggilan fungsi", fn () {
         ada x = 1
         fn y() { 4 }
 
@@ -229,7 +229,7 @@ sidang("Blok", fn () {
         tuntut y itu Fungsi
     })
 
-    uji("blok kelas dapat mengakses kelas lain dalam blok luar", fn () {
+    ia("blok kelas dapat mengakses kelas lain dalam blok luar", fn () {
         kelas A {}
         kelas B {
             fn apakahBenar() {
@@ -243,7 +243,7 @@ sidang("Blok", fn () {
         tuntut B.baru().apakahBenar() == benar
     })
 
-    uji("blok kelas dapat mengakses diri sendiri dari dalam metode", fn () {
+    ia("blok kelas dapat mengakses diri sendiri dari dalam metode", fn () {
         kelas A {
             ada nilai
             fn nilai(n) { nilai = n }
@@ -263,7 +263,7 @@ sidang("Blok", fn () {
         tuntut aBaru.nilai() == 100
     })
 
-    uji("blok metode yang menerima fungsi adalah dari objek dimana metode tersebut berasal", fn () {
+    ia("blok metode yang menerima fungsi adalah dari objek dimana metode tersebut berasal", fn () {
         kelas A {
             fn catatan() { "a" }
             fn denganFungsi(f) {
@@ -287,7 +287,7 @@ sidang("Blok", fn () {
         tuntut B.baru().denganFungsi() == "ba"
     })
 
-    uji("blok `pribadi` hanya bisa digunakan di dalam kelas", fn () {
+    ia("blok `pribadi` hanya bisa digunakan di dalam kelas", fn () {
         tuntut coba {
             pribadi {
                 fn xyz() {}

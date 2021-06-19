@@ -1,7 +1,7 @@
 sidang(Nirdefinisi, fn () {
     ada identitas = fn (x) { x }
 
-    uji("itu Nirdefinisi", fn () {
+    ia("itu Nirdefinisi", fn () {
         tuntut Nirdefinisi itu Kelas
         tuntut Nirdefinisi itu Objek
 

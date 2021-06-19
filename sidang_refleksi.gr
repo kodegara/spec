@@ -1,5 +1,5 @@
 sidang(Refleksi, fn () {
-    uji("#cipta! menginisialisasi kelas", fn () {
+    ia("#cipta! menginisialisasi kelas", fn () {
         tidakAda!(fn () { A })
 
         kelas A {}

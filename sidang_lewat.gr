@@ -1,5 +1,5 @@
 sidang("Kata kunci `lewat`", fn () {
-    uji("akan menjadi masalah eksekusi jika dipanggil diluar iterasi", fn () {
+    ia("akan menjadi masalah eksekusi jika dipanggil diluar iterasi", fn () {
         tuntut coba {
             lewat
         } tahan (e) {
@@ -10,7 +10,7 @@ sidang("Kata kunci `lewat`", fn () {
     })
 
     tentang("digunakan dengan `dari`", fn () {
-        uji("dapat melewati poin iterasi", fn () {
+        ia("dapat melewati poin iterasi", fn () {
             ada deret = []
 
             dari (ada i = 0; i < 10; i++) {
@@ -26,7 +26,7 @@ sidang("Kata kunci `lewat`", fn () {
     })
 
     tentang("digunakan dengan `selama`", fn () {
-        uji("dapat melewati poin iterasi", fn () {
+        ia("dapat melewati poin iterasi", fn () {
             ada deret = []
             ada i = 0
 
@@ -52,7 +52,7 @@ sidang("Kata kunci `lewat`", fn () {
             }
         }
 
-        uji("dapat dilewati", fn () {
+        ia("dapat dilewati", fn () {
             ada deret = []
 
             iterasikan([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], fn (i) {
@@ -68,7 +68,7 @@ sidang("Kata kunci `lewat`", fn () {
         })
     })
 
-    uji("hanya melewati iterasi paling dekat", fn () {
+    ia("hanya melewati iterasi paling dekat", fn () {
         ada deret = []
 
         dari (ada i = 0; i < 5; i++) {

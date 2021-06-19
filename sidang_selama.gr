@@ -1,5 +1,5 @@
 sidang("Kata kunci selama", fn () {
-    uji("melakukan iterasi selama nilai bernilai benar", fn () {
+    ia("melakukan iterasi selama nilai bernilai benar", fn () {
         ada der = []
         ada i = 0
 
@@ -11,7 +11,7 @@ sidang("Kata kunci selama", fn () {
         tuntut der == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     })
 
-    uji("jika kondisi sudah salah, tidak akan melakukan apapun", fn () {
+    ia("jika kondisi sudah salah, tidak akan melakukan apapun", fn () {
         ada x
 
         selama (salah) {
@@ -21,7 +21,24 @@ sidang("Kata kunci selama", fn () {
         tuntut x == nil
     })
 
-    uji("bisa keluar dari dalam menggunakan utus", fn () {
+    ia("bisa menggunakan alternatif sintaksis tanpa tanda kurung", fn () {
+        ada x = 0
+
+        selama salah {
+            x = 1
+        }
+
+        tuntut x == 0
+
+        selama benar {
+            x++
+            jika x == 5 { putus }
+        }
+
+        tuntut x == 5
+    })
+
+    ia("bisa keluar dari dalam menggunakan utus", fn () {
         ada nilai = 1
 
         selama (benar) {
@@ -33,7 +50,7 @@ sidang("Kata kunci selama", fn () {
         tuntut nilai == 2
     })
 
-    uji("jika ada kesalahan dalam blok, otomatis keluar", fn () {
+    ia("jika ada kesalahan dalam blok, otomatis keluar", fn () {
         ada pernahDalamSelama = salah
 
         coba {
@@ -46,7 +63,7 @@ sidang("Kata kunci selama", fn () {
         tuntut pernahDalamSelama == benar
     })
 
-    uji("bisa bersarang", fn () {
+    ia("bisa bersarang", fn () {
         ada deret = []
 
         ada i = 0

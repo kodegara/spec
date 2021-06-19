@@ -1,5 +1,5 @@
 sidang("Kata kunci `utus`", fn () {
-    uji("bisa mengutus nilai dari dalam blok selama (benar)", fn () {
+    ia("bisa mengutus nilai dari dalam blok selama (benar)", fn () {
         ada nilaiLain = fn () {
             ada i = 0
             ada d = []
@@ -28,7 +28,7 @@ sidang("Kata kunci `utus`", fn () {
         }() == 1
     })
 
-    uji("bisa mengutus nilai dari dalam blok dari (benar)", fn () {
+    ia("bisa mengutus nilai dari dalam blok dari (benar)", fn () {
         ada nilaiLain = fn () {
             ada d = []
             dari (ada i = 0; benar; i += 1) {
