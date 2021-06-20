@@ -1,0 +1,115 @@
+sidang(Rangkap, fn () {
+    tentang("instansiasi", fn () {
+        tentang("pembentukan secara literal", fn () {
+            ia("bisa dibentuk dengan sederhana", fn () {
+                ada a = 1, b = 2
+                tuntut <1, 2> == <1, 2>
+                tuntut <a, b> == <1, 2>
+                tuntut <1, 2> == <a, b>
+            })
+
+            ia("bisa memiliki titik koma sebagai pemisah ekspresi", fn () {
+                <1,2>; <1, 3>
+            })
+
+            ia("bisa bisa ditempatkan pada pengenal", fn () {
+                ada a = <1, 2, 2 + 3, fn () {}, [], {}, fn () { benar }()>
+            })
+
+            ia("bisa dibentuk dengan banyak baris", fn () {
+                ada nilai = 12
+                ada nilaiFn = fn () { 12 }
+
+                ada b = <
+                    0,
+                    1,
+                    2 + 3,
+                    1 > 1,
+                    1 < 1,
+                    fn () {},
+                    fn () { benar }(),
+                    1 > nilai,
+                    1 < nilai,
+                    1 > nilaiFn(),
+                    1 < nilaiFn()
+                >
+            })
+
+            tentang("adanya ekspresi lain yang tidak terkai", fn () {
+                ia("bisa dibentuk ketika ekspresi terakhir tersebut adalah Boolean", fn () {
+                    tuntut fn () {
+                        <1 + 2, 1-1, 1 < 2, 2, 1 > 2>
+                        benar
+                    }() == benar
+                })
+
+                ia("bisa dibentuk ketika ekspresi terakhir tersebut adalah Integer", fn () {
+                    tuntut fn () {
+                        <1 + 2, 1-1, 1 < 2, 2, 1 > 2>
+                        123
+                    }() == 123
+                })
+
+                xia("bisa dibentuk ketika ekspresi terakhir adalah Fungsi", fn () {
+                    // todo: hanya bisa dilakukan kalau kita bisa membedakan whitespace dan newline
+                    // fn () {
+                    //     <1 + 2, 1-1, 1 < 2, 2, 1 > 2>
+                    //     fn () {}
+                    // }() == nil
+                })
+
+                xia("bisa dibentuk ketika ekspresi terakhir tersebut adalah Deret", fn () {
+                    // todo: hanya bisa dilakukan kalau kita bisa membedakan whitespace dan newline
+                    tuntut fn() {
+                        <1 + 2, 1-1, 1 < 2, 2, 1 > 2>
+                        [123]
+                    }() == [123]
+
+                    tuntut fn() {
+                        <1 + 2, 1-1, 1 < 2, 2, 1 > 2>
+                        [123][0]
+                    }() == 123
+                })
+
+                xia("bisa dibentuk ketika ekspresi terakhir adalah Rangkap", fn () {
+                    // todo: hanya bisa dilakukan kalau kita bisa membedakan whitespace dan newline
+                    // <1+ 2, 1-1, 1 < 2, 2, 1 > 2>
+                    // <1+ 2, 1-1, 1 < 2, 2, 1 > 2, 1>
+                    // <1+ 2, 1-1, 1 < 2, 2, 1 > 2, 1 < 2>
+                    // <1 < 2, 2, 1 > 2, 1>
+                    // <1 < 2, 1 > 2, 1>
+                })
+            })
+
+            tentang("penggunaan operator yang ambigu", fn () {
+                ia("bisa memproses operator > diakhir", fn () {
+                    tuntut <0 > 0, 1 > 0, 1 > 2> == <salah, benar, salah>
+                    tuntut <1, 1 > 2> == <1, salah>
+                })
+
+                ia("bisa memproses operator < diakhir", fn () {
+                    tuntut <1 < 0, 1 < 1, 1 < 2> == <salah, salah, benar>
+                    tuntut <1, 1 < 2> == <1, benar>
+                })
+
+                ia("bisa memproses adanya beragam penggunaan operator `<` dan `>`", fn () {
+                    tuntut <1, 1 > 2, 1 < 2> == <1, salah, benar>
+                    tuntut <1 > 2, 1> == <salah, 1> // literal biasa diakhir
+                })
+            })
+
+        })
+
+        ia("bisa dibentuk menggunakan fungsi statis baru", fn () {
+            ada a = Rangkap.baru()
+            tuntut a == <>
+        })
+    })
+
+    tentang(".panjang()", fn () {
+        ia("mengutus panjang Rangkap", fn () {
+            tuntut <>.panjang() == 0
+            tuntut <1, 2, 3>.panjang() == 3
+        })
+    })
+})

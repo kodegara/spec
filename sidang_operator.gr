@@ -406,6 +406,44 @@ sidang("Operator", fn () {
                 tuntut peta[kRiil2v2] == "v2"
             })
         })
+
+        tentang("pada Rangkap", fn () {
+            ia("mengembalikan elemen pada suatu posisi `i` dimana `i` adalah Integer", fn () {
+                ada a = <0, 1, 2>
+                tuntut a[0] == 0
+                tuntut a[1] == 1
+                tuntut a[2] == 2
+
+                tuntut <0>[0] == 0
+                tuntut <0, 1>[0] == 0
+                tuntut <0, 1, 2>[0] == 0
+                tuntut <0, 1, 2>[1] == 1
+                tuntut <0, 1, 2>[2] == 2
+            })
+
+            ia("menjadi masalah jika indeks tidak terdefinisikan", fn () {
+                ada a = <0, nil, 1>
+                tuntut a[1] == nil
+
+                tuntut coba {
+                    a[3]
+                    salah
+                } tahan (e) {
+                    cetak(e)
+                    tuntut e.pesan == "elemen tidak ditemukan"
+                    benar
+                } == benar
+
+                tuntut coba {
+                    <0>[-1]
+                    salah
+                } tahan (e) {
+                    cetak(e)
+                    tuntut e.pesan == "elemen tidak ditemukan"
+                    benar
+                } == benar
+            })
+        })
     })
 
     tentang("[]= (isiPosisi)", fn () {
@@ -938,6 +976,36 @@ sidang("Operator", fn () {
                 tuntut fAnanta <= fAnanta == benar
                 tuntut -fAnanta <= -fAnanta == benar
                 tuntut fAnanta <= -fAnanta == salah
+            })
+        })
+    })
+
+    // todo: petakan ke fungsi bernama panggil dengan argumen deret
+    tentang("() (picu)", fn () {
+        ada tuntutPanggilanBermasalah = fn (f) {
+            tuntut coba {
+                f()
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahEksekusi
+                tuntut e.pesan.berisi?("bukan fungsi")
+                benar
+            } == benar
+        }
+
+        tentang("pada Deret", fn () {
+            ia("akan bermasalah", fn () {
+                tuntutPanggilanBermasalah(fn () { []() })
+                tuntutPanggilanBermasalah(fn () { [0]() })
+                tuntutPanggilanBermasalah(fn () { [0, 1]() })
+            })
+        })
+
+        tentang("pada Rangkap", fn () {
+            ia("akan bermasalah", fn () {
+                tuntutPanggilanBermasalah(fn () { <>() })
+                tuntutPanggilanBermasalah(fn () { <0>() })
+                tuntutPanggilanBermasalah(fn () { <1, 2, 3>() })
             })
         })
     })
