@@ -237,6 +237,12 @@ sidang(Deret, fn () {
         }
     })
 
+    ia(".jadiRangkap() mengubah deret menjadi Rangkap", fn () {
+        tuntut [].jadiRangkap == <>
+        tuntut [nil].jadiRangkap == <nil>
+        tuntut [1, 2, 3].jadiRangkap == <1, 2, 3>
+    })
+
     ia(".jelma(arg) menghasilkan deret baru dengan nilai tertransformasi sesuai arahan fungsi", fn () {
         ada a = [0, 1, 2, 3]
         ada aGanda = a.jelma(fn (x) { x * 2 })
@@ -417,13 +423,21 @@ sidang(Deret, fn () {
         tuntut a == [1, 2]
     })
 
-    ia(".unik() menghapus elemen duplikat dari dalam deret", fn () {
-        tuntut [].unik() == []
-        tuntut [nil].unik() == [nil]
-        tuntut [nil, nil].unik() == [nil]
-        tuntut [nil, 1, nil, 1].unik() == [nil, 1]
-        tuntut [1, nil, 1, nil].unik() == [1, nil]
-        tuntut [1, 2, 3, 4, 4, 3, 2, 1].unik() == [1, 2, 3, 4]
-        tuntut [1, 2, 3, 4, nil, 4, 3, 2, 1].unik() == [1, 2, 3, 4, nil]
+    tentang(".unik()", fn () {
+        ia("menghapus elemen duplikat dari Deret", fn () {
+            tuntut [].unik() == []
+            tuntut [nil].unik() == [nil]
+            tuntut [nil, nil].unik() == [nil]
+            tuntut [nil, 1, nil, 1].unik() == [nil, 1]
+            tuntut [1, nil, 1, nil].unik() == [1, nil]
+            tuntut [1, 2, 3, 4, 4, 3, 2, 1].unik() == [1, 2, 3, 4]
+            tuntut [1, 2, 3, 4, nil, 4, 3, 2, 1].unik() == [1, 2, 3, 4, nil]
+        })
+
+        ia("tidak mengubah Deret lama", fn () {
+            ada d = [1, 1, 1, 2, 3]
+            tuntut d.unik == [1, 2, 3]
+            tuntut d == [1, 1, 1, 2, 3]
+        })
     })
 })

@@ -1,17 +1,38 @@
 sidang(Masalah, fn () {
-    ia(".baru() bisa membuat objek masalah tanpa pesan", fn () {
-        ada msl = Masalah.baru()
-        tuntut msl itu Masalah
-        tuntut msl.pesan() == ""
-    })
+    tentang("inisialisasi", fn () {
+        tentang("saat menggunakan #baru()", fn () {
+            ia("bisa dibuat tanpa pesan", fn () {
+                ada msl = Masalah.baru()
+                tuntut msl itu Masalah
+                tuntut msl.pesan() == ""
+            })
 
-    ia(".baru() bisa membuat objek masalah dengan pesan", fn () {
-        ada msl = MasalahKode.baru("ada kesalahan dalam kode")
+            ia("bisa dibuat dengan pesan", fn () {
+                ada msl = MasalahKode.baru("ada kesalahan dalam kode")
 
-        tuntut msl itu MasalahKode
-        tuntut msl itu Masalah
+                tuntut msl itu MasalahKode
+                tuntut msl itu Masalah
 
-        tuntut msl.pesan() == "ada kesalahan dalam kode"
+                tuntut msl.pesan() == "ada kesalahan dalam kode"
+            })
+        })
+
+        tentang("saat menggunakan #picu()", fn () {
+            ia("bisa dibuat tanpa pesan", fn () {
+                tuntut Masalah() itu Masalah
+                tuntut MasalahRangkap() itu MasalahRangkap
+            })
+
+            ia("bisa dibuat dengan pesan", fn () {
+                ada m = Masalah("berpesan")
+                tuntut m.pesan == "berpesan"
+                tuntut m itu Masalah
+
+                m = MasalahRangkap("merangkap")
+                tuntut m.pesan == "merangkap"
+                tuntut m itu MasalahRangkap
+            })
+        })
     })
 
     tentang(".jejak()", fn () {

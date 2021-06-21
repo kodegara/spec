@@ -950,7 +950,6 @@ sidang(Kelas, fn () {
                 A.baru().b()
                 salah
             } tahan (e) {
-                cetak(e)
                 tuntut e.pesan() == "`a` adalah metode pribadi kelas A yang hanya bisa dipanggil dari dalam"
                 benar
             } == benar
@@ -1071,6 +1070,37 @@ sidang(Kelas, fn () {
                     tuntut e.pesan() == "objek tipe A tidak memiliki metode `a` yang bisa dipanggil"
                     benar
                 } == benar
+            })
+
+            ia("dapat diakses dari metode dalam kelas yang sama", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {
+                    ada sta X = "X"
+
+                    fn x() { X }
+                    fn xxx() { xx + x }
+
+                    fn sta x() { X }
+                    fn sta y() { cetak("HOO"); Y }
+                    fn sta iniX() { ini.X }
+                    fn sta iniY() { ini.Y }
+
+                    pribadi {
+                        ada sta Y = "Y"
+                        fn xx() { X + X }
+                    }
+                }
+
+                ada a = A.baru()
+                tuntut a.x() == A.X
+                tuntut a.xxx() == "XXX"
+                tuntut A.x() == A.X
+                tuntut A.iniX() == A.X
+
+                // pribadi
+                tuntut A.iniY() == "Y"
+                tuntut A.y() == "Y"
             })
 
             ia("dapat memiliki nilai awal", fn () {

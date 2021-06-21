@@ -106,10 +106,126 @@ sidang(Rangkap, fn () {
         })
     })
 
+    tentang(".awal()", fn () {
+        ia("mengembalikan nilai paling awal dalam Rangkap", fn () {
+            tuntut <0, 1, 2, 3>.awal == 0
+            tuntut <1, 2, 3, 4>.awal == 1
+            tuntut <nil, 1, 2, 3>.awal == nil
+        })
+
+        ia("bermasalah jika Rangkap tidak memiliki elemen apapun", fn () {
+            tuntut coba {
+                <>.awal
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahRangkap
+                tuntut e.pesan == "elemen tidak ditemukan"
+            } == benar
+        })
+    })
+
+    tentang(".akhir()", fn () {
+        ia("mengembalikan nilai dalam deretan terakhir dalam Rangkap", fn () {
+            tuntut <0, 1, 2, 3>.akhir == 3
+            tuntut <1, 2, 3, 4>.akhir == 4
+            tuntut <1, 2, 3, nil>.akhir == nil
+        })
+    })
+
+    ia(".jadiDeret() mengubah Rangkap ini menjadi Deret", fn () {
+        tuntut <>.jadiDeret() == []
+        tuntut <nil>.jadiDeret() == [nil]
+        tuntut <1, 2, 3>.jadiDeret == [1, 2, 3]
+    })
+
     tentang(".panjang()", fn () {
         ia("mengutus panjang Rangkap", fn () {
             tuntut <>.panjang() == 0
             tuntut <1, 2, 3>.panjang() == 3
+        })
+    })
+
+    tentang(".padaPosisi(arg)", fn () {
+        ia("bisa menerima Integer", fn () {
+            tuntut <0, 1, 2>.padaPosisi(0) == 0
+        })
+
+        ia("bisa menerima Kata", fn () {
+            ada a = <0, 1, 2>
+            a.tambahAlias("nol")
+            a["nol"] == 0
+        })
+
+        ia("akan bermasalah jika posisi tidak terdefinisikan", fn () {
+            tuntut coba {
+                <0>.padaPosisi(1)
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahRangkap
+                tuntut e.pesan == "elemen tidak ditemukan"
+                benar
+            } == benar
+        })
+    })
+
+    tentang(".tambahAlias(arg)", fn () {
+        ia("memberi nama alias pada deret Rangkap mulai dari deret paling awal", fn () {
+            ada umur = <11, 18, 19, 22>
+
+            ada x = [];
+
+            ["andi", "budi", "cintia", "tono"].tiap(fn (nama) {
+                tuntut coba {
+                    umur[nama]
+                    salah
+                } tahan (e) {
+                    tuntut e itu MasalahRangkap
+                    tuntut e.pesan() == "alias tidak terdefinisikan: " + nama
+                    x += [nama]
+                    benar
+                } == benar
+
+                umur.tambahAlias(nama)
+            })
+
+            tuntut x == ["andi", "budi", "cintia", "tono"]
+        })
+
+        ia("akan bermasalah jika memberi nama melebihi jumlah elemen", fn () {
+            tuntut coba {
+                <>.tambahAlias("sesuatu")
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahRangkap
+                tuntut e.pesan.berisi?("tidak dapat memberi alias `sesuatu`")
+                benar
+            } == benar
+        })
+
+        ia("akan bermasalah jika nama bukan Kata", fn () {
+            tuntut coba {
+                <>.tambahAlias(123)
+                salah
+            } tahan (e) {
+                cetak(e)
+                tuntut e itu MasalahRangkap
+                tuntut e.pesan == "hanya bisa menerima Kata sebagai alias"
+                benar
+            } == benar
+        })
+
+        ia("akan bermasalah jika alias sudah terdefinisikan", fn () {
+            ada a = <0, 1>
+            a.tambahAlias("nol")
+
+            tuntut coba {
+                a.tambahAlias("nol")
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahRangkap
+                tuntut e.pesan.berisi?("tidak dapat memberi alias `nol` karena sudah menjadi alias posisi ke-0")
+                benar
+            } == benar
         })
     })
 })

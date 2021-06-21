@@ -317,6 +317,25 @@ sidang("Operator", fn () {
         })
     })
 
+    tentang("=~ (sesuai?)", fn () {
+        tentang("pada Kata", fn () {
+            ia("bernilai benar jika Kata sesuai dengan suatu ekspresi regular", fn () {
+                tuntut "Gara" =~ #r{(G|g)ara} == benar
+                tuntut "Gara" =~ #r{gara} == salah
+            })
+        })
+
+        tentang("pada Riil", fn () {
+            ia("bernilai benar jika Riil mendekati Riil lain", fn () {
+                ada a = 1.25
+                ada b = a - 0.005
+
+                tuntut a =~ b == benar
+                tuntut a =~ 1.26
+            })
+        })
+    })
+
     tentang("[] (padaPosisi)", fn () {
         tentang("pada Deret", fn () {
             ada angka = [1, 2, 3, 4, 5]
@@ -1006,6 +1025,32 @@ sidang("Operator", fn () {
                 tuntutPanggilanBermasalah(fn () { <>() })
                 tuntutPanggilanBermasalah(fn () { <0>() })
                 tuntutPanggilanBermasalah(fn () { <1, 2, 3>() })
+            })
+        })
+
+        tentang("saat pada kelas buatan sendiri", fn () {
+            tentang("saat tanpa metode `picu`", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {}
+                ada a = A.baru()
+                tuntutPanggilanBermasalah(fn () { a() })
+            })
+
+            tentang("saat metode `picu` terdefinisikan", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {
+                    fn picu(args) {
+                        tuntut args itu Rangkap
+                        tuntut args.panjang == args[0]
+
+                        ini
+                    }
+                }
+
+                ada a = A.baru()
+                tuntut a(4, 1, 2, 3) == a
             })
         })
     })

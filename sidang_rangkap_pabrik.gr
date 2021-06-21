@@ -1,0 +1,139 @@
+sidang(Rangkap::Pabrik, fn () {
+    tentang("inisialisasi", fn () {
+        ia("tidak dapat dibuat tanpa argumen", fn () {
+            tuntut coba {
+                kelasIni.baru
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahMetode
+                tuntut e.pesan == "`baru` adalah fungsi statis bersifat pribadi kelas Rangkap::Pabrik yang hanya bisa dipanggil dari dalam"
+                benar
+            } == benar
+        })
+
+        ia("bisa dibuat dengan argumen sebuah Deret", fn () {
+            ada p = kelasIni.baru(["a", "b", "c"])
+            tuntut p itu kelasIni
+        })
+
+        ia("bisa dibuat menggunakan Rangkap#dengan", fn () {
+            ada p = Rangkap.dengan(["a", "b"])
+            tuntut p itu kelasIni
+        })
+
+        ia("akan bermasalah jika alias tidak unik", fn () {
+            tuntut coba {
+                kelasIni.baru(["a", "b", "c", "a"])
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahRangkap
+                tuntut e.pesan == "nama alias sudah ada yang terdefinisikan"
+                benar
+            } == benar
+        })
+    })
+
+    tentang(".padaPosisi(arg1, arg2)", fn () {
+        ia("bisa mendefinisikan tipe data arg1 sebagai arg2", fn () {
+            ada siswa = kelasIni.baru(["nama", "umur"])
+
+            siswa["nama"] = Kata
+            siswa["umur"] = Integer
+        })
+
+        ia("akan bermasalah jika alias belum terdefinisikan", fn () {
+            ada siswa = kelasIni.baru(["nama", "umur"])
+
+            tuntut coba {
+                siswa["xyz"] = Integer
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahRangkap
+                tuntut e.pesan == "`xyz` belum terdefinisikan"
+                benar
+            } == benar
+        })
+
+        ia("akan bermasalah jika alias bukan Kata", fn () {
+            ada siswa = kelasIni.baru(["nama", "umur"])
+
+            tuntut coba {
+                siswa[1] = Integer
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahRangkap
+                tuntut e.pesan == "alias harus Kata"
+                benar
+            } == benar
+        })
+
+        ia("akan bermasalah jika arg2 bukan Kelas", fn () {
+            ada siswa = kelasIni.baru(["nama", "umur"])
+
+            tuntut coba {
+                siswa["nama"] = 1
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahRangkap
+                tuntut e.pesan == "seharusnya Kelas tapi menerima Integer"
+                benar
+            } == benar
+        })
+    })
+
+    tentang(".picu()", fn () {
+        // todo: ganti ke def("siswa", fn () { })
+        ada siswa = kelasIni.baru(["nama", "umur"])
+
+        ia("dapat membuat Rangkap", fn () {
+            ada s1 = siswa("Adam", 12)
+
+            tuntut s1 itu Rangkap
+            tuntut s1[0] == "Adam"
+            tuntut s1["nama"] == "Adam"
+
+            tuntut s1[1] == 12
+            tuntut s1["umur"] == 12
+        })
+
+        ia("bermasalah jika argumen kurang dari yang dibutuhkan", fn () {
+            tuntut coba {
+                siswa("Adam")
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahRangkap
+                tuntut e.pesan == "seharusnya 2 rangkap: [\"nama\", \"umur\"], tapi menerima: <\"Adam\">"
+                benar
+            } == benar
+        })
+
+        tentang("saat memiliki tipe yang terdefinisikan", fn () {
+            ia("dapat membuat Rangkap jika sesuai tipe", fn () {
+                ada siswa = kelasIni.baru(["nama", "umur"])
+                // ganti ke (sebelum(fn() {}))
+                siswa["nama"] = Kata
+                siswa["umur"] = Integer
+
+                ada s = siswa("Adam", 12)
+                tuntut s["nama"] == "Adam"
+                tuntut s["umur"] == 12
+            })
+
+            ia("akan bermasalah jika tidak sesuai tipe", fn () {
+                ada siswa = kelasIni.baru(["nama", "umur"])
+                // ganti ke (sebelum(fn() {}))
+                siswa["nama"] = Kata
+                siswa["umur"] = Integer
+
+                tuntut coba {
+                    siswa(1, 12)
+                    salah
+                } tahan (e) {
+                    tuntut e itu MasalahRangkap
+                    tuntut e.pesan == "`nama` harus bertipe Kata"
+                    benar
+                } == benar
+            })
+        })
+    })
+})
