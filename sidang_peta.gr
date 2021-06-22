@@ -1,3 +1,7 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
 sidang(Peta, fn () {
     // todo: biar variabel tidak berubah-ubah setiap jalannya tes/independen
     // var("kFungsi") { {} } equal to -> var("kFungsi", fn () { {} }) << hanya jika fungsi sebagai argumen terakhir

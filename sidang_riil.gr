@@ -1,3 +1,7 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
 sidang("Riil", fn () {
     ia("memiliki beberapa konstanta", fn () {
         tuntut Riil.NAN.nan?() == benar

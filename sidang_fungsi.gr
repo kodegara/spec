@@ -1,3 +1,7 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
 sidang(Fungsi, fn () {
     ada fungsi = fn () {}
 
