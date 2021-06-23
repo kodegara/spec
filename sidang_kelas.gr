@@ -787,8 +787,8 @@ sidang(Kelas, fn () {
             fn checksum() { checksum }
 
             fn masukkan(item) {
-                nilai << item
-                ini.nilai << item
+                nilai += [item]
+                ini.nilai += [item]
 
                 checksum += 2
                 ini.checksum += 2
@@ -1669,9 +1669,9 @@ sidang(Kelas, fn () {
                     kelas C {}
                 }
 
-                cek << A itu Kelas
-                cek << A::B itu Kelas
-                cek << A::C itu Kelas
+                cek += [A itu Kelas]
+                cek += [A::B itu Kelas]
+                cek += [A::C itu Kelas]
             }()
 
             tuntut cek == [benar, benar, benar]

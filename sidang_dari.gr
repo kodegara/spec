@@ -8,7 +8,7 @@ sidang("Statemen dari", fn () {
         ada i = 0
 
         dari (i = 0; i < 10; i += 1) {
-            der << i
+            der += [i]
         }
 
         tuntut der == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -19,7 +19,7 @@ sidang("Statemen dari", fn () {
         ada der = []
 
         dari (ada i = 0; i < 10; i += 1) {
-            der << i
+            der += [i]
         }
 
         tuntut der == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -32,7 +32,7 @@ sidang("Statemen dari", fn () {
         tuntut der == []
 
         dari ada i = 0; i < 10; i++ {
-            der << i
+            der += [i]
         }
 
         tuntut der == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -45,7 +45,7 @@ sidang("Statemen dari", fn () {
         // dianggap sebagai assignment sehingga nilai i harus berubah sesuai iterasi
         dari (i = 0; i < 10; i += 1) {
             tuntut i != 100
-            der << i
+            der += [i]
         }
 
         tuntut der == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -58,7 +58,7 @@ sidang("Statemen dari", fn () {
 
         dari (ada i = 0; i < 10; i += 1) {
             tuntut i != 100
-            der << i
+            der += [i]
         }
 
         tuntut der == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -101,21 +101,21 @@ sidang("Statemen dari", fn () {
         ada deret = []
 
         dari (ada i = 0; i < 5; i += 1) {
-            deret << i
+            deret += [i]
 
             ada deretJ = []
             dari (ada j = i + 1; j < 5; j += 1) {
-                deretJ << j
+                deretJ += [j]
 
                 ada deretK = []
                 dari (ada k = j + 1; k < 5; k += 1) {
-                    deretK << k
+                    deretK += [k]
                 }
 
-                deretJ << deretK
+                deretJ += [deretK]
             }
 
-            deret << deretJ
+            deret += [deretJ]
         }
 
         tuntut deret == [

@@ -8,8 +8,12 @@ sidang(Deret, fn () {
     // definisi identitas, utus diri sendiri
     ada identitas = fn (x) { x }
 
-    ia(".baru() dapat membuat objek baru", fn () {
-        tuntut Deret.baru() == []
+    tentang("inisialisasi", fn () {
+        tentang("saat menggunakan .baru()", fn () {
+            ia("mengutus Deret kosong", fn () {
+                tuntut Deret.baru() == []
+            })
+        })
     })
 
     ia("itu Deret", fn () {
@@ -22,90 +26,116 @@ sidang(Deret, fn () {
         tuntut !(angka itu Kelas)
     })
 
-    ia(".awal() mengutus elemen pada posisi ke-0", fn () {
-        tuntut coba {
-            [].awal(1)
-        } tahan (e) {
-            tuntut e itu MasalahArgumen
-            tuntut e.pesan().berisi?("`awal` hanya bisa dipanggil dengan tanpa argumen")
-            benar
-        }
+    tentang("metode bawaan", fn () {
+        tentang(".awal()", fn () {
+            ia("mengutus elemen pada posisi ke-0", fn () {
+                tuntut coba {
+                    [].awal(1)
+                } tahan (e) {
+                    tuntut e itu MasalahArgumen
+                    tuntut e.pesan().berisi?("`awal` hanya bisa dipanggil dengan tanpa argumen")
+                    benar
+                }
 
-        tuntut [].awal() == nil
-        tuntut [1].awal() == 1
-        tuntut [1, 2, 3].awal() == 1
-        tuntut [[], 1].awal() == []
-        tuntut [nil, 1, 2, 3].awal() == nil
+                tuntut [].awal() == nil
+                tuntut [1].awal() == 1
+                tuntut [1, 2, 3].awal() == 1
+                tuntut [[], 1].awal() == []
+                tuntut [nil, 1, 2, 3].awal() == nil
+            })
+        })
+
+        tentang(".akhir()", fn () {
+            ia("mengutus elemen pada posisi terakhir", fn () {
+                ada tertahan = salah
+                tuntut coba { [].akhir(1) } tahan (e) { tuntut e itu MasalahArgumen; tertahan = benar }
+                tuntut tertahan == benar
+
+                tuntut [].akhir() == nil
+                tuntut [1].akhir() == 1
+                tuntut [1, 2, 3].akhir() == 3
+                tuntut [[], 1].akhir() == 1
+                tuntut [nil, 1, 2, 3].akhir() == 3
+            })
+        })
+
+        tentang(".ambil()", fn () {
+            ia("tidak mengubah Deret asal", fn () {
+                ada deret = [1, 2, 3]
+                ada t = deret.ambil
+                tuntut t == <3, [1, 2]>
+                tuntut t["hasil"] == 3
+                tuntut t["deret"] == [1, 2]
+                tuntut deret == [1, 2, 3]
+            })
+
+            ia("tidak menerima argumen apapun", fn () {
+                tuntut coba { [].ambil(1); salah } tahan (e) { tuntut e itu MasalahArgumen; benar } == benar
+            })
+
+            ia("mengambil elemen dari sisi kanan", fn () {
+                ada deret = [1, 2, 3, 4, 5]
+
+                tuntut deret.ambil()["hasil"] == 5
+            })
+
+            ia("mengutus Rangkap `nil` jika Deret tidak berisi apapun", fn () {
+                ada t = [].ambil
+                tuntut t["hasil"] == nil
+                tuntut t["deret"] == []
+            })
+        })
     })
 
-    ia(".akhir() mengutus elemen pada posisi terakhir", fn () {
-        ada tertahan = salah
-        tuntut coba { [].akhir(1) } tahan (e) { tuntut e itu MasalahArgumen; tertahan = benar }
-        tuntut tertahan == benar
+    tentang(".ambilAwal()", fn () {
+        ia("tidak mengubah Deret asal", fn () {
+            ada deret = [1, 2, 3]
+            ada t = deret.ambilAwal
+            tuntut t == <1, [2, 3]>
+            tuntut t["hasil"] == 1
+            tuntut t["deret"] == [2, 3]
+            tuntut deret == [1, 2, 3]
+        })
 
-        tuntut [].akhir() == nil
-        tuntut [1].akhir() == 1
-        tuntut [1, 2, 3].akhir() == 3
-        tuntut [[], 1].akhir() == 1
-        tuntut [nil, 1, 2, 3].akhir() == 3
+        ia("tidak menerima argumen apapun", fn () {
+            tuntut coba { [].ambilAwal(1); salah } tahan (e) { tuntut e itu MasalahArgumen; benar } == benar
+        })
+
+        ia("mengambil elemen dari sisi kiri", fn () {
+            ada deret = [1, 2, 3, 4, 5]
+
+            tuntut deret.ambilAwal()["hasil"] == 1
+        })
+
+        ia("mengutus Rangkap `nil` jika Deret tidak berisi apapun", fn () {
+            ada t = [].ambil
+            tuntut t["hasil"] == nil
+            tuntut t["deret"] == []
+        })
     })
 
-    ia(".ambil() mengambil elemen dari sisi kanan", fn () {
-        ada angka = [1, 2, 3, 4, 5]
-
-        ada tertahan = salah
-        tuntut coba { angka.ambil(1) } tahan (e) { tuntut e itu MasalahArgumen; tertahan = benar }
-        tuntut tertahan == benar
-
-        tuntut angka.ambil() == 5
-        tuntut angka.ambil() == 4
-        tuntut angka.ambil() == 3
-        tuntut angka.ambil() == 2
-        tuntut angka.ambil() == 1
-
-        tuntut angka == []
-        tuntut angka.ambil() == nil
+    tentang(".berisi?()", fn () {
+        ia("bernilai benar jika deret tidak kosong", fn () {
+            tuntut [].berisi?() == salah
+            tuntut [nil].berisi?() == benar
+            tuntut [1, 2, 3].berisi?() == benar
+        })
     })
 
-    ia(".berisi?() bernilai benar jika deret tidak kosong", fn () {
-        tuntut [].berisi?() == salah
-        tuntut [nil].berisi?() == benar
-        tuntut [1, 2, 3].berisi?() == benar
-    })
+    tentang(".berisi?(arg)", fn () {
+        ia("bernilai benar jika deret berisi elemen arg", fn () {
+            tuntut [].berisi?(nil) == salah
 
-    ia(".berisi?(arg1) bernilai benar jika deret berisi elemen argumen", fn () {
-        tuntut [].berisi?(nil) == salah
+            ada d = [1, 2, nil, "kata", [3]]
 
-        ada d = [1, 2, nil, "kata", [3]]
-
-        tuntut d.berisi?(0) == salah
-        tuntut d.berisi?(1) == benar
-        tuntut d.berisi?(2) == benar
-        tuntut d.berisi?(nil) == benar
-        tuntut d.berisi?("kata") == benar
-        tuntut d.berisi?(3) == salah
-        tuntut d.berisi?([3]) == benar
-    })
-
-    ia(".cabut() menghapus lalu mengutus elemen pada indeks ke-0", fn () {
-        tuntut [].cabut() == nil
-        tuntut [nil].cabut() == nil
-
-        ada deret = [1, nil, 2, 3]
-        tuntut deret.cabut() == 1
-        tuntut deret == [nil, 2, 3]
-
-        tuntut deret.cabut() == nil
-        tuntut deret == [2, 3]
-
-        tuntut deret.cabut() == 2
-        tuntut deret == [3]
-
-        tuntut deret.cabut() == 3
-        tuntut deret == []
-
-        tuntut deret.cabut() == nil
-        tuntut deret == []
+            tuntut d.berisi?(0) == salah
+            tuntut d.berisi?(1) == benar
+            tuntut d.berisi?(2) == benar
+            tuntut d.berisi?(nil) == benar
+            tuntut d.berisi?("kata") == benar
+            tuntut d.berisi?(3) == salah
+            tuntut d.berisi?([3]) == benar
+        })
     })
 
     ia(".cari(arg1) mencari posisi elemen dalam deret", fn () {
@@ -125,15 +155,6 @@ sidang(Deret, fn () {
         tuntut deret.cari(-1) == 7
     })
 
-    ia(".dorong!(arg1) menambahkan elemen baru diakhir deret", fn () {
-        tuntut coba { [].dorong!() } tahan (e) { tuntut e itu MasalahArgumen }
-        tuntut coba { [].dorong!(1, 2, 3, 4) } tahan (e) { tuntut e itu MasalahArgumen }
-
-        tuntut [].dorong!(1) == [1]
-        tuntut [1].dorong!(2) == [1, 2]
-        tuntut [1, 2].dorong!(3) == [1, 2, 3]
-    })
-
     ia(".gabung(arg1) menggabung setiap elemen dalam deret dibatasi dengan argumen disetiap elemen", fn () {
         ada nilai = ["a", "b", "c", "d", "e"]
 
@@ -143,37 +164,69 @@ sidang(Deret, fn () {
         tuntut "ab cde".pisah("").gabung("") == "ab cde"
     })
 
-    ia(".hapusPosisi(arg1) dapat menghapus element pada posisi tertentu", fn () {
-        ada angka = [1, 2, 3, 4, 5]
+    tentang(".hapusDi(arg)", fn () {
+        ia("tidak mengubah Deret awal", fn () {
+            ada angka = [1, 2, 3, 4, 5]
 
-        tuntut coba { angka.hapusPosisi() } tahan (e) { tuntut e itu MasalahArgumen }
-        tuntut coba { angka.hapusPosisi("1") } tahan (e) { tuntut e itu MasalahArgumen }
+            tuntut coba { angka.hapusDi() } tahan (e) { tuntut e itu MasalahArgumen }
+            tuntut coba { angka.hapusDi("1") } tahan (e) { tuntut e itu MasalahArgumen }
 
-        tuntut angka.hapusPosisi(-1) == nil
-        tuntut angka.hapusPosisi(5) == nil
-        tuntut angka == [1, 2, 3, 4, 5]
+            tuntut angka.hapusDi(-1)[0] == nil
+            tuntut angka.hapusDi(5)[0] == nil
+            tuntut angka.hapusDi(5)[1] == [1, 2, 3, 4, 5]
 
-        tuntut angka.hapusPosisi(0) == 1
-        tuntut angka == [2, 3, 4, 5]
-        tuntut angka.hapusPosisi(1) == 3
-        tuntut angka == [2, 4, 5]
-        tuntut angka.hapusPosisi(2) == 5
-        tuntut angka == [2, 4]
-        tuntut angka.hapusPosisi(0) == 2
-        tuntut angka == [4]
-        tuntut angka.hapusPosisi(0) == 4
-        tuntut angka == []
-        tuntut angka.hapusPosisi(0) == nil
+            // todo: gunakan sintaks destructure
+            ada t = angka.hapusDi(0)
+            ada angka2 = t["deret"]
+            tuntut t["hasil"] == 1
+            tuntut t["deret"] == [2, 3, 4, 5]
 
-        ada angka = []
-        angka.hapusPosisi(0); tuntut angka == []
-        angka.hapusPosisi(-1); tuntut angka == []
-        angka.hapusPosisi(1); tuntut angka == []
+            t = angka2.hapusDi(1)
+            angka2 = t["deret"]
+            tuntut t["hasil"] == 3
+            tuntut t["deret"] == [2, 4, 5]
 
-        ada angka = [0]
-        angka.hapusPosisi(-1); tuntut angka == [0]
-        angka.hapusPosisi(1); tuntut angka == [0]
-        angka.hapusPosisi(0); tuntut angka == []
+            t = angka2.hapusDi(2)
+            angka2 = t["deret"]
+            tuntut t["hasil"] == 5
+            tuntut t["deret"] == [2, 4]
+
+            t = angka2.hapusDi(0)
+            angka2 = t["deret"]
+            tuntut t["hasil"] == 2
+            tuntut t["deret"] == [4]
+
+            t = angka2.hapusDi(0)
+            angka2 = t["deret"]
+            tuntut t["hasil"] == 4
+            tuntut t["deret"] == []
+
+            t = angka2.hapusDi(0)
+            angka2 = t["deret"]
+            tuntut t["hasil"] == nil
+            tuntut t["deret"] == []
+
+            tuntut angka == [1, 2, 3, 4, 5]
+        })
+
+        ia("tidak menghapus apapun jika Deret tidak berisi", fn () {
+            ada d = []
+            ada t = d.hapusDi(0)
+            tuntut t["hasil"] == nil
+            tuntut t["deret"] == []
+        })
+
+        ia("tidak bermasalah jika indeks belum terdefinisikan", fn () {
+            // indeks -1, 2000
+            ada d = []
+            ada t = d.hapusDi(-1)
+            tuntut t["hasil"] == nil
+            tuntut t["deret"] == []
+
+            t = d.hapusDi(2000)
+            tuntut t["hasil"] == nil
+            tuntut t["deret"] == []
+        })
     })
 
     ia(".tambah(arg1) menambahkan seluruh elemen dari dua buah deret", fn () {
@@ -197,38 +250,40 @@ sidang(Deret, fn () {
         tuntut d1.irisan(d2) == d2.irisan(d1)
     })
 
-    ia(".isiPosisi(arg1, arg2) tidak memperbolehkan indeks pada posisi negatif", fn () {
-        ada tertahan = coba {
-            [].isiPosisi(-1, 0)
-        } tahan (e) {
-            tuntut e.pesan() == "indeks tidak bisa negatif"
-            tuntut e itu MasalahArgumen
-        }
+    tentang(".isiDi(arg1, arg2)", fn () {
+        ia("tidak memperbolehkan indeks pada posisi negatif", fn () {
+            ada tertahan = coba {
+                [].isiDi(-1, 0)
+            } tahan (e) {
+                tuntut e.pesan() == "indeks tidak bisa negatif"
+                tuntut e itu MasalahArgumen
+            }
 
-        tuntut tertahan == benar
-    })
+            tuntut tertahan == benar
+        })
 
-    ia(".isiPosisi(arg1, arg2) mengisi arg2 pada posisi arg1", fn () {
-        ada d = [1, 6, 7]
+        ia("mengutus Deret baru dengan posisi `arg1` yang bernilai `arg2`", fn () {
+            ada d = [1, 6, 7]
 
-        tuntut d.isiPosisi(0, 5) == [5, 6, 7]
-        tuntut d == [5, 6, 7]
+            ada dBaru = d.isiDi(0, 5)
+            tuntut dBaru == [5, 6, 7]
+            tuntut d == [1, 6, 7]
 
-        tuntut d.isiPosisi(1, nil) == [5, nil, 7]
-        tuntut d == [5, nil, 7]
+            dBaru = dBaru.isiDi(1, nil)
+            tuntut dBaru == [5, nil, 7]
+            tuntut d == [1, 6, 7]
 
-        tuntut d.isiPosisi(2, "7") == [5, nil, "7"]
-        tuntut d == [5, nil, "7"]
-    })
+            dBaru = dBaru.isiDi(2, "7")
+            tuntut dBaru == [5, nil, "7"]
+            tuntut d == [1, 6, 7]
+        })
 
-    ia(".isiPosisi(arg1, arg2) mengisi jarak kosong yang ada dengan `nil`", fn () {
-        ada d = [1, 6, 7]
+        ia("mengisi jarak kosong yang ada dengan `nil`", fn () {
+            ada d = [1, 6, 7]
 
-        tuntut d.isiPosisi(3, 8) == [1, 6, 7, 8]
-        tuntut d == [1, 6, 7, 8]
-
-        d.isiPosisi(6, 11)
-        tuntut d == [1, 6, 7, 8, nil, nil, 11]
+            tuntut d.isiDi(3, 8) == [1, 6, 7, 8]
+            tuntut d.isiDi(6, 11) == [1, 6, 7, nil, nil, nil, 11]
+        })
     })
 
     ia(".jadiPeta() mengubah deret menjadi peta", fn () {
@@ -325,16 +380,24 @@ sidang(Deret, fn () {
         tuntut [[[[[[[[[[[[[[1]]]]]]]]]]]]]].rata() == [1]
     })
 
-    ia(".rapat() menghapus `nil` dari dalam deret", fn () {
-        tuntut coba { [].rapat(-1) } tahan (e) { e itu MasalahArgumen }
+    tentang(".rapat()", fn () {
+        ia("menghapus `nil`", fn () {
+            tuntut coba { [].rapat(-1) } tahan (e) { e itu MasalahArgumen }
 
-        tuntut [].rapat() == []
-        tuntut [nil].rapat() == []
-        tuntut [nil, nil].rapat() == []
-        tuntut [nil, nil, nil].rapat() == []
-        tuntut [nil, nil, nil, nil].rapat() == []
-        tuntut [1, nil, 2, nil, 3].rapat() == [1, 2, 3]
-        tuntut [[], nil, []].rapat() == [[], []]
+            tuntut [].rapat() == []
+            tuntut [nil].rapat() == []
+            tuntut [nil, nil].rapat() == []
+            tuntut [nil, nil, nil].rapat() == []
+            tuntut [nil, nil, nil, nil].rapat() == []
+            tuntut [1, nil, 2, nil, 3].rapat() == [1, 2, 3]
+            tuntut [[], nil, []].rapat() == [[], []]
+        })
+
+        ia("tidak mengubah Deret semula", fn () {
+            ada d = [1, 2, nil, 4, 5]
+            tuntut d.rapat() == [1, 2, 4, 5]
+            tuntut d == [1, 2, nil, 4, 5]
+        })
     })
 
     ia(".reduksi() dapat mereduksi elemen dalam deret", fn () {
@@ -344,13 +407,28 @@ sidang(Deret, fn () {
 
         ada idks = []
         tuntut [1, 2, 3, 4, 5].reduksi(0, fn (akm, x, i) {
-            idks << i
+            idks += [i]
         })
 
         tuntut idks == [0, 1, 2, 3, 4]
     })
 
-    tentang("semua?(arg1)", fn () {
+    tentang(".salin()", fn () {
+        ia("membuat Deret baru tapi berisi elemen yang sama", fn () {
+            ada a = [1, 2, 3, 4]
+            ada b = a.salin
+
+            b = b.isiDi(0, -1)
+            tuntut a == [1, 2, 3, 4]
+            tuntut b == [-1, 2, 3, 4]
+
+            a = a.isiDi(0, 999)
+            tuntut a == [999, 2, 3, 4]
+            tuntut b == [-1, 2, 3, 4]
+        })
+    })
+
+    tentang(".semua?(arg1)", fn () {
         ia("bernilai `benar` jika seluruh elemen dalam deret adalah instansi dari kelas yang disediakan", fn () {
             tuntut [].semua?(Integer) == salah
             tuntut [1].semua?(Integer) == benar
@@ -390,7 +468,7 @@ sidang(Deret, fn () {
         ada d2 = []
 
         d1.tiap(fn (elemen) {
-            d2 << elemen
+            d2 += [elemen]
         })
 
         tuntut d2 == d1
@@ -403,8 +481,8 @@ sidang(Deret, fn () {
         ada d2 = []
 
         d1.tiap(fn (e, i) {
-            indeks << i
-            d2 << e
+            indeks += [i]
+            d2 += [e]
         })
 
         tuntut d2 == d1
@@ -421,7 +499,7 @@ sidang(Deret, fn () {
                 putus
             }
 
-            a << el
+            a += [el]
         }) == nil
 
         tuntut a == [1, 2]

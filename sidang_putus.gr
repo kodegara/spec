@@ -18,12 +18,12 @@ sidang("Kata kunci `putus`", fn () {
         ada i = 0
 
         selama (i < 100) {
-            deret << i
+            deret += [i]
             i += 1
 
             jika (i == 5) {
                 putus
-                deret << 12345 // tidak ditambahkan!
+                deret += [12345] // tidak ditambahkan!
             }
         }
 
@@ -34,11 +34,11 @@ sidang("Kata kunci `putus`", fn () {
         ada deret = []
 
         dari (ada i = 0; i < 100; i += 1) {
-            deret << i
+            deret += [i]
 
             jika (i == 5) {
                 putus
-                deret << 12345 // tidak ditambahkan!
+                deret += [12345] // tidak ditambahkan!
             }
         }
 
@@ -50,12 +50,12 @@ sidang("Kata kunci `putus`", fn () {
         ada i = 0
 
         selama (benar) {
-            deret << i
+            deret += [i]
             i += 1
 
             jika (i == 5) {
                 putus
-                deret << 12345 // tidak ditambahkan!
+                deret += [12345] // tidak ditambahkan!
             }
         }
 
@@ -66,10 +66,10 @@ sidang("Kata kunci `putus`", fn () {
         ada nilaiLain = fn () {
             ada d = []
             dari (ada i = 0; benar; i += 1) {
-                d << i
+                d += [i]
                 jika (i == 5) {
                     putus
-                    d << 12345 // tidak ditambahkan!
+                    d += [12345] // tidak ditambahkan!
                 }
             }
             d
@@ -88,10 +88,10 @@ sidang("Kata kunci `putus`", fn () {
         ada deret = []
 
         iterasikan([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], fn (i) {
-            deret << i
+            deret += [i]
             jika (i == 5) {
                 putus
-                deret << 12345 // tidak ditambahkan!
+                deret += [12345] // tidak ditambahkan!
             }
         })
 
@@ -102,12 +102,12 @@ sidang("Kata kunci `putus`", fn () {
         ada deret = []
 
         dari (ada i = 0; i < 3; i += 1) {
-            deret << i
+            deret += [i]
 
             dari (ada j = i; j < 3; j += 1) {
-                deret << j
+                deret += [j]
                 putus
-                deret << 12345 // tidak ditambahkan!
+                deret += [12345] // tidak ditambahkan!
             }
         }
 
@@ -120,13 +120,13 @@ sidang("Kata kunci `putus`", fn () {
         selama (i < 3) {
             ada j = i
 
-            deret << i
+            deret += [i]
 
             selama (j < 3) {
-                deret << j
+                deret += [j]
                 j += 1
                 putus
-                deret << 12345 // tidak ditambahkan!
+                deret += [12345] // tidak ditambahkan!
             }
 
             i += 1

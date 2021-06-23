@@ -40,7 +40,7 @@ sidang(Kernel, fn () {
         ia("bisa mengubah pengenal dari blok yang sama", fn () {
             ada a = []
 
-            tuntut eval!("a << 1") == a
+            tuntut eval!("a += [1]") == a
             tuntut a == [1]
         })
     })

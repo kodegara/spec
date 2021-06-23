@@ -8,7 +8,7 @@ sidang("Kata kunci `utus`", fn () {
             ada i = 0
             ada d = []
             selama (benar) {
-                d << i
+                d += [i]
                 jika (i == 5) {
                     utus d
                 }
@@ -36,7 +36,7 @@ sidang("Kata kunci `utus`", fn () {
         ada nilaiLain = fn () {
             ada d = []
             dari (ada i = 0; benar; i += 1) {
-                d << i
+                d += [i]
                 jika (i == 5) { utus d }
             }
         }

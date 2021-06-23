@@ -8,7 +8,7 @@ sidang("Kata kunci selama", fn () {
         ada i = 0
 
         selama (i < 10) {
-            der << i
+            der += [i]
             i += 1
         }
 
@@ -72,25 +72,25 @@ sidang("Kata kunci selama", fn () {
 
         ada i = 0
         selama (i < 5) {
-            deret << i
+            deret += [i]
 
             ada j = i + 1
             ada deretJ = []
             selama (j < 5) {
-                deretJ << j
+                deretJ += [j]
 
                 ada k = j + 1
                 ada deretK = []
                 selama (k < 5) {
-                    deretK << k
+                    deretK += [k]
                     k += 1
                 }
 
-                deretJ << deretK
+                deretJ += [deretK]
                 j += 1
             }
 
-            deret << deretJ
+            deret += [deretJ]
             i += 1
         }
 

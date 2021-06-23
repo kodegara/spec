@@ -114,10 +114,10 @@ sidang("Ekspresi coba", fn () {
     ia("blok `lalu` pasti dieksekusi", fn () {
         ada d = []
 
-        coba { nil + nil } tahan { 0 } lalu { d << 1 }
+        coba { nil + nil } tahan { 0 } lalu { d += [1] }
         tuntut d == [1]
 
-        coba { 1 + 1 } tahan { 0 } lalu { d << 2 }
+        coba { 1 + 1 } tahan { 0 } lalu { d += [2] }
         tuntut d == [1, 2]
 
         tuntut d == [1, 2]

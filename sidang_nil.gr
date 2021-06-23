@@ -12,4 +12,10 @@ sidang(Nirdefinisi, fn () {
         tuntut nil itu Nirdefinisi
         tuntut nil itu Objek
     })
+
+    tentang(".kosong?()", fn () {
+        ia("mengutus `benar`", fn () {
+            tuntut nil.kosong? == benar
+        })
+    })
 })

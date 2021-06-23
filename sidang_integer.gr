@@ -40,7 +40,7 @@ sidang(Integer, fn () {
         ada a = []
 
         3.kali(fn () {
-            a << benar
+            a += [benar]
         })
 
         tuntut a == [benar, benar, benar]

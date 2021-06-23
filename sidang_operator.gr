@@ -52,7 +52,7 @@ sidang("Operator", fn () {
         ia("bisa digunakan dengan iterasi `dari`", fn () {
             ada angka = []
             dari (ada i = 0; i < 5; i++) {
-                angka << i
+                angka += [i]
             }
             tuntut angka == [0, 1, 2, 3, 4]
         })
@@ -105,7 +105,7 @@ sidang("Operator", fn () {
         ia("bisa digunakan dengan iterasi `dari`", fn () {
             ada angka = []
             dari (ada i = 5; i > 0; i--) {
-                angka << i
+                angka += [i]
             }
             tuntut angka == [5, 4, 3, 2, 1]
         })
@@ -452,7 +452,6 @@ sidang("Operator", fn () {
                     a[3]
                     salah
                 } tahan (e) {
-                    cetak(e)
                     tuntut e.pesan == "elemen tidak ditemukan"
                     benar
                 } == benar
@@ -461,7 +460,6 @@ sidang("Operator", fn () {
                     <0>[-1]
                     salah
                 } tahan (e) {
-                    cetak(e)
                     tuntut e.pesan == "elemen tidak ditemukan"
                     benar
                 } == benar
@@ -469,15 +467,15 @@ sidang("Operator", fn () {
         })
     })
 
-    tentang("[]= (isiPosisi)", fn () {
+    tentang("[]= (isiDi)", fn () {
         tentang("pada Deret", fn () {
             ia("bisa mengganti elemen pada posisi yang sebelumnya telah ditempati elemen lain", fn () {
                 ada x = [1, 2, 3, 4]
 
-                x[0] = 12
+                x = (x[0] = 12)
                 tuntut x == [12, 2, 3, 4]
 
-                x[fn(){0}()] = benar
+                x = (x[fn(){0}()] = benar)
                 tuntut x == [benar, 2, 3, 4]
             })
 
@@ -485,10 +483,10 @@ sidang("Operator", fn () {
                 ada a = []
                 tuntut a == []
 
-                a[0] = 1
+                a = (a[0] = 1)
                 tuntut a == [1]
 
-                a[5] = 1
+                a = (a[5] = 1)
                 tuntut a == [1, nil, nil, nil, nil, 1]
             })
 
@@ -518,27 +516,23 @@ sidang("Operator", fn () {
     })
 
     // todo: delegasikan ke metode,
-    tentang("<<", fn () {
-        tentang("pada Deret", fn () {
-            ia("menambahkan elemen pada posisi terakhir", fn () {
-                ada der = []
-                ada derCopy = der
-                ada derLain = []
+    tentang("<< (dorong!)", fn () {
+        tentang("pada kelas buatan sendiri", fn () {
+            ia("bisa digunakan jika kelas mendefinisikan metode `dorong!`", fn () {
+                tidakAda!(fn () { A })
 
-                der << 1
-                tuntut der == [1]
-                tuntut derCopy == der
-                tuntut derLain == []
+                kelas A {
+                    ada kata
+                    fn dorong!(e) {
+                        kata = kata + e
+                    }
+                }
 
-                der << 2
-                tuntut der == [1, 2]
-                tuntut derCopy == der
-                tuntut derLain == []
-
-                derLain << 3
-                tuntut der == [1, 2]
-                tuntut derCopy == [1, 2]
-                tuntut derLain == [3]
+                ada a = A.baru()
+                a.kata = "a"
+                tuntut a.kata == "a"
+                a << "b"
+                tuntut a.kata == "ab"
             })
         })
     })

@@ -20,9 +20,9 @@ sidang("Kata kunci `lewat`", fn () {
             dari (ada i = 0; i < 10; i++) {
                 jika (i % 2 == 0) {
                     lewat
-                    deret << i
+                    deret += [i]
                 }
-                deret << i
+                deret += [i]
             }
 
             tuntut deret == [1, 3, 5, 7, 9]
@@ -38,10 +38,10 @@ sidang("Kata kunci `lewat`", fn () {
                 jika (i % 2 == 0) {
                     i++
                     lewat
-                    deret << i
+                    deret += [i]
                 }
 
-                deret << i
+                deret += [i]
                 i++
             }
 
@@ -62,10 +62,10 @@ sidang("Kata kunci `lewat`", fn () {
             iterasikan([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], fn (i) {
                 jika (i % 2 == 0) {
                     lewat
-                    deret << i
+                    deret += [i]
                 }
 
-                deret << i
+                deret += [i]
             })
 
             tuntut deret == [1, 3, 5, 7, 9]
@@ -76,15 +76,15 @@ sidang("Kata kunci `lewat`", fn () {
         ada deret = []
 
         dari (ada i = 0; i < 5; i++) {
-            deret << i
+            deret += [i]
 
             dari (ada j = i; j < 5; j++) {
                 jika (j % 2 == 0) {
                     lewat
-                    deret << "b"
+                    deret += ["b"]
                 }
 
-                deret << "a"
+                deret += ["a"]
             }
         }
 

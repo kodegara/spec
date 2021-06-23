@@ -109,11 +109,11 @@ sidang(Peta, fn () {
         tuntut p["y"] == benar
     })
 
-    ia(".isiPosisi(arg1, arg2) mengasosiasikan elemen arg2 pada posisi arg1", fn () {
+    ia(".isiDi(arg1, arg2) mengasosiasikan elemen arg2 pada posisi arg1", fn () {
         ada p = {}
 
         tuntut p.kunci?("x") == salah
-        tuntut p.isiPosisi("x", benar)
+        tuntut p.isiDi("x", benar)
         tuntut p.kunci?("x") == benar
         tuntut p["x"] == benar
     })
@@ -223,7 +223,7 @@ sidang(Peta, fn () {
         ada p = {}
 
         peta.tiap(fn (k, n) {
-            p.isiPosisi(k, n)
+            p.isiDi(k, n)
         })
 
         tuntut p == peta

@@ -69,7 +69,7 @@ sidang(Kata, fn () {
         ada teksPisah2 = []
         teksPisah.tiap(fn (t, idx) {
             tuntut t == teksPisah[idx]
-            teksPisah2 << t
+            teksPisah2 += [t]
         })
         tuntut teksPisah2 == teksPisah
     })
@@ -186,6 +186,7 @@ sidang(Kata, fn () {
         tuntut tul2 == "b"
 
         tuntut tul1.tambah(1) == "a1"
+        cetak(tul1.tambah([1, 2, 3]))
         tuntut tul1.tambah([1, 2, 3]) == "a[1, 2, 3]"
         tuntut tul1.tambah({benar: 1}) == "a{benar: 1}"
         tuntut tul1.tambah(benar) == "abenar"
