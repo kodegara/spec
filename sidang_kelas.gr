@@ -995,6 +995,40 @@ sidang(Kelas, fn () {
 
     tentang("penggunaan kata kunci `sta`", fn () {
         tentang("variabel", fn () {
+            ia("dapat didefinisikan bercampur dengan variabel instansi biasa", fn () {
+                kelas A {
+                    ada a, b, sta c, d
+                    ada e, sta f = "f", sta g ="g", h = 5
+                }
+
+                tuntut A.c == nil
+                tuntut A.f == "f"
+                tuntut A.g == "g"
+
+                tuntut coba {
+                    A.d
+                    salah
+                } tahan (e) {
+                    tuntut e itu MasalahPengenal
+                    tuntut e.pesan == "tidak dapat meresolusi identitas statis `d`"
+                } == benar
+
+                tuntut coba {
+                    A.h
+                    salah
+                } tahan (e) {
+                    tuntut e itu MasalahPengenal
+                    tuntut e.pesan == "tidak dapat meresolusi identitas statis `h`"
+                }
+
+                ada a = A.baru()
+                tuntut a.a == nil
+                tuntut a.b == nil
+                tuntut a.d == nil
+                tuntut a.e == nil
+                tuntut a.h == 5
+            })
+
             ia("tidak bercampur dengan pengenal statis dari kelas-kelas lain", fn () {
                 kelas A {
                     ada sta a
