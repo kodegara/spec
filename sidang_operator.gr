@@ -209,7 +209,15 @@ sidang("Operator", fn () {
         })
     })
 
-    tentang("=", fn () {
+    tentang("= (penempatan variabel)", fn () {
+        ia("bisa mengubah satu variabel", fn () {
+            ada a
+            tuntut a == nil
+
+            a = 12
+            tuntut a == 12
+        })
+
         ia("tidak boleh melakukan penempatan nilai ke variabel kelas", fn () {
             tuntut coba {
                 Kelas = 123
@@ -219,6 +227,44 @@ sidang("Operator", fn () {
                 tuntut e.pesan() == "pengenal kelas tidak dapat menerima penempatan nilai baru"
                 benar
             } == benar
+        })
+
+        ia("bisa melakukan banyak penempatan nilai sekaligus selama pengenal telah terdefinisikan", fn () {
+            ada a, b, c
+            a = 1, b = 2, c = 3
+
+            tuntut a == 1
+            tuntut b == 2
+            tuntut c == 3
+        })
+
+        ia("bermasalah jika variabel awal tidak memiliki `=`", fn () {
+            ada a, b
+
+            tuntut coba {
+                eval!("a, b = 48")
+                salah
+            } tahan (e) {
+                tuntut e.pesan == "tidak diperbolehkan adanya `,` pada posisi tersebut"
+                benar
+            } == benar
+        })
+
+        ia("bermasalah jika ada variabel yang tidak memiliki `=`", fn () {
+            ada a, b, c, d
+
+            tuntut coba {
+                eval!("a = 1, b = 2, c, d = 3")
+                salah
+            } tahan (e) {
+                tuntut e.pesan == "seharusnya menjumpai `=`, tapi malah `IDENTITAS`"
+                benar
+            } == benar
+
+            tuntut a == nil
+            tuntut b == nil
+            tuntut c == nil
+            tuntut d == nil
         })
     })
 

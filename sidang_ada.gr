@@ -90,33 +90,40 @@ sidang("Kata kunci ada", fn () {
             } == benar
         })
 
-        ia("tidak boleh berakhiran `=`", fn () {
-            tuntut coba {
-                ada a= = 12
-                salah
-            } tahan (e) {
-                tuntut e itu MasalahPengenal
-                tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `=` kecuali sebagai metode dalam kelas"
-                benar
-            } == benar
-
-            tuntut coba {
-                ada a= = fn () {}
-                salah
-            } tahan (e) {
-                tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `=` kecuali sebagai metode dalam kelas"
-                benar
-            } == benar
-
-            tuntut coba {
-                kelas A {
+        tentang("berakhiran `=`", fn () {
+            ia("tidak boleh jika ada `=` lagi", fn () {
+                tuntut coba {
                     ada a= = 12
-                }
-                salah
-            } tahan (e) {
-                tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `=` kecuali sebagai metode dalam kelas"
-                benar
-            } == benar
+                    salah
+                } tahan (e) {
+                    tuntut e itu MasalahPengenal
+                    tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `=` kecuali sebagai metode dalam kelas"
+                    benar
+                } == benar
+
+                tuntut coba {
+                    ada a= = fn () {}
+                    salah
+                } tahan (e) {
+                    tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `=` kecuali sebagai metode dalam kelas"
+                    benar
+                } == benar
+
+                tuntut coba {
+                    kelas A {
+                        ada a= = 12
+                    }
+                    salah
+                } tahan (e) {
+                    tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `=` kecuali sebagai metode dalam kelas"
+                    benar
+                } == benar
+            })
+
+            ia("diperbolehkan jika tidak ada `=` lagi", fn () {
+                ada a= 12
+                tuntut a == 12
+            })
         })
     })
 
@@ -124,6 +131,14 @@ sidang("Kata kunci ada", fn () {
         ia("bernilai nil sedia kala", fn () {
             ada x
             tuntut x == nil
+        })
+
+        ia("bisa memiliki nilai yang langsung ditempatkan", fn () {
+            ada a = 12
+            tuntut a == 12
+
+            ada b =24 // = mendekati nilai
+            tuntut b == 24
         })
 
         ia("pernyataan bisa berakhiran titik koma", fn () {
