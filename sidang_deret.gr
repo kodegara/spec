@@ -229,6 +229,26 @@ sidang(Deret, fn () {
         })
     })
 
+    tentang(".keduk()", fn () {
+        ada f1 = fn () {}
+        ada f2 = fn () {}
+
+        ia("bisa memberi elemen dalam Deret satu-per-satu tiap pemanggilan", fn () {
+            ada pengeduk = [f1, f2].keduk
+
+            tuntut pengeduk() == f1
+            tuntut pengeduk() == f2
+        })
+
+        ia("mengutus `nil` jika sudah tidak ada elemen yang bisa dikeduk", fn () {
+            ada pengeduk = [f1, f2].keduk
+
+            tuntut pengeduk() == f1
+            tuntut pengeduk() == f2
+            tuntut pengeduk() == nil
+        })
+    })
+
     ia(".tambah(arg1) menambahkan seluruh elemen dari dua buah deret", fn () {
         tuntut coba { [].tambah() } tahan (e) { tuntut e itu MasalahArgumen }
         tuntut coba { [].tambah(1) } tahan (e) { tuntut e itu MasalahArgumen }

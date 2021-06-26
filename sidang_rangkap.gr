@@ -142,6 +142,33 @@ sidang(Rangkap, fn () {
         tuntut <1, 2, 3>.jadiDeret == [1, 2, 3]
     })
 
+    tentang(".keduk()", fn () {
+        ada f1 = fn () {}
+        ada f2 = fn () {}
+
+        ia("bisa memberi elemen dalam Rangkap satu-per-satu tiap pemanggilan", fn () {
+            ada pengeduk = <f1, f2>.keduk
+
+            tuntut pengeduk() == f1
+            tuntut pengeduk() == f2
+        })
+
+        ia("bermasalah jika sudah tidak ada elemen yang bisa dikeduk", fn () {
+            ada pengeduk = <f1, f2>.keduk
+
+            tuntut pengeduk() == f1
+            tuntut pengeduk() == f2
+
+            tuntut coba {
+                pengeduk()
+                salah
+            } tahan (e) {
+                tuntut e.pesan == "elemen tidak ditemukan"
+                benar
+            } == benar
+        })
+    })
+
     tentang(".panjang()", fn () {
         ia("mengutus panjang Rangkap", fn () {
             tuntut <>.panjang() == 0
