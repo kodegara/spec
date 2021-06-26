@@ -20,23 +20,44 @@ sidang(Rangkap, fn () {
                 ada a = <1, 2, 2 + 3, fn () {}, [], {}, fn () { benar }()>
             })
 
+            xia("bisa bersarang", fn () {
+                // todo:
+                // <<1, 2>, <3, 4>>
+            })
+
             ia("bisa dibentuk dengan banyak baris", fn () {
                 ada nilai = 12
                 ada nilaiFn = fn () { 12 }
 
                 ada b = <
-                    0,
-                    1,
-                    2 + 3,
-                    1 > 1,
-                    1 < 1,
-                    fn () {},
-                    fn () { benar }(),
-                    1 > nilai,
-                    1 < nilai,
-                    1 > nilaiFn(),
-                    1 < nilaiFn()
+                    0,                  // tes literal
+                    1,                  // tes literal
+                    2 + 3,              // tes infix
+                    1 > 1,              // tes infix ambigu >
+                    1 < 1,              // tes infix ambigu <
+                    fn () {},           // tes fungsi
+                    fn () { benar }(),  // tes pemanggilan fungsi
+                    1 > nilai,          // tes infix variabel
+                    1 < nilai,          // tes infix variabel
+                    1 > nilaiFn(),      // tes infix fungsi
+                    1 < nilaiFn(),      // tes infix fungsi
+                    nilai,              // tes variabel
+                    1                   // tes literal setelah variabel
                 >
+
+                tuntut b[0] == 0
+                tuntut b[1] == 1
+                tuntut b[2] == 5
+                tuntut b[3] == salah
+                tuntut b[4] == salah
+                tuntut b[5] itu Fungsi
+                tuntut b[6] == benar
+                tuntut b[7] == salah
+                tuntut b[8] == benar
+                tuntut b[9] == salah
+                tuntut b[10] == benar
+                tuntut b[11] == 12
+                tuntut b[12] == 1
             })
 
             tentang("adanya ekspresi lain yang tidak terkai", fn () {
