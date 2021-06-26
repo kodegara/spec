@@ -123,6 +123,14 @@ sidang("Kata kunci ada", fn () {
             ia("diperbolehkan jika tidak ada `=` lagi", fn () {
                 ada a= 12
                 tuntut a == 12
+
+                ada b, c= ..[1, 2]
+                tuntut b == 1
+                tuntut c == 2
+
+                ada d= 4, e = 5
+                tuntut d == 4
+                tuntut e == 5
             })
         })
     })
@@ -226,6 +234,13 @@ sidang("Kata kunci ada", fn () {
                 tuntut a == 3
                 tuntut b == 2
                 tuntut c == 1
+            })
+
+            ia("bisa diisi nilai menggunakan operasi keduk", fn () {
+                ada x, y, z = ..[1, 2, 3]
+                tuntut x == 1
+                tuntut y == 2
+                tuntut z == 3
             })
 
             ia("bisa diakhiri titik koma", fn () {

@@ -364,6 +364,28 @@ sidang(Kelas, fn () {
                         a.a = 13
                         tuntut a.a() == 13
                     })
+
+                    // todo: mendukung .. untuk objek
+                    // ia("bisa dilakukan dengan menggunakan operator keduk (..)", fn () {
+                    //     tidakAda!(fn () { A })
+
+                    //     kelas A {
+                    //         ada a, b, c
+
+                    //         fn dariDeret(d) {
+                    //             ini.a, ini.b, ini.c = ..d
+                    //         }
+
+                    //         fn dariDeret2(d) {
+                    //             a, b, c = ..d
+                    //         }
+                    //     }
+
+                    //     ada a = A.baru
+                    //     a.a, a.b, a.c = ..[1, 2, 3]
+                    //     a.dariDeret([4, 5, 6])
+                    //     a.dariDeret2([7, 8, 9])
+                    // })
                 })
 
                 tentang("dengan metode penyetel", fn () {
