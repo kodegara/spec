@@ -58,7 +58,7 @@ sidang(Kelas, fn () {
         tuntut 1.tipe() != Angka
     })
 
-    tentang("arijawab", fn () {
+    tentang("metode", fn () {
         ia("tidak merembet keluar", fn () {
             ada penghitungTanggalLahir
 
@@ -241,6 +241,37 @@ sidang(Kelas, fn () {
 
             a.tambah(1, 1) == 3
         })
+
+        saat("mengutus fungsi", fn () {
+            ia("tidak dapat mengingat `ini`", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {
+                    fn fIniDalam() {
+                        fn () { ini }
+                    }
+
+                    fn fIniLuar() {
+                        ada obj = ini
+                        fn () { obj }
+                    }
+                }
+
+                ada a = A.baru()
+
+                tuntut coba {
+                    a.fIniDalam()()
+                    salah
+                } tahan (e) {
+                    tuntut e.pesan == "`ini` hanya bisa digunakan sebagai referensi objek dalam kelas"
+                    benar
+                } == benar
+            })
+        })
+    })
+
+    tentang("fungsi statis", fn () {
+        // todo: memiliki uji coba yang sama/mirip dengan metode
     })
 
     ia("bisa diperkaya meski telah didefinisikan", fn () {
@@ -679,7 +710,7 @@ sidang(Kelas, fn () {
                     a.pengubahD()(15)
                     salah
                 } tahan (e) {
-                    tuntut e.pesan() == "identitas belum terdefinisikan: b"
+                    tuntut e.pesan() == "`ini` hanya bisa digunakan sebagai referensi objek dalam kelas"
                     benar
                 } == benar
 
@@ -697,7 +728,7 @@ sidang(Kelas, fn () {
                     a.pengubahF()(15)
                     salah
                 } tahan (e) {
-                    tuntut e.pesan() == "identitas belum terdefinisikan: a"
+                    tuntut e.pesan() == "`ini` hanya bisa digunakan sebagai referensi objek dalam kelas"
                     benar
                 } == benar
             })
@@ -1120,7 +1151,7 @@ sidang(Kelas, fn () {
                     fn xxx() { xx + x }
 
                     fn sta x() { X }
-                    fn sta y() { cetak("HOO"); Y }
+                    fn sta y() { Y }
                     fn sta iniX() { ini.X }
                     fn sta iniY() { ini.Y }
 
