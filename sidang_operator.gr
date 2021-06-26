@@ -229,42 +229,103 @@ sidang("Operator", fn () {
             } == benar
         })
 
-        ia("bisa melakukan banyak penempatan nilai sekaligus selama pengenal telah terdefinisikan", fn () {
-            ada a, b, c
-            a = 1, b = 2, c = 3
+        tentang("saat penempatan multi-variabel", fn () {
+            ia("bisa melakukan banyak penempatan nilai sekaligus selama pengenal telah terdefinisikan", fn () {
+                ada a, b, c
+                a = 1, b = 2, c = 3
 
-            tuntut a == 1
-            tuntut b == 2
-            tuntut c == 3
+                tuntut a == 1
+                tuntut b == 2
+                tuntut c == 3
+
+                ada x, y, z
+                x = a, y = b, z = c
+
+                tuntut x == 1
+                tuntut y == 2
+                tuntut z == 3
+
+                x = x + 1, y = y + 1, z = z + 1
+
+                tuntut x == 2
+                tuntut y == 3
+                tuntut z == 4
+
+                x = a + 1, y = b + 1, z = c + 1
+
+                tuntut x == 2
+                tuntut y == 3
+                tuntut z == 4
+            })
+
+            ia("bermasalah jika variabel awal tidak memiliki `=`", fn () {
+                ada a, b
+
+                tuntut coba {
+                    eval!("a, b = 48")
+                    salah
+                } tahan (e) {
+                    tuntut e.pesan == "baris penempatan memiliki variabel `a` yang tidak diikuti `=` atau bagian dari operasi keduk `..`"
+                    benar
+                } == benar
+            })
+
+            ia("bermasalah jika ada variabel yang tidak memiliki `=`", fn () {
+                ada a, b, c, d
+
+                tuntut coba {
+                    eval!("a = 1, b = 2, c, d = 3")
+                    salah
+                } tahan (e) {
+                    tuntut e.pesan == "baris penempatan memiliki variabel `c` yang tidak diikuti `=` atau bagian dari operasi keduk `..`"
+                    benar
+                } == benar
+
+                tuntut a == nil
+                tuntut b == nil
+                tuntut c == nil
+                tuntut d == nil
+            })
+
+            ia("bisa menerima nilai dari operasi keduk", fn () {
+                ada a, b, c
+                a, b, c = ..[1, 2, 3]
+                a, b = ..[1, 2, 3]
+                a = .. [1, 2, 3]
+            })
         })
 
-        ia("bermasalah jika variabel awal tidak memiliki `=`", fn () {
-            ada a, b
-
-            tuntut coba {
-                eval!("a, b = 48")
-                salah
-            } tahan (e) {
-                tuntut e.pesan == "tidak diperbolehkan adanya `,` pada posisi tersebut"
+        ia("bisa bersarang dalam ekspresi atau statement lain", fn () {
+            ada x = coba { // =
+                dari (ada i = 0; i < 10; i++) {} // = lagi
                 benar
-            } == benar
+            } tahan (e) {
+                salah
+            }
+
+            tuntut x == benar
         })
 
-        ia("bermasalah jika ada variabel yang tidak memiliki `=`", fn () {
-            ada a, b, c, d
+        xia("bisa dilakukan di dalam Deret", fn () {
+            // ada sta X = [
+            //     ANGKA = 1, // otomatis statis
+            //     XYZ = 2,   // otomatis statis
+            // ]
 
-            tuntut coba {
-                eval!("a = 1, b = 2, c, d = 3")
-                salah
-            } tahan (e) {
-                tuntut e.pesan == "seharusnya menjumpai `=`, tapi malah `IDENTITAS`"
-                benar
-            } == benar
+            // todo: make it possible
+            // ada b, c, d, e
+            // ada a = [1, 2, 3, b = 4, c = 5, 6, 7]
+            // tuntut a == [1, 2, 3, 4, 5, 6, 7]
+            // tuntut b == 4
+            // tuntut c == 5
 
-            tuntut a == nil
-            tuntut b == nil
-            tuntut c == nil
-            tuntut d == nil
+            // ada d = 8
+            // a = [b, c, 6, 7, d, e = 9]
+            // tuntut a == [4, 5, 6, 7, 8, 9]
+            // tuntut b == 4
+            // tuntut c == 5
+            // tuntut d == 8
+            // tuntut e == 9
         })
     })
 
@@ -1095,6 +1156,146 @@ sidang("Operator", fn () {
 
                 ada a = A.baru()
                 tuntut a(4, 1, 2, 3) == a
+            })
+        })
+    })
+
+    tentang(".. (operasi keduk)", fn () {
+        saat("pada kelas buatan sendiri", fn () {
+            saat("kelas tidak memiliki metode `keduk`", fn () {
+                ia("bermasalah", fn () {
+                    tidakAda!(fn () { A })
+
+                    kelas A {}
+
+                    tuntut coba {
+                        ada a, b = ..A.baru()
+                        salah
+                    } tahan (e) {
+                        tuntut e.pesan == "objek A tidak mengimplementasikan metode `keduk`"
+                        benar
+                    } == benar
+                })
+            })
+
+            saat("kelas memiliki metode `keduk`", fn () {
+                saat("mengutus fungsi pengeduk", fn () {
+                    tidakAda!(fn () { A })
+
+                    kelas TakHingga {
+                        fn keduk() {
+                            ada n = 0
+
+                            utus fn () {
+                                n = n + 1
+                            }
+                        }
+                    }
+
+                    ada a, b, c
+                    a, b, c = ..TakHingga.baru()
+                    tuntut a == 1
+                    tuntut b == 2
+                    tuntut c == 3
+                })
+
+                saat("mengutus nilai lain", fn () {
+                    ia("bermasalah", fn () {
+                        tidakAda!(fn () { A })
+
+                        kelas A {
+                            fn keduk() { [] }
+                        }
+
+                        tuntut coba {
+                            ada a, b = ..A.baru()
+                            salah
+                        } tahan (e) {
+                            tuntut e.pesan == "harusnya mendapati fungsi pengeduk dari pemanggilan `keduk`, tapi menapati objek bertipe Deret"
+                            benar
+                        } == benar
+                    })
+                })
+            })
+        })
+
+        tentang("saat jumlah pengenal sama dengan jumlah elemen yang dikeduk", fn () {
+            tentang("pada Deret", fn () {
+                ia("bisa menempatkan nilai satu per satu", fn () {
+                    ada a, b
+                    a, b = ..[1, 2]
+
+                    tuntut a == 1
+                    tuntut b == 2
+                })
+            })
+
+            tentang("pada Rangkap", fn () {
+                ia("bisa menempatkan nilai satu per satu", fn () {
+                    ada a, b
+                    a, b = ..<1, 2>
+
+                    tuntut a == 1
+                    tuntut b == 2
+                })
+            })
+        })
+
+        tentang("saat jumlah pengenal lebih dari jumlah elemen yang dikeduk", fn () {
+            tentang("dengan Deret", fn () {
+                ia("mengutus `nil` untuk pengenal yang tidak mendapatkan jatah", fn () {
+                    ada a, b, c
+
+                    a, b, c = ..[1, 2]
+                    tuntut a == 1
+                    tuntut b == 2
+                    tuntut c == nil
+                })
+            })
+
+            tentang("dengan Rangkap", fn () {
+                ia("akan bermasalah", fn () {
+                    ada a, b, c
+
+                    tuntut coba {
+                        a, b, c = ..<1, 2>
+                        salah
+                    } tahan (e) {
+                        tuntut e.pesan == "elemen tidak ditemukan"
+                        benar
+                    } == benar
+                })
+
+                ia("akan mengubah nilai pengenal yang mendapatkan jatah saja", fn () {
+                    ada a, b, c
+                    coba { a, b, c = ..<1, 2> } tahan (e) { }
+
+                    tuntut a == 1
+                    tuntut b == 2
+                    tuntut c == nil
+                })
+            })
+        })
+
+        tentang("saat jumlah pengenal lebih sedikit dari jumlah elemen yang dikeduk", fn () {
+            tentang("dengan Deret", fn () {
+                ia("menempatkan ke seluruh pengenal yang ada", fn () {
+                    ada a, b
+                    a, b = ..[1, 2, 3]
+
+                    tuntut a == 1
+                    tuntut b == 2
+                })
+            })
+
+            tentang("dengan Rangkap", fn () {
+                ia("menempatkan ke seluruh pengenal yang ada", fn () {
+                    ada a, b
+                    a, b = ..<1, 2, 3>
+
+                    tuntut a == 1
+                    tuntut b == 2
+                })
             })
         })
     })

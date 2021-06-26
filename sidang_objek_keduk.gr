@@ -1,0 +1,53 @@
+tentang("Objek keduk", fn () {
+    tentang("inisialisasi", fn () {
+        ia("dibuat menggunakan 1 `..`", fn () {
+            ada a = ..[1,2]
+        })
+
+        ia("bermasalah jika memiliki `..` yang berjejer", fn () {
+            tuntut coba {
+                eval!("ada a = ....[1, 2]")
+                salah
+            } tahan (e) {
+                tuntut e.pesan == "operasi keduk (`..`) tidak dapat menerima operasi keduk lainnya: ..[1, 2]"
+                benar
+            } == benar
+        })
+
+        ia("bermasalah jika tidak memiliki objek yang dikeduk", fn () {
+            tuntut coba {
+                eval!("ada a = ..")
+            } tahan (e) {
+                tuntut e.pesan == "operasi keduk harus disandingkan dengan sebuah objek yang akan dikeduk"
+                benar
+            } == benar
+        })
+    })
+
+    ia("tidak dapat diutus dari fungsi", fn () {
+        ada a = fn () {
+            utus ..[1,2]
+        }
+
+        ada b = fn () {
+            ..[1,2]
+        }
+
+        tuntut coba {
+            a()
+            salah
+        } tahan (e) {
+            tuntut e.pesan == "operasi keduk (`..`) hanya dapat dilakukan berdampingan dengan operasi penempatan (`=`)"
+            benar
+        } == benar
+
+        tuntut coba {
+            b()
+            salah
+        } tahan (e) {
+            tuntut e.pesan == "operasi keduk (`..`) hanya dapat dilakukan berdampingan dengan operasi penempatan (`=`)"
+            benar
+        } == benar
+    })
+
+})
