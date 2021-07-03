@@ -3,17 +3,6 @@
 // Penggunaan tunduk pada aturan lisensi.
 
 sidang("Sintaksis", fn () {
-    ia("yang mengakibatkan MasalahKode", fn () {
-        tuntut coba {
-            eval!("ada a = fn() {}\na: 1: 2")
-            salah
-        } tahan (e) {
-            tuntut e.pesan() == "tidak diperbolehkan adanya `:` pada posisi tersebut"
-            tuntut e itu MasalahKode
-            benar
-        } == benar
-    })
-
     tentang("pemanggilan fungsi", fn () {
         tentang("ketika fungsi", fn () {
             ia("bisa dipanggil", fn () {
@@ -70,6 +59,17 @@ sidang("Sintaksis", fn () {
     })
 
     tentang("sintaksis `:`", fn () {
+        ia("tidak boleh ditempatkan sembarangan", fn () {
+            tuntut coba {
+                eval!("ada a = fn() {}\na: 1: 2")
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "tidak diperbolehkan adanya `:` pada posisi tersebut"
+                tuntut e itu MasalahKode
+                benar
+            } == benar
+        })
+
         ia("bisa digunakan sebagai pemisah tuntutan dan pesan", fn () {
             tuntut fn () {} itu Fungsi: "fungsi!"
 
@@ -187,6 +187,65 @@ sidang("Sintaksis", fn () {
                     tuntut e.pesan() == "tidak dimengerti: `b`"
                     benar
                 } == benar
+            })
+        })
+    })
+
+    tentang("interpretasi kode dengan/tanpa titik-koma (`;`)", fn () {
+        tentang("Deret", fn () {
+            tentang("[] sebagai literal", fn () {
+                ia("tidak menggabung deret dalam baris yang berbeda", fn () {
+                    ada n // todo hapus ;
+                    [0]
+                    [100].tiap(fn (e) { // tidak dibaca [0][100]
+                        n = e
+                    })
+
+                    tuntut n == 100
+                })
+
+                ia("bisa memahami deret", fn () {
+                    ada a = [
+                        1
+                    ]
+
+                    tuntut a == [1]
+
+                    a = [
+                        2
+                    ]
+
+                    tuntut a == [2]
+                })
+
+                ia("bisa memahami Deret dalam Deret", fn () {
+                    ada a = [
+                        [
+                            [1]
+                        ]
+                    ]
+
+                    tuntut a == [[[1]]]
+                })
+            })
+
+            tentang("[] sebagai pengutus elemen", fn () {
+                ia("tidak ambigu jika disejajarkan dengan pengenal", fn () {
+                    // tanpa spasi setelah n
+                    ada n1
+                    [].tiap(fn (e) {}) // tidak dianggap ada n[].tiap ...
+
+                    ada n2 // ada spasinya
+                    [].tiap(fn (e) {}) // tidak dianggap ada n[].tiap ...
+
+                    // ada titik komanya tapi tanpa spasi setelah nama variabel
+                    ada n3;
+                    [].tiap(fn (e) {}) // tidak bermasalah
+
+                    // todo: bisa ada titik komanya
+                    // ada n4; // ada titik komanya dan komentar
+                    // [].tiap(fn (e) {})
+                })
             })
         })
     })

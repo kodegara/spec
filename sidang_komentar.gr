@@ -19,10 +19,12 @@ sidang("Komentar", fn () {
         // a
         // b
         // c
+        tuntut benar == benar
 
         //
         //
         //
+        tuntut benar == benar
     })
 
     ia("bisa digunakan untuk mengomentasi kode berdekatan dengan `ini`", fn () {

@@ -224,7 +224,7 @@ sidang(Rangkap, fn () {
         ia("memberi nama alias pada deret Rangkap mulai dari deret paling awal", fn () {
             ada umur = <11, 18, 19, 22>
 
-            ada x = [];
+            ada x = []
 
             ["andi", "budi", "cintia", "tono"].tiap(fn (nama) {
                 tuntut coba {
