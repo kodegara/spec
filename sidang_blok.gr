@@ -37,7 +37,7 @@ sidang("Blok", fn () {
                 c
                 salah
             } tahan (e) {
-                tuntut e.pesan() == "identitas tidak ditemukan: c"
+                tuntut e.pesan() == "pengenal `c` tidak ditemukan atau belum terdefinisikan"
                 benar
             } == benar
         })
@@ -76,7 +76,7 @@ sidang("Blok", fn () {
                 c
                 salah
             } tahan (e) {
-                tuntut e.pesan() == "identitas tidak ditemukan: c"
+                tuntut e.pesan() == "pengenal `c` tidak ditemukan atau belum terdefinisikan"
                 benar
             } == benar
         })
@@ -120,7 +120,7 @@ sidang("Blok", fn () {
 
         tuntut nilai == 2
         tuntut coba { A.baru(); salah } tahan { benar } == benar
-        tuntut coba { nilaiBaruDidefinisikan == 2 } tahan (e) { e.pesan().berisi?("identitas tidak ditemukan: nilaiBaruDidefinisikan") }
+        tuntut coba { nilaiBaruDidefinisikan == 2 } tahan (e) { e.pesan().berisi?("pengenal `nilaiBaruDidefinisikan` tidak ditemukan atau belum terdefinisikan") }
     })
 
     ia("dari dalam fungsi yang berbeda, identitas bisa merembet jika diutus", fn () {
@@ -179,7 +179,7 @@ sidang("Blok", fn () {
                 salah
             } tahan (e) {
                 tuntut e itu MasalahPengenal
-                tuntut e.pesan() == "identitas tidak ditemukan: b"
+                tuntut e.pesan() == "pengenal `b` tidak ditemukan atau belum terdefinisikan"
                 benar
             } == benar
         }()
@@ -199,7 +199,7 @@ sidang("Blok", fn () {
             salah
         } tahan (e) {
             tuntut e itu MasalahPengenal
-            tuntut e.pesan() == "identitas tidak ditemukan: b"
+            tuntut e.pesan() == "pengenal `b` tidak ditemukan atau belum terdefinisikan"
             benar
         } == benar
     })

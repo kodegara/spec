@@ -185,7 +185,7 @@ sidang("Kata kunci ada", fn () {
                 salah
             } tahan (e) {
                 tuntut e itu MasalahPengenal
-                tuntut e.pesan() == "identitas tidak ditemukan: x"
+                tuntut e.pesan() == "pengenal `x` tidak ditemukan atau belum terdefinisikan"
             } == benar
         })
 
@@ -194,7 +194,7 @@ sidang("Kata kunci ada", fn () {
                 x = 123
             } tahan (e) {
                 tuntut e itu MasalahPengenal
-                tuntut e.pesan() == "identitas belum terdefinisikan: x"
+                tuntut e.pesan() == "pengenal `x` tidak ditemukan atau belum terdefinisikan"
             } == benar
         })
 

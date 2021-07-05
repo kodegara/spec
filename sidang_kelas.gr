@@ -497,7 +497,7 @@ sidang(Kelas, fn () {
                             a.a2()()
                             salah
                         } tahan (e) {
-                            tuntut e.pesan() == "identitas belum terdefinisikan: iVarLain"
+                            tuntut e.pesan() == "pengenal `iVarLain` tidak ditemukan atau belum terdefinisikan"
                             benar
                         } == benar
                     })
@@ -690,7 +690,7 @@ sidang(Kelas, fn () {
                 a.tidakBisa()
                 salah
             } tahan (e) {
-                tuntut e.pesan() == "identitas tidak ditemukan: a2"
+                tuntut e.pesan() == "pengenal `a2` tidak ditemukan atau belum terdefinisikan"
                 benar
             }
         })
@@ -722,7 +722,7 @@ sidang(Kelas, fn () {
                     a.pengubahC()(14)
                     salah
                 } tahan (e) {
-                    tuntut e.pesan() == "identitas belum terdefinisikan: b"
+                    tuntut e.pesan() == "pengenal `b` tidak ditemukan atau belum terdefinisikan"
                     benar
                 } == benar
 
@@ -742,7 +742,7 @@ sidang(Kelas, fn () {
                     a.pengubahE()(15)
                     salah
                 } tahan (e) {
-                    tuntut e.pesan() == "identitas belum terdefinisikan: a"
+                    tuntut e.pesan() == "pengenal `a` tidak ditemukan atau belum terdefinisikan"
                     benar
                 } == benar
 
@@ -1142,7 +1142,7 @@ sidang(Kelas, fn () {
                     }
                     salah
                 } tahan (e) {
-                    tuntut e.pesan() == "identitas tidak ditemukan: b"
+                    tuntut e.pesan() == "pengenal `b` tidak ditemukan atau belum terdefinisikan"
                     benar
                 } == benar
             })
@@ -1614,7 +1614,7 @@ sidang(Kelas, fn () {
                 ::A
                 salah
             } tahan (e) {
-                tuntut e.pesan() == "identitas tidak ditemukan: A"
+                tuntut e.pesan() == "pengenal `A` tidak ditemukan atau belum terdefinisikan"
                 benar
             } == benar
 

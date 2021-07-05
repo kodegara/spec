@@ -259,7 +259,6 @@ sidang(Rangkap, fn () {
                 <>.tambahAlias(123)
                 salah
             } tahan (e) {
-                cetak(e)
                 tuntut e itu MasalahRangkap
                 tuntut e.pesan == "hanya bisa menerima Kata sebagai alias"
                 benar

@@ -118,7 +118,7 @@ sidang(Fungsi, fn () {
             tuntut coba {
                 abcdef()
             } tahan (e) {
-                tuntut e.pesan().berisi?("identitas tidak ditemukan: abcdef")
+                tuntut e.pesan().berisi?("pengenal `abcdef` tidak ditemukan atau belum terdefinisikan")
                 benar
             } == benar
         })
