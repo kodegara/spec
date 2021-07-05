@@ -65,4 +65,45 @@ sidang(Objek, fn () {
             tuntut A.sambut?("b") == benar
         })
     })
+
+    tentang(".tuk(arg)", fn () {
+        ia("harus diberikan fungsi beraritas 1 sebagai argumen", fn () {
+            tuntut coba {
+                1.tuk(1)
+                salah
+            } tahan(e) {
+                tuntut e.pesan == "argumen harus berupa fungsi"
+                benar
+            } == benar
+
+            tuntut coba {
+                1.tuk(fn () {})
+                salah
+            } tahan(e) {
+                tuntut e.pesan == "argumen fungsi harus menerima satu parameter"
+                benar
+            } == benar
+
+            ada diketuk = salah
+
+            tuntut diketuk == salah
+            ada hasil = 1.tuk(fn (i) { diketuk = benar; 2 })
+
+            tuntut hasil == 1
+            tuntut diketuk == benar
+        })
+
+        ia("mengutus objek ini sendiri", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A { ada nama }
+            ada a = A.baru()
+
+            tuntut a.tuk(fn (obj) {
+                obj.nama = "Gara"
+            }).nama == "Gara"
+
+            tuntut a == a
+        })
+    })
 })
