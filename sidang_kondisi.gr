@@ -76,6 +76,20 @@ sidang("Ekspresi Kondisi", fn () {
         tuntut a == 2
     })
 
+    tentang("sebagai ekspresi", fn () {
+        ia("bisa digunakan dengan blok `{}`", fn () {
+            tuntut jika benar { 1 } == 1
+            tuntut jika benar { 1 } lain { 2 } == 1
+            tuntut jika salah { 1 } lain { 2 } == 2
+        })
+
+        xia("bisa digunakan setelah ekspresi", fn () {
+            // todo: bisa dilakukan:
+            // tuntut 1 jika benar == 1
+            // tuntut 1 jika salah == nil
+        })
+    })
+
     tentang("dengan ekspresi penempatan sebagai bagian kondisi", fn () {
         saat("pengenal sudah terdefinisikan", fn () {
             ia("dilakukan jika bernilai `benar`", fn () {
