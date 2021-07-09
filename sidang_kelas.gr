@@ -18,7 +18,17 @@ sidang(Kelas, fn () {
                 kelas a {}
                 salah
             } tahan (e) {
-                tuntut e.pesan() == "Nama kelas harus diawali huruf kapital"
+                tuntut e.pesan() == "nama kelas harus diawali huruf kapital"
+            } == benar
+        })
+
+        ia("tidak boleh diawali dengan operator alam nama", fn () {
+            tuntut coba {
+                kelas ::A {}
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "pengenal kelas tidak boleh diawali dengan `::`"
+                benar
             } == benar
         })
 
@@ -1577,7 +1587,7 @@ sidang(Kelas, fn () {
         })
     })
 
-    tentang("kelas dalam namespace", fn () {
+    tentang("kelas dalam alam nama", fn () {
         ia("bisa didefinisikan dan diresolusi menggunakan `::`", fn () {
             tidakAda!(fn () { A })
             tidakAda!(fn () { A::B })
@@ -1651,13 +1661,7 @@ sidang(Kelas, fn () {
         })
 
         ia("pengenal kelas tidak boleh diawali dengan `::`", fn () {
-            tuntut coba {
-                kelas ::A {}
-                salah
-            } tahan (e) {
-                tuntut e.pesan() == "pengenal kelas tidak boleh diawali dengan `::`"
-                benar
-            } == benar
+            tidakAda!(fn () { A })
 
             tuntut coba {
                 kelas A {
@@ -1670,7 +1674,7 @@ sidang(Kelas, fn () {
             } == benar
         })
 
-        ia("bisa diresolusi dengan benar meski ada kelas dengan nama yang mirip tapi dalam namespace yang berbeda", fn () {
+        ia("bisa diresolusi dengan benar meski ada kelas dengan nama yang mirip tapi dalam alam nama yang berbeda", fn () {
             tidakAda!(fn () { Koneksi })
             tidakAda!(fn () { Sertifikat })
             tidakAda!(fn () { HTTP::Koneksi })

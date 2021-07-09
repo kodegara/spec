@@ -98,7 +98,7 @@ sidang("Sintaksis", fn () {
             })
         })
 
-        tentang("dengan `:` satu lagi sebagai namespace", fn () {
+        tentang("dengan `:` satu lagi untuk alam nama", fn () {
             tentang("penggunaan sebagai pengenal kelas", fn () {
                 ia("harus diulang dua kali", fn () {
                     tuntut coba {
