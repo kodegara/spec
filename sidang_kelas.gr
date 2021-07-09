@@ -1792,4 +1792,15 @@ sidang(Kelas, fn () {
             tuntut a.jadiKata().berisi?("a=<ini>")
         })
     })
+
+    tentang(".moyang()", fn () {
+        ia("mengutus deret kelas super", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {}
+            tuntut A.moyang itu Deret
+            tuntut A.moyang.berisi?(Kelas)
+            tuntut A.moyang.berisi?(Objek)
+        })
+    })
 })
