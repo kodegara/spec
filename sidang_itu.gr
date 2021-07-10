@@ -40,7 +40,7 @@ sidang("Kata kunci `itu`", fn () {
         tuntut m itu fn () { Masalah }() == benar
     })
 
-    ia("bisa membandingkan sampai ke kelas super", fn () {
+    ia("bisa membandingkan sampai ke kelas punca", fn () {
         tuntut [] itu Deret == benar
         tuntut [] itu Objek == benar
         tuntut 1 itu Integer == benar

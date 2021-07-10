@@ -20,7 +20,7 @@ sidang(Objek, fn () {
             tuntut A.metode().berisi?("b") == benar
         })
 
-        ia("memiliki metode yang diturunkan dari kelas super", fn () {
+        ia("memiliki metode yang diturunkan dari kelas punca", fn () {
             tidakAda!(fn () { A })
 
             kelas A {}

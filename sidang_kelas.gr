@@ -1263,7 +1263,7 @@ sidang(Kelas, fn () {
     })
 
     tentang(".moyang()", fn () {
-        ia("mengutus deret kelas super", fn () {
+        ia("mengutus deret kelas punca", fn () {
             tidakAda!(fn () { A })
 
             kelas A {}

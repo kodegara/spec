@@ -551,7 +551,7 @@ sidang("Statis pada `kelas`", fn () {
                     }
 
                     pribadi {
-                        fn sta baru() { super() }
+                        fn sta baru() { punca() }
                     }
                 }
 
@@ -601,7 +601,7 @@ sidang("Statis pada `kelas`", fn () {
                     }
 
                     pribadi {
-                        fn sta baru() { super() }
+                        fn sta baru() { punca() }
                     }
                 }
 
