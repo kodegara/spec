@@ -69,6 +69,86 @@ sidang("Statis pada `kelas`", fn () {
             tuntut A.NILAI == 1
         })
 
+        tentang("pengubahan dari dalam kelas", fn () {
+            tentang("menggunakan `=`", fn () {
+                ia("tidak dapat dilakukan", fn () {
+                    tidakAda!(fn () { A })
+
+                    // mengubah menggunakan `=`
+                    tuntut coba {
+                        kelas A {
+                            ada sta NILAI = 1
+                            NILAI = 2
+                        }
+                        salah
+                    } tahan (e) {
+                        tuntut e.pesan == "tidak diperkenankan mengubah nilai variabel statis `NILAI`"
+                        benar
+                    } == benar
+                })
+            })
+
+            tentang("menggunakan `++`", fn () {
+                ia("tidak dapat dilakukan", fn () {
+                    tidakAda!(fn () { A })
+
+                    tuntut coba {
+                        kelas A {
+                            ada sta NILAI = 1
+                            NILAI++
+                        }
+                        salah
+                    } tahan (e) {
+                        tuntut e.pesan == "tidak diperkenankan mengubah nilai variabel statis `NILAI`"
+                        benar
+                    } == benar
+                })
+            })
+
+            tentang("menggunakan `+=`", fn () {
+                ia("tidak dapat dilakukan", fn () {
+                    tidakAda!(fn () { A })
+
+                    tuntut coba {
+                        kelas A {
+                            ada sta NILAI = 1
+                            NILAI += 1
+                        }
+                        salah
+                    } tahan (e) {
+                        tuntut e.pesan == "tidak diperkenankan mengubah nilai variabel statis `NILAI`"
+                        benar
+                    } == benar
+                })
+            })
+
+            tentang("menggunakan fungsi statis", fn () {
+                ia("tidak dapat dilakukan", fn () {
+                    tidakAda!(fn () { A })
+
+                    kelas A {
+                        ada sta NILAI = 1
+
+                        fn sta ubahNilai1() {
+                            NILAI = 123
+                        }
+
+                        fn sta ubahNilai2() {
+                            A.NILAI = 1
+                        }
+                    }
+
+                    tuntut coba { A.ubahNilai1(); salah }
+                    tahan (e) { tuntut e.pesan == "tidak diperkenankan mengubah nilai variabel statis `NILAI`"; benar } == benar
+
+                    tuntut coba { A.ubahNilai2(); salah }
+                    tahan (e) { tuntut e.pesan == "tidak diperkenankan mengubah nilai variabel statis `NILAI`"; benar } == benar
+
+                    tuntut A.NILAI == 1
+                })
+            })
+        })
+
         ia("dapat mengambil nilai dari variabel statis lain", fn () {
             kelas A {
                 ada sta nilaiLama = 123
