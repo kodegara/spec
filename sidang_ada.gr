@@ -23,8 +23,8 @@ sidang("Kata kunci ada", fn () {
             } == benar
 
             tuntut coba {
-                tuntut __PATH__ != nil
-                __PATH__ = 123
+                tuntut __DIR__ != nil
+                __DIR__ = 123
             } tahan (e) {
                 tuntut e.pesan() == "dilarang mendefinisikan konstanta sistem"
                 benar
