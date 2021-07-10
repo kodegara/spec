@@ -1,0 +1,534 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
+sidang("Statis pada `kelas`", fn () {
+    tentang("variabel", fn () {
+        ia("dapat didefinisikan bercampur dengan variabel instansi biasa", fn () {
+            kelas A {
+                ada a, b, sta c, d
+                ada e, sta f = "f", sta g ="g", h = 5
+            }
+
+            tuntut A.c == nil
+            tuntut A.f == "f"
+            tuntut A.g == "g"
+
+            tuntut coba {
+                A.d
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahPengenal
+                tuntut e.pesan == "tidak dapat meresolusi identitas statis `d`"
+            } == benar
+
+            tuntut coba {
+                A.h
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahPengenal
+                tuntut e.pesan == "tidak dapat meresolusi identitas statis `h`"
+            }
+
+            ada a = A.baru()
+            tuntut a.a == nil
+            tuntut a.b == nil
+            tuntut a.d == nil
+            tuntut a.e == nil
+            tuntut a.h == 5
+        })
+
+        ia("tidak bercampur dengan pengenal statis dari kelas-kelas lain", fn () {
+            kelas A {
+                ada sta a
+            }
+
+            kelas B {
+                ada sta b
+            }
+
+            tuntut coba { A.b; salah } tahan (e) { tuntut e.pesan() == "tidak dapat meresolusi identitas statis `b`"; benar } == benar
+            tuntut coba { B.a; salah } tahan (e) { tuntut e.pesan() == "tidak dapat meresolusi identitas statis `a`"; benar } == benar
+        })
+
+        ia("tidak dapat diubah dari luar kelas", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                ada sta NILAI = 1
+            }
+
+            tuntut coba {
+                A.NILAI = 2
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "tidak diperkenankan mengubah nilai variabel statis `NILAI`"
+                benar
+            } == benar
+
+            tuntut A.NILAI == 1
+        })
+
+        ia("dapat mengambil nilai dari variabel statis lain", fn () {
+            kelas A {
+                ada sta nilaiLama = 123
+                ada sta nilai = nilaiLama
+            }
+
+            tuntut A.nilaiLama == 123
+            tuntut A.nilai == 123
+        })
+
+        ia("hanya dapat mengambil nilai dari pengenal variabel", fn () {
+            kelas A {
+                ada sta a = "a1"
+                ada sta staA = a
+
+                fn a() { "a2" }
+            }
+
+            tuntut A.a == "a1"
+            tuntut A.staA == "a1"
+            tuntut A.baru().a() == "a2"
+
+            tuntut coba {
+                kelas B {
+                    ada sta fnB = b
+                    fn b () {}
+                }
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "pengenal `b` tidak ditemukan atau belum terdefinisikan"
+                benar
+            } == benar
+        })
+
+        ia("tidak dapat diakses dari suatu instansi", fn () {
+            kelas A {
+                fn sta a() {}
+            }
+
+            ada a = A.baru()
+
+            coba {
+                a.a()
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "objek tipe A tidak memiliki metode `a` yang bisa dipanggil"
+                benar
+            } == benar
+        })
+
+        ia("dapat diakses dari metode dalam kelas yang sama", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                ada sta X = "X"
+
+                fn x() { X }
+                fn xxx() { xx + x }
+
+                fn sta x() { X }
+                fn sta y() { Y }
+                fn sta iniX() { ini.X }
+                fn sta iniY() { ini.Y }
+
+                pribadi {
+                    ada sta Y = "Y"
+                    fn xx() { X + X }
+                }
+            }
+
+            ada a = A.baru()
+            tuntut a.x() == A.X
+            tuntut a.xxx() == "XXX"
+            tuntut A.x() == A.X
+            tuntut A.iniX() == A.X
+
+            // pribadi
+            tuntut A.iniY() == "Y"
+            tuntut A.y() == "Y"
+        })
+
+        ia("dapat memiliki nilai awal", fn () {
+            kelas A {
+                ada sta nilai = "a"
+                ada sta a = "a"
+            }
+
+            kelas B {
+                ada sta nilai = "b"
+                ada sta kelasA = A
+                ada sta b = "b"
+            }
+
+            // variabel statis dengan pengenal yang berbeda
+            tuntut A.a == "a"
+            tuntut B.b == "b"
+
+            // variabel statis dengan pengenal yang sama
+            tuntut A.nilai == "a"
+            tuntut B.nilai == "b"
+            tuntut B.kelasA.nilai == "a"
+        })
+
+        ia("dapat bersifat statis dan pribadi", fn () {
+            kelas A {
+                pribadi {
+                    ada sta nilaiPribadi = "ap"
+                }
+
+                ada sta nilaiDariPribadi1 = nilaiPribadi
+                ada sta nilaiDariPribadi2 = A.nilaiPribadi
+            }
+
+            tuntut A.nilaiDariPribadi1 == "ap"
+            tuntut A.nilaiDariPribadi2 == "ap"
+
+            tuntut coba {
+                A.nilaiPribadi
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "tidak dapat meresolusi identitas statis `nilaiPribadi` yang bersifat pribadi"
+                benar
+            } == benar
+        })
+
+        ia("jika tidak dapat diresolusi akan menjadi masalah", fn () {
+            kelas A {}
+
+            tuntut coba {
+                A.nilai
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "tidak dapat meresolusi identitas statis `nilai`"
+                benar
+            } == benar
+        })
+
+        ia("tidak bisa didefinisikan di dalam sebuah metode", fn () {
+            tuntut coba {
+                kelas A {
+                    fn a() {
+                        ada sta x = 12
+                    }
+                }
+                A.baru().a()
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "pengenal statis hanya bisa digunakan di luar metode di dalam kelas"
+                benar
+            } == benar
+        })
+
+        ia("tidak dapat dieksekusi seperti metode kecuali jika fungsi", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                ada sta a = 12
+                ada sta b = fn () { "b" }
+
+                pribadi {
+                    ada sta c = fn () { "c" }
+                }
+
+                ada sta d = c
+            }
+
+            tuntut coba {
+                A.a()
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "kelas A tidak memiliki fungsi statis `a` tak berargumen yang bisa dipanggil"
+                benar
+            } == benar
+
+            tuntut A.b itu Fungsi
+            tuntut A.b() == "b"
+
+            tuntut coba {
+                A.c()
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "kelas A tidak memiliki fungsi statis `c` tak berargumen yang bisa dipanggil"
+                benar
+            } == benar
+
+            tuntut A.d() == "c"
+        })
+    })
+
+    tentang("fungsi", fn () {
+        ia("bermasalah jika fungsi statis tidak terdefinisikan", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {}
+
+            tuntut coba {
+                A.XYZ = 12
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "kelas A tidak memiliki fungsi statis `XYZ=` berargumen 1 yang bisa dipanggil"
+                benar
+            } == benar
+
+            tuntut coba {
+                A.xyz()
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "kelas A tidak memiliki fungsi statis `xyz` tak berargumen yang bisa dipanggil"
+                benar
+            } == benar
+        })
+
+        ia("bisa mendefinisikan fungsi statis", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                fn sta a() { "a" }
+            }
+
+            tuntut A.a() == "a"
+        })
+
+        ia("bisa bernama sama dengan metode", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                fn sta a() { "statis" }
+                fn a() { "metode" }
+            }
+
+            ada a = A.baru()
+            tuntut a.a() == "metode"
+            tuntut A.a() == "statis"
+        })
+
+        ia("fungsi statis bisa memiliki argumen yang bernama sama dengan identitas fungsi", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                fn sta x(x) { x.jadiKata() }
+            }
+
+            tuntut A.x(1) == "1"
+            tuntut A.x([1,2,3]) == [1,2,3].jadiKata()
+        })
+
+        ia("bisa memanggil fungsi statis", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                fn sta a() { "a" }
+                fn sta b() { "b" }
+                fn sta ab() { a() + b() }
+                fn sta abc() { a() + b() + c() }
+
+                fn sta x(x) { x.jadiKata() }
+                fn sta abcx(arg) { abc() + x(arg) }
+
+                pribadi {
+                    fn sta c() { "c" }
+                }
+            }
+
+            tuntut A.a() == "a"
+            tuntut A.b() == "b"
+            tuntut A.ab() == "ab"
+            tuntut A.abc() == "abc"
+            tuntut A.x(123) == "123"
+            tuntut A.abcx(123) == "abc123"
+        })
+
+        ia("bisa diresolusi dengan atau tanpa menggunakan identitas kelas", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                fn sta x(x) { x.jadiKata() }
+                fn sta aa() { x("a") + A.x("a") }
+            }
+
+            tuntut A.aa() == "aa"
+        })
+
+        ia("bisa diresolusi meski multi-bentuk", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                fn sta a(arg1, arg2) { arg1 + arg2 }
+                fn sta a(arg1) { A.a(arg1, 1) + a(arg1, 1) }
+                fn sta a() { a(1) }
+            }
+
+            tuntut A.a(1, 1) == 2
+            tuntut A.a(1) == 4
+            tuntut A.a() == 4
+        })
+
+        ia("tidak dianggap metode kelas", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                fn sta a() { "a" }
+            }
+
+            ada a = A.baru()
+            tuntut !a.metode().berisi?("a")
+
+            tuntut coba {
+                a.a()
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "objek tipe A tidak memiliki metode `a` yang bisa dipanggil"
+                benar
+            } == benar
+        })
+
+        ia("bisa bersifat pribadi", fn () {
+            kelas A {
+                fn sta a() { "a" }
+                fn sta ab() { a() + b() }
+
+                pribadi {
+                    fn sta b() { "b" }
+                }
+            }
+
+            tuntut A.a() == "a"
+            tuntut A.ab() == "ab"
+
+            tuntut coba {
+                A.b()
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "`b` adalah fungsi statis bersifat pribadi kelas A yang hanya bisa dipanggil dari dalam"
+                benar
+            } == benar
+        })
+
+        tentang("fungsi statis `#baru()`", fn () {
+            ia("harus mengutus objek dengan kelas yang sama", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {
+                    fn sta baru() { 1 } // mengutus yang bukan instansi A
+                    fn sta baru(arg) { arg } // mengutus yang bukan instansi A
+                    fn sta baru(arg1, arg2) { Refleksi.cipta!(A) } // menciptakan kelas lewat refleksi
+                    fn sta baru(arg1, arg2, arg3) { baru() } // memanggil baru tanpa identitas kelas
+                }
+
+                tuntut coba {
+                    A.baru()
+                    salah
+                } tahan (e) {
+                    tuntut e itu MasalahKelas
+                    tuntut e.pesan() == "proses inisialisasi harus mengutus objek bertipe kelas yang sama"
+                    benar
+                } == benar
+
+                tuntut coba {
+                    A.baru()
+                    salah
+                } tahan (e) {
+                    tuntut e itu MasalahKelas
+                    tuntut e.pesan() == "proses inisialisasi harus mengutus objek bertipe kelas yang sama"
+                    benar
+                } == benar
+
+                tuntut coba {
+                    A.baru(1)
+                    salah
+                } tahan (e) {
+                    tuntut e itu MasalahKelas
+                    tuntut e.pesan() == "proses inisialisasi harus mengutus objek bertipe kelas yang sama"
+                    benar
+                } == benar
+
+                tuntut A.baru(1, 2) itu A
+
+                tuntut coba {
+                    A.baru(1, 2, 3)
+                    salah
+                } tahan (e) {
+                    tuntut e.pesan() == "proses inisialisasi harus mengutus objek bertipe kelas yang sama"
+                    benar
+                } == benar
+            })
+
+            ia("bisa menjadi fungsi statis pribadi", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {
+                    ada a
+
+                    fn a() { a }
+                    fn a=(x) { a = x }
+
+                    fn sta baru(a) {
+                        ada obj = baru()
+                        obj.a = a
+                        obj
+                    }
+
+                    pribadi {
+                        fn sta baru() { super() }
+                    }
+                }
+
+                ada a = A.baru(123)
+                tuntut a.a() == 123
+
+                tuntut coba {
+                    A.baru()
+                    salah
+                } tahan (e) {
+                    tuntut e.pesan() == "`baru` adalah fungsi statis bersifat pribadi kelas A yang hanya bisa dipanggil dari dalam"
+                    benar
+                } == benar
+            })
+
+            ia("dapat mendefinisikan fungsi statis `.baru()` dengan varian argumen lain", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {
+                    ada a
+                    fn a() { a }
+                    fn a=(x) { a = x }
+
+                    fn sta baru(arg) {
+                        ada obj = baru()
+                        obj.a = "a" + arg
+                        obj
+                    }
+                }
+
+                ada a = A.baru("a")
+                tuntut a.a() == "aa"
+            })
+
+            ia("dapat menjadikan pribadi fungsi `baru` yang tanpa argumen", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {
+                    ada a
+                    fn a() { a }
+                    fn a=(x) { a = x }
+
+                    fn sta baru(a) {
+                        ada obj = baru()
+                        obj.a = a
+                        obj
+                    }
+
+                    pribadi {
+                        fn sta baru() { super() }
+                    }
+                }
+
+                tuntut A.baru(nil).a() == nil
+                tuntut A.baru(123).a() == 123
+                tuntut A.baru("123").a() == "123"
+            })
+        })
+    })
+})
