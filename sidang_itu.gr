@@ -50,4 +50,43 @@ sidang("Kata kunci `itu`", fn () {
         tuntut 1 itu Angka == benar
         tuntut 1.0 itu Angka == benar
     })
+
+    tentang("penggunaan didalam kelas", fn () {
+        ia("bisa mengecek dengan benar", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                fn cek() {
+                    123 itu Angka && [] itu Deret && "kata" itu Kata
+                }
+            }
+
+            tuntut A.baru().cek() == benar
+        })
+
+        ia("bisa menggunakan `ini`", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                fn cek() {
+                    ini itu A && !(ini itu Angka) && !(ini itu Deret) && !(ini itu Kata)
+                }
+            }
+
+            tuntut A.baru().cek() == benar
+        })
+
+        ia("bisa menggunakan `ini` pada kelas turunan", fn () {
+            tidakAda!(fn () { A })
+            tidakAda!(fn () { B })
+
+            kelas A {
+                fn cek() { ini itu A }
+            }
+
+            kelas B -> A {}
+
+            tuntut B.baru().cek() == benar
+        })
+    })
 })
