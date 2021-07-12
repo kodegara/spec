@@ -24,7 +24,7 @@ sidang("Kata kunci `lempar`", fn () {
             salah
         } tahan (e) {
             tuntut e == m
-            tuntut e itu e.tipe
+            tuntut e itu e.kelas
             tuntut e.pesan == m.pesan
             benar
         } == benar

@@ -3,6 +3,68 @@
 // Penggunaan tunduk pada aturan lisensi.
 
 sidang(Objek, fn () {
+    tentang(".kelas()", fn () {
+        ia("bisa digunakan dengan `ini`", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                fn kelasA?() {
+                    ini.kelas == A && ini.kelas() == A
+                }
+            }
+
+            tuntut A.baru().kelasA? == benar
+        })
+
+        ia("bisa digunakan seakan variabel", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                fn kelasA?() {
+                    kelas == A
+                }
+            }
+
+            tuntut A.baru().kelasA? == benar
+        })
+
+        ia("bisa dipanggil seakan fungsi", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                fn kelasA?() {
+                    kelas() == A
+                }
+            }
+
+            tuntut A.baru().kelasA? == benar
+        })
+
+        ia("mengembalikan `Kelas` saat digunakan dalam fungsi statis", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                fn sta kelasKelas?() {
+                    kelas == Kelas && kelas() == Kelas && ini.kelas == Kelas && ini.kelas() == Kelas
+                }
+            }
+
+            tuntut A.kelasKelas? == benar
+        })
+
+        ia("tidak bisa didefinisikan ulang", fn () {
+            tidakAda!(fn () { A })
+
+            tuntut coba {
+                eval!("kelas A { fn kelas() { 123 } }")
+                salah
+            } tahan (e) {
+                tuntut e.pesan == "tidak diperkenankan mendefinisikan fungsi `kelas` karena `kelas` adalah kata kunci"
+                benar
+            } == benar
+        })
+    })
+
     tentang(".metode()", fn () {
         ia("mengutus Deret seluruh fungsi yang bisa dipanggil", fn () {
             tidakAda!(fn () { A })

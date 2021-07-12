@@ -294,9 +294,9 @@ sidang(Fungsi, fn () {
             })
         })
 
-        tentang(".tipe()", fn () {
+        tentang(".kelas()", fn () {
             ia("mengutus kelas Fungsi", fn () {
-                tuntut fn(){}.tipe() == Fungsi
+                tuntut fn(){}.kelas() == Fungsi
             })
         })
     })

@@ -35,7 +35,7 @@ sidang("Kata kunci `itu`", fn () {
 
     ia("bisa menggunakan ekspresi", fn () {
         ada m = Masalah.baru
-        tuntut m itu m.tipe == benar
+        tuntut m itu m.kelas == benar
         tuntut m itu Masalah == benar
         tuntut m itu fn () { Masalah }() == benar
     })

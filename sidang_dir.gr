@@ -34,19 +34,19 @@ sidang(Dir, fn () {
             })
 
             ia(".dir?() mengutus nilai Boolean", fn () {
-                tuntut d.semua?(fn (e) { e.dir?().tipe() == Boolean }) == benar
+                tuntut d.semua?(fn (e) { e.dir?().kelas() == Boolean }) == benar
             })
 
             ia(".file?() mengutus nilai Boolean", fn () {
-                tuntut d.semua?(fn (e) { e.file?().tipe() == Boolean }) == benar
+                tuntut d.semua?(fn (e) { e.file?().kelas() == Boolean }) == benar
             })
 
             ia(".symlink?() mengutus nilai Boolean", fn () {
-                tuntut d.semua?(fn (e) { e.symlink?().tipe() == Boolean }) == benar
+                tuntut d.semua?(fn (e) { e.symlink?().kelas() == Boolean }) == benar
             })
 
             ia(".unixSocket?() mengutus nilai Boolean", fn () {
-                tuntut d.semua?(fn (e) { e.unixSocket?().tipe() == Boolean }) == benar
+                tuntut d.semua?(fn (e) { e.unixSocket?().kelas() == Boolean }) == benar
             })
 
             ia(".alamat() mengutus nama yang bersifat alamat absolut", fn () {

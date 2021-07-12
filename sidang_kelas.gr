@@ -58,14 +58,14 @@ sidang(Kelas, fn () {
         })
     })
 
-    ia(".tipe() bisa lebih spesifik dari `itu`", fn () {
+    ia(".kelas() bisa lebih spesifik dari `itu`", fn () {
         kelas Siswa {}
 
-        tuntut Siswa.baru().tipe() == Siswa
+        tuntut Siswa.baru().kelas() == Siswa
         tuntut 1 itu Angka
         tuntut 1 itu Integer
-        tuntut 1.tipe() == Integer
-        tuntut 1.tipe() != Angka
+        tuntut 1.kelas() == Integer
+        tuntut 1.kelas() != Angka
     })
 
     tentang("metode", fn () {
@@ -1113,10 +1113,10 @@ sidang(Kelas, fn () {
                 kelas A {}
 
                 fn sta aKu() { A.baru() } // tes menerima pemanggilan
-                fn sta aKu?(a) { a.tipe() == A } // tes pengenal
+                fn sta aKu?(a) { a.kelas() == A } // tes pengenal
 
                 fn sta aNya() { ::A.baru() } // tes menerima pemanggilan
-                fn sta aNya?(a) { a.tipe() == ::A } // tes pengenal
+                fn sta aNya?(a) { a.kelas() == ::A } // tes pengenal
             }
 
             tuntut B.aKu?(B::A.baru()) == benar
@@ -1159,11 +1159,11 @@ sidang(Kelas, fn () {
                 }
 
                 fn sta sekoneksi?(a) {
-                    a.tipe() == Koneksi // tes pengenal
+                    a.kelas() == Koneksi // tes pengenal
                 }
 
                 fn sta periksaSertifikat(s) {
-                    s.tipe() == Sertifikat // test pengenal
+                    s.kelas() == Sertifikat // test pengenal
                 }
 
                 fn sta buatSertifikat() {
