@@ -619,15 +619,14 @@ sidang("Operator", fn () {
         })
     })
 
-    // todo: delegasikan ke metode,
-    tentang("<< (dorong!)", fn () {
+    tentang("<< (dorongMasuk!)", fn () {
         tentang("pada kelas buatan sendiri", fn () {
-            ia("bisa digunakan jika kelas mendefinisikan metode `dorong!`", fn () {
+            ia("bisa digunakan jika kelas mendefinisikan metode `dorongMasuk!`", fn () {
                 tidakAda!(fn () { A })
 
                 kelas A {
                     ada kata
-                    fn dorong!(e) {
+                    fn dorongMasuk!(e) {
                         kata = kata + e
                     }
                 }
@@ -637,6 +636,32 @@ sidang("Operator", fn () {
                 tuntut a.kata == "a"
                 a << "b"
                 tuntut a.kata == "ab"
+            })
+        })
+    })
+
+    tentang(">> (dorongKeluar!)", fn () {
+        tentang("pada kelas buatan sendiri", fn () {
+            ia("bisa digunakan jika kelas mendefinisikan metode `dorongKeluar!`", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {
+                    ada kata
+                    fn dorongKeluar!(e) {
+                        ada kataBaru = ""
+                        // kata = kata[] // todo: kata[0..1] range
+                        kata.tiap(fn (k, idx) {
+                            jika (idx + 1) == kata.panjang { putus }
+                            kataBaru += k
+                        })
+                        kata = kataBaru
+                    }
+                }
+
+                ada a = A.baru()
+                a.kata = "Garaa"
+                a >> nil
+                tuntut a.kata == "Gara"
             })
         })
     })
