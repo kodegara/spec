@@ -109,13 +109,18 @@ sidang(Peta, fn () {
         tuntut p["y"] == benar
     })
 
-    ia(".isiDi(arg1, arg2) mengasosiasikan elemen arg2 pada posisi arg1", fn () {
-        ada p = {}
+    tentang(".isiDi(arg1, arg2)", fn () {
+        ia("mengutus Peta baru dengan kunci `arg1` yang bernilai `arg2`", fn () {
+            ada p = {}
 
-        tuntut p.kunci?("x") == salah
-        tuntut p.isiDi("x", benar)
-        tuntut p.kunci?("x") == benar
-        tuntut p["x"] == benar
+            tuntut p.kunci?("x") == salah
+
+            ada pBaru = p.isiDi("x", benar)
+            tuntut pBaru.kunci?("x") == benar
+            tuntut p.kunci?("x") == salah
+            tuntut pBaru["x"] == benar
+            tuntut p["x"].nil? == benar
+        })
     })
 
     ia(".kosong?() bernilai benar jika peta tidak berelemen", fn () {
@@ -223,7 +228,7 @@ sidang(Peta, fn () {
         ada p = {}
 
         peta.tiap(fn (k, n) {
-            p.isiDi(k, n)
+            p = p[k: n]
         })
 
         tuntut p == peta

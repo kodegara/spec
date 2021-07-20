@@ -37,19 +37,20 @@ sidang(Rangkap::Pabrik, fn () {
         })
     })
 
-    tentang(".padaPosisi(arg1, arg2)", fn () {
+    tentang(".isiDi(arg1, arg2)", fn () {
         ia("bisa mendefinisikan tipe data arg1 sebagai arg2", fn () {
             ada siswa = kelasIni.baru(["nama", "umur"])
 
-            siswa["nama"] = Kata
-            siswa["umur"] = Integer
+            siswa
+                .kelasUntuk("nama", Kata)
+                .kelasUntuk("umur", Integer)
         })
 
         ia("akan bermasalah jika alias belum terdefinisikan", fn () {
             ada siswa = kelasIni.baru(["nama", "umur"])
 
             tuntut coba {
-                siswa["xyz"] = Integer
+                siswa.kelasUntuk("xyz", Integer)
                 salah
             } tahan (e) {
                 tuntut e itu MasalahRangkap
@@ -62,7 +63,7 @@ sidang(Rangkap::Pabrik, fn () {
             ada siswa = kelasIni.baru(["nama", "umur"])
 
             tuntut coba {
-                siswa[1] = Integer
+                siswa.kelasUntuk(1, Integer)
                 salah
             } tahan (e) {
                 tuntut e itu MasalahRangkap
@@ -75,7 +76,7 @@ sidang(Rangkap::Pabrik, fn () {
             ada siswa = kelasIni.baru(["nama", "umur"])
 
             tuntut coba {
-                siswa["nama"] = 1
+                siswa.kelasUntuk("nama", 1)
                 salah
             } tahan (e) {
                 tuntut e itu MasalahRangkap
@@ -114,9 +115,8 @@ sidang(Rangkap::Pabrik, fn () {
         tentang("saat memiliki tipe yang terdefinisikan", fn () {
             ia("dapat membuat Rangkap jika sesuai tipe", fn () {
                 ada siswa = kelasIni.baru(["nama", "umur"])
-                // ganti ke (sebelum(fn() {}))
-                siswa["nama"] = Kata
-                siswa["umur"] = Integer
+                    .kelasUntuk("nama", Kata)
+                    .kelasUntuk("umur", Integer) // ganti ke (sebelum(fn() {}))
 
                 ada s = siswa("Adam", 12)
                 tuntut s["nama"] == "Adam"
@@ -125,9 +125,8 @@ sidang(Rangkap::Pabrik, fn () {
 
             ia("akan bermasalah jika tidak sesuai tipe", fn () {
                 ada siswa = kelasIni.baru(["nama", "umur"])
-                // ganti ke (sebelum(fn() {}))
-                siswa["nama"] = Kata
-                siswa["umur"] = Integer
+                    .kelasUntuk("nama", Kata)
+                    .kelasUntuk("umur", Integer) // ganti ke (sebelum(fn() {}))
 
                 tuntut coba {
                     siswa(1, 12)

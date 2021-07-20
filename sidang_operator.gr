@@ -574,33 +574,29 @@ sidang("Operator", fn () {
         })
     })
 
-    tentang("[]= (isiDi)", fn () {
+    tentang("[k:v] (isiDi)", fn () {
         tentang("pada Deret", fn () {
-            ia("bisa mengganti elemen pada posisi yang sebelumnya telah ditempati elemen lain", fn () {
+            ia("bisa mengganti elemen pada suatu posisi", fn () {
                 ada x = [1, 2, 3, 4]
 
-                x = (x[0] = 12)
+                x = x[0: 12]
                 tuntut x == [12, 2, 3, 4]
 
-                x = (x[fn(){0}()] = benar)
+                x = x[fn(){0}(): benar]
                 tuntut x == [benar, 2, 3, 4]
             })
 
-            ia("bisa menambahkan elemen baru pada posisi yang sebelumnya tidak terdefinisikan", fn () {
-                ada a = []
-                tuntut a == []
+            ia("bisa mengganti elemen pada banyak posisi lainnya sekaligus", fn () {
+                ada x = [1, 2, 3, 4]
 
-                a = (a[0] = 1)
-                tuntut a == [1]
-
-                a = (a[5] = 1)
-                tuntut a == [1, nil, nil, nil, nil, 1]
+                x = x[0: 12, 1: 13]
+                tuntut x == [12, 13, 3, 4]
             })
 
             ia("bisa digunakan dengan ekspresi", fn () {
                 ada f = fn () { [1, 2, 3, 4] }
-                fn () { [1, 2, 3, 4] }()[0] = 5
-                f()[0] = 5
+                fn () { [1, 2, 3, 4] }()[0: 5]
+                f()[0: 5]
 
                 tuntut f() == [1, 2, 3, 4] // tidak berubah
             })
@@ -609,14 +605,15 @@ sidang("Operator", fn () {
         tentang("pada Peta", fn () {
             ia("bisa mengganti elemen pada posisi yang sebelumnya telah ditempati elemen lain", fn () {
                 ada a = {"nama": "gara"}
-                a["nama"] = "Gara"
+                a = a["nama": "Gara"]
                 tuntut a["nama"] == "Gara"
             })
 
             ia("bisa menambahkan elemen baru pada posisi yang sebelumnya tidak terdefinisikan", fn () {
                 ada a = {}
                 tuntut a["nama"] == nil
-                a["nama"] = "Gara"
+
+                a = a["nama": "Gara"]
                 tuntut a["nama"] == "Gara"
             })
         })
