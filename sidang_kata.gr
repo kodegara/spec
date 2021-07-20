@@ -287,6 +287,18 @@ sidang(Kata, fn () {
         tuntut "Gara".sesuai?(#r{(G|g)a}) == benar
     })
 
+    tentang(".tiap(arg1)", fn () {
+        ia("bisa melakukan iterasi karakter per karakter", fn () {
+            ada kata = ""
+
+            "Gara".tiap(fn (k) {
+                kata += k
+            })
+
+            tuntut kata == "Gara"
+        })
+    })
+
     ia(".jadiKata() mengembalikan diri sendiri", fn () {
         tuntut "gara".jadiKata() == "gara"
     })
