@@ -211,6 +211,12 @@ sidang(Fungsi, fn () {
                 } == benar
             })
 
+            xia("tidak mengubah variabel lokal dengan nama yang sama", fn () {
+                ada a = 123
+                tuntut fn (a){ a }(456) == 456
+                tuntut a == 123
+            })
+
             xia("tidak dipengaruhi oleh variabel lokal yang memiliki nama yang sama", fn () {
                 ada iterasikan = fn (deret, fnPengiterasi) {
                     cetak(deret)
