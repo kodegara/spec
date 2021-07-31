@@ -121,6 +121,24 @@ sidang(Peta, fn () {
             tuntut pBaru["x"] == benar
             tuntut p["x"].nil? == benar
         })
+
+        saat("nilai kobit sama", fn () {
+            ia("tetap disimpan masing-masing", fn () {
+                ada obj1 = 123
+                ada obj2 = "abc"
+
+                ada fnKobit = fn () { 123 }
+                Refleksi.terapkan!(obj1, "kobit", fnKobit)
+                Refleksi.terapkan!(obj2, "kobit", fnKobit)
+
+                ada p = {}
+                p = p[obj1: obj1]
+                p = p[obj2: obj2]
+
+                tuntut p[obj1] == obj1
+                tuntut p[obj2] == obj2
+            })
+        })
     })
 
     ia(".kosong?() bernilai benar jika peta tidak berelemen", fn () {
@@ -193,6 +211,30 @@ sidang(Peta, fn () {
         tuntut peta.nilai?([{}]) == salah
     })
 
+    tentang(".panjang", fn () {
+        ia("mengutus panjang Peta", fn () {
+            tuntut {}.panjang == 0
+            tuntut {1: 1}.panjang == 1
+            tuntut {1: 1, 1: 1}.panjang == 1
+            tuntut {1: 1, 2: 2}.panjang == 2
+            tuntut {{}: []}.panjang == 1
+        })
+
+        saat("nilai kobit sama", fn () {
+            ia("mengutus panjang Peta dengan benar", fn () {
+                ada obj1 = 123
+                ada obj2 = "abc"
+
+                ada fnKobit = fn () { 123 }
+                Refleksi.terapkan!(obj1, "kobit", fnKobit)
+                Refleksi.terapkan!(obj2, "kobit", fnKobit)
+
+                ada p = {obj1: obj1, obj2: obj2}
+                tuntut p.panjang == 2
+            })
+        })
+    })
+
     ia(".rapat() menghapus kunci yang terasosiasikan dengan nilai `nil`", fn () {
         ada p = {1: nil, 2: nil, benar: nil, nil: 4, 5: 6}
         tuntut p.rapat() == {nil: 4, 5: 6}
@@ -236,7 +278,24 @@ sidang(Peta, fn () {
         tuntut p.panjang() > 0
     })
 
-    ia(".jadiKata() menuliskan Peta menjadi Kata", fn () {
-        tuntut peta.jadiKata() itu Kata
+    tentang(".jadiKata()", fn () {
+        ia("menuliskan Peta menjadi Kata", fn () {
+            tuntut peta.jadiKata() itu Kata
+            cetak(peta.jadiKata())
+        })
+
+        saat("nilai kobit sama", fn () {
+            ia("menuliskan Peta menjadi Kata", fn () {
+                ada obj1 = 123
+                ada obj2 = "abc"
+
+                ada fnKobit = fn () { 123 }
+                Refleksi.terapkan!(obj1, "kobit", fnKobit)
+                Refleksi.terapkan!(obj2, "kobit", fnKobit)
+
+                ada p = {obj1: obj1, obj2: obj2}
+                tuntut p.jadiKata() == "{123: 123, \"abc\": \"abc\"}"
+            })
+        })
     })
 })
