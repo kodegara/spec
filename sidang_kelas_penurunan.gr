@@ -32,14 +32,25 @@ sidang("Penurunan `kelas`", fn () {
         tuntut A2.moyang.berisi?(Objek) == benar
     })
 
-    ia("bermasalah jika kelas telah terdefinisikan", fn () {
-        tuntut coba {
-            kelas Masalah -> Riil {}
-            salah
-        } tahan (e) {
-            tuntut e.pesan == "kelas `Masalah` telah terdefinisikan sehingga tidak memungkinkan untuk mengubah kelas puncanya dari `Kelas` menjadi `Riil`"
-            benar
-        } == benar
+    tentang("kelas telah terdefinisikan", fn () {
+        ia("bermasalah jika kelas punca berbeda", fn () {
+            tuntut coba {
+                kelas Masalah -> Riil {}
+                salah
+            } tahan (e) {
+                tuntut e.pesan == "kelas `Masalah` telah terdefinisikan sehingga tidak memungkinkan untuk mengubah kelas puncanya dari `Kelas` menjadi `Riil`"
+                benar
+            } == benar
+        })
+
+        xia("tidak bermasalah jika kelas punca sama dengan saat kelas didefinisikan untuk pertama kalinya", fn () {
+            tidakAda!(fn () { A })
+            tidakAda!(fn () { B })
+
+            kelas A {}
+            kelas B -> A {}
+            kelas B -> A {}
+        })
     })
 
     ia("bermasalah jika kelas punca belum terdefinisikan", fn () {
