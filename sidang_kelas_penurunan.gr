@@ -270,6 +270,25 @@ sidang("Penurunan `kelas`", fn () {
             })
 
             tentang("pemanggilan metode yang diturunkan menggunakan `punca`", fn () {
+                saat("kelas punca tidak memiliki metode tersebut", fn () {
+                    ia("akan bermasalah", fn () {
+                        tidakAda!(fn () { A })
+
+                        kelas A {}
+                        kelas B -> A {
+                            fn a() { punca }
+                        }
+
+                        tuntut coba {
+                            B.baru.a
+                            salah
+                        } tahan (e) {
+                            tuntut e.pesan == "tidak dapat meresolusi pemanggilan `punca`"
+                            benar
+                        } == benar
+                    })
+                })
+
                 ia("bisa dipanggil tanpa tanda kurung", fn () {
                     tidakAda!(fn () { A })
                     tidakAda!(fn () { A1 })

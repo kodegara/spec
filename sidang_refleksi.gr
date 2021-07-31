@@ -3,6 +3,282 @@
 // Penggunaan tunduk pada aturan lisensi.
 
 sidang(Refleksi, fn () {
+    tentang("terapkan!", fn () {
+        ia("akan bermasalah jika nama metode tidak dapat diterima sesuai kaidah penamaan", fn () {
+            tuntut coba {
+                Refleksi.terapkan!("", "123", fn() {}); salah
+            } tahan (e) {
+                tuntut e.pesan == "nama fungsi tidak boleh diawali dengan angka"
+                benar
+            } == benar
+
+            tuntut coba {
+                Refleksi.terapkan!("", "abc def", fn () {})
+                salah
+            } tahan (e) {
+                cetak(e.pesan)
+                tuntut e.pesan == "nama fungsi tidak sesuai dengan kaidah penamaan"
+                benar
+            } == benar
+
+            tuntut coba {
+                Refleksi.terapkan!("", "abc\nxyz", fn () {})
+                salah
+            } tahan (e) {
+                cetak(e.pesan)
+                tuntut e.pesan == "nama fungsi tidak sesuai dengan kaidah penamaan"
+                benar
+            } == benar
+        })
+
+        ia("mengutus balik objek yang diterapkan", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {}
+            ada a = A.baru
+
+            ada terutus = Refleksi.terapkan!(a, "abc", fn () {})
+            tuntut terutus == a
+        })
+
+        saat("metode belum terdefinisikan", fn () {
+            ia("akan didefinisikan", fn () {
+                kelas A {}
+                ada a1 = A.baru()
+                ada a2 = A.baru()
+
+                Refleksi.terapkan!(a1, "hmm", fn () { "hmma1" })
+                Refleksi.terapkan!(a2, "hmm", fn () { "hmma2" })
+
+                tuntut a1.hmm == "hmma1"
+                tuntut a2.hmm == "hmma2"
+                tuntut a1.hmm != a2.hmm
+            })
+
+            ia("termasuk dalam daftar metode objek tersebut", fn () {
+                ada a = 123
+                tuntut a.metode.berisi?("a") == salah
+
+                Refleksi.terapkan!(a, "a", fn () {})
+                tuntut a.metode.berisi?("a") == benar
+            })
+
+            ia("dapat dipanggil dari metode yang telah didefinisikan didalam kelas", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {
+                    fn panggilA() { a() }
+                }
+
+                ada a = A.baru()
+                Refleksi.terapkan!(a, "a", fn () { "a" })
+
+                tuntut a.panggilA() == "a"
+            })
+
+            ia("bisa berpusparagam", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {}
+
+                ada a = A.baru()
+                Refleksi.terapkan!(a, "a", fn () { "a0" })
+                Refleksi.terapkan!(a, "a", fn (arg1) { "a1" + arg1 })
+                Refleksi.terapkan!(a, "a", fn (arg1, arg2) { "a2" + arg1 + arg2 })
+
+                tuntut a.a() == "a0"
+                tuntut a.a("b") == "a1b"
+                tuntut a.a("b", "c") == "a2bc"
+            })
+
+            ia("akan menimpa jika didefinisikan lebih dari sekali", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {}
+
+                ada a = A.baru()
+                Refleksi.terapkan!(a, "a", fn () { "1" })
+                Refleksi.terapkan!(a, "a", fn () { "2" })
+
+                tuntut a.a() == "2"
+            })
+
+            tentang("penggunaan kata kunci `punca`", fn () {
+                ia("akan bermasalah", fn () {
+                    tidakAda!(fn () { A })
+
+                    kelas A {}
+
+                    ada a = A.baru()
+                    Refleksi.terapkan!(a, "a", fn () { punca() })
+
+                    tuntut coba {
+                        a.a()
+                        salah
+                    } tahan (e) {
+                        tuntut e.pesan == "tidak dapat meresolusi pemanggilan `punca`"
+                        benar
+                    } == benar
+                })
+            })
+        })
+
+        saat("metode telah terdefinisikan", fn () {
+            saat("metode terdefinisikan secara refleksi", fn () {
+                ia("bisa ditimpa", fn () {
+                    tidakAda!(fn () { A })
+
+                    kelas A {}
+                    ada a = A.baru()
+
+                    Refleksi.terapkan!(a, "a", fn () { "A" })
+                    tuntut a.a() == "A"
+
+                    Refleksi.terapkan!(a, "a", fn () { "a" })
+                    tuntut a.a() == "a"
+                })
+            })
+
+            saat("metode terdefinisikan tanpa refleksi", fn () {
+                ia("bisa ditimpa", fn () {
+                    tidakAda!(fn () { A })
+
+                    kelas A {
+                        fn a() { "A" }
+                    }
+
+                    ada a = A.baru()
+                    tuntut a.a() == "A"
+
+                    Refleksi.terapkan!(a, "a", fn () { "a" })
+                    tuntut a.a() == "a"
+
+                    tuntut A.baru().a() == "A"
+                })
+
+                saat("metode asal berupa metode pribadi", fn () {
+                    ia("menjadi dapat diakses secara umum", fn () {
+                        tidakAda!(fn () { A })
+
+                        kelas A {
+                            pribadi {
+                                fn a() { "pribadi" }
+                            }
+                        }
+
+                        ada a = A.baru()
+                        Refleksi.terapkan!(a, "a", fn () { "umum" })
+
+                        tuntut a.a() == "umum"
+                    })
+                })
+
+                tentang("penggunaan kata kunci `punca`", fn () {
+                    ia("memanggil metode asal", fn () {
+                        tidakAda!(fn () { A })
+
+                        kelas A {
+                            fn a() { "a" }
+                        }
+
+                        ada a = A.baru
+                        Refleksi.terapkan!(a, "a", fn () { "A" + punca })
+
+                        tuntut a.a() == "Aa"
+                    })
+                })
+            })
+        })
+
+        tentang("pendefinisian pada kelas", fn () {
+            ia("tidak ditemukan pada object dari kelas tersebut", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {}
+
+                Refleksi.terapkan!(A, "a", fn () { "a" })
+                tuntut A.a == "a"
+                tuntut A.baru.metode.berisi?("a") == salah
+            })
+
+            saat("membayangi fungsi statis", fn () {
+                ia("dapat menggantikan pemanggilan fungsi statis", fn () {
+                    tidakAda!(fn () { A })
+
+                    kelas A {
+                        fn sta a() { "a" }
+                    }
+
+                    tuntut A.a == "a"
+                    Refleksi.terapkan!(A, "a", fn () { "A" })
+                    tuntut A.a == "A"
+                })
+
+                tentang("penggunaan kata kunci `punca`", fn () {
+                    ia("memanggil metode yang terdefinisikan dalam kelas Kelas", fn () {
+                        tidakAda!(fn () { A })
+
+                        kelas A {}
+
+                        tuntut A.nama == "A"
+                        tuntut A.nama() == "A"
+
+                        Refleksi.terapkan!(A, "nama", fn () { "a" + punca })
+
+                        tuntut A.nama == "aA"
+                        tuntut A.nama() == "aA"
+                    })
+
+                    ia("tidak memanggil fungsi statis dengan nama yang sama", fn () {
+                        tidakAda!(fn () { A })
+                        tidakAda!(fn () { B })
+
+                        kelas A {
+                            fn sta nama() { "sta" }
+                            fn nama() { "nonsta" }
+                        }
+
+                        kelas B -> A {}
+
+                        Refleksi.terapkan!(B, "nama", fn () { "a" + punca })
+                        tuntut B.nama == "aB"
+                    })
+                })
+            })
+
+            ia("tidak diturunkan ke kelas turunan", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {}
+                Refleksi.terapkan!(A, "nama", fn () { "a" + punca })
+                kelas B -> A {}
+
+                tuntut A.nama == "aA"
+                tuntut B.nama == "B"
+                tuntut B.moyang.berisi?(A)
+            })
+        })
+
+        saat("terjadi masalah dalam metode refleksi", fn () {
+          ia("akan mencetak alamat objek dalam memori sebagai kelas", fn () {
+            tidakAda!(fn () { A })
+
+            ada a = 123
+            Refleksi.terapkan!(a, "a", fn () { tuntut salah: "dari dalam refleksi" })
+
+            tuntut coba {
+                a.a
+                salah
+            } tahan (e) {
+                ada jejakTerakhir = e.jejak.akhir
+                tuntut jejakTerakhir =~ #r{Integer@0x[0-9a-f]+\.a}
+                tuntut e.pesan == "dari dalam refleksi"
+                benar
+            } == benar
+          })
+        })
+    })
+
     ia("#cipta! menginisialisasi kelas", fn () {
         tidakAda!(fn () { A })
 
