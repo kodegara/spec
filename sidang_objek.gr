@@ -168,4 +168,32 @@ sidang(Objek, fn () {
             tuntut a == a
         })
     })
+
+    tentang(".variabel()", fn () {
+        saat("kelas tidak memiliki variabel instansi", fn () {
+            ia("kosong", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {}
+
+                tuntut A.baru.variabel.kosong? == benar
+            })
+        })
+
+        saat("kelas memiliki variabel instansi", fn () {
+            ia("mengutus Deret berisi daftar variabel instansi yang berisifat umum", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {
+                    ada a, b, c
+
+                    pribadi {
+                        ada d
+                    }
+                }
+
+                tuntut A.baru.variabel == ["a", "b", "c"]
+            })
+        })
+    })
 })
