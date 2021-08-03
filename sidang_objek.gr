@@ -3,6 +3,16 @@
 // Penggunaan tunduk pada aturan lisensi.
 
 sidang(Objek, fn () {
+    tentang("#baru()", fn () {
+        ia("membuat objek baru", fn () {
+            ada a, b = ..[Objek.baru, Objek.baru]
+
+            tuntut a itu Objek
+            tuntut b itu Objek
+            tuntut a != b
+        })
+    })
+
     tentang(".hantar(arg1)", fn () {
         saat("metode tidak terdefinisikan", fn () {
             ia("akan bermasalah", fn () {
