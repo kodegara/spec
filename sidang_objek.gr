@@ -3,6 +3,135 @@
 // Penggunaan tunduk pada aturan lisensi.
 
 sidang(Objek, fn () {
+    tentang(".hantar(arg1)", fn () {
+        saat("metode tidak terdefinisikan", fn () {
+            ia("akan bermasalah", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {}
+
+                tuntut coba {
+                    A.baru().hantar("a")
+                    salah
+                } tahan (e) {
+                    tuntut e.pesan == "objek tipe A tidak memiliki metode `a` yang bisa dipanggil"
+                    benar
+                } == benar
+            })
+        })
+
+        saat("metode terdefinisikan", fn () {
+            ia("memicu metode", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {
+                    fn a() { "a" }
+                }
+
+                tuntut A.baru.hantar("a") == "a"
+            })
+
+            saat("terjadi masalah dalam metode yang dipicu", fn () {
+                ia("akan bermasalah", fn () {
+                    tidakAda!(fn () { A })
+
+                    kelas A {
+                        fn a() { tuntut salah: "dari dalam metode" }
+                    }
+
+                    tuntut coba {
+                        A.baru.hantar("a")
+                        salah
+                    } tahan (e) {
+                        tuntut e.pesan == "dari dalam metode"
+                        tuntut e.jejak[e.jejak.panjang - 2] == "Objek.hantar/2"
+                        tuntut e.jejak[e.jejak.panjang - 3] == "Objek.hantar/1"
+                        benar
+                    } == benar
+                })
+            })
+        })
+
+        saat("fungsi statis terdefinisikan", fn () {
+            saat("objek berupa Kelas", fn () {
+                ia("memicu fungsi statis", fn () {
+                    tidakAda!(fn () { A })
+
+                    kelas A {
+                        fn sta a() { "a" }
+                        fn a() { "A" }
+                    }
+
+                    tuntut A.hantar("a") == "a"
+                })
+
+                saat("terjadi masalah dalam fungsi statis yang dipicu", fn () {
+                    ia("akan bermasalah", fn () {
+                        tidakAda!(fn () { A })
+
+                        kelas A {
+                            fn sta a() { tuntut salah: "dari dalam fungsi statis" }
+                        }
+
+                        tuntut coba {
+                            A.hantar("a")
+                            salah
+                        } tahan (e) {
+                            tuntut e.pesan == "dari dalam fungsi statis"
+                            tuntut e.jejak[e.jejak.panjang - 2] == "Objek.hantar/2"
+                            tuntut e.jejak[e.jejak.panjang - 3] == "Objek.hantar/1"
+                            benar
+                        } == benar
+                    })
+                })
+            })
+        })
+
+        saat("variabel instansi terdefinisikan", fn () {
+            ia("bisa mengembalikan nilai variabel instansi", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {
+                    ada a = [1, 2, 3]
+                }
+
+                tuntut A.baru.hantar("a") == [1, 2, 3]
+            })
+        })
+
+        saat("metode dan variabel instansi terdefinisikan", fn () {
+            ia("akan meresolusi metode terlebih dahulu", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {
+                    ada a = "A", b = "B"
+                    fn a() { "a" }
+                    fn c() { "c" }
+
+                    pribadi {
+                        ada c
+                        fn b() { "b" }
+                    }
+                }
+
+                ada a = A.baru
+                tuntut a.hantar("a") == "a"
+            })
+        })
+    })
+
+    tentang(".hantar(arg1, arg2)", fn () {
+        ia("bisa mengirim argumen sebagai parameter picu", fn () {
+            tidakAda!(fn () { A })
+
+            kelas Kalkulator {
+                fn sta tambah(angka1, angka2) { angka1 + angka2 }
+            }
+
+            tuntut Kalkulator.hantar("tambah", <1, 2>) == 3
+        })
+    })
+
     tentang(".kelas()", fn () {
         ia("bisa digunakan dengan `ini`", fn () {
             tidakAda!(fn () { A })
