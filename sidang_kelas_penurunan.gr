@@ -43,13 +43,17 @@ sidang("Penurunan `kelas`", fn () {
             } == benar
         })
 
-        xia("tidak bermasalah jika kelas punca sama dengan saat kelas didefinisikan untuk pertama kalinya", fn () {
+        ia("tidak bermasalah jika kelas punca sama dengan saat kelas didefinisikan untuk pertama kalinya", fn () {
             tidakAda!(fn () { A })
             tidakAda!(fn () { B })
 
             kelas A {}
-            kelas B -> A {}
-            kelas B -> A {}
+            kelas B -> A { fn a() { "a" }}
+            kelas B -> A { fn b() { "b" }}
+
+            ada b = B.baru
+            tuntut b.a() == "a"
+            tuntut b.b() == "b"
         })
     })
 
