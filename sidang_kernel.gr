@@ -45,6 +45,13 @@ sidang(Kernel, fn () {
         })
     })
 
+    tentang("#exit!()", fn () {
+        xia("keluar dari program", fn () {
+            // jalankan program yang menulis ke teks, tapi sebelum teks dicetak, exit
+            // cek bahwa teks tidak tercetak
+        })
+    })
+
     ia("#muat memuat dan mengevaluasi file sebagai inti Kernel", fn () {
         tidakAda!(fn () { ADariMuat })
         tidakAda!(fn () { BDariMuat })
