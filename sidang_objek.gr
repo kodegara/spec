@@ -194,6 +194,41 @@ sidang(Objek, fn () {
         })
     })
 
+    tentang(".kobit()", fn () {
+        ia("bisa menghitung nilai kode hash", fn () {
+            tidakAda!(fn () { X })
+
+            kelas X {
+                ada x
+            }
+
+            ada a, b = ..[X.baru, X.baru]
+
+            a.x = "a"
+            b.x = "b"
+
+            tuntut a.kobit != b.kobit
+        })
+
+        saat("terjadi masalah saat menghitung kobit pada variabel instansi", fn () {
+            ia("tidak menjadi masalah", fn () {
+                tidakAda!(fn () { X })
+
+                kelas X {
+                    ada x
+                }
+
+                ada a = X.baru
+                a.x = X.baru
+                Refleksi.terapkan!(a.x, "kobit", fn () { tuntut salah })
+
+                tuntut coba { a.x.kobit; salah } tahan (e) { benar } == benar
+
+                tuntut a.kobit itu Angka
+            })
+        })
+    })
+
     tentang(".metode()", fn () {
         ia("mengutus Deret seluruh fungsi yang bisa dipanggil", fn () {
             tidakAda!(fn () { A })
