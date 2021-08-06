@@ -336,6 +336,88 @@ sidang("Statis pada `kelas`", fn () {
 
             tuntut A.d() == "c"
         })
+
+        tentang("pendefinisian yang bergantung pada fungsi statis lain", fn () {
+            saat("dalam satu ekspresi", fn () {
+                ia("dievaluasi dengan benar", fn () {
+                    tidakAda!(fn () { Pelajaran })
+
+                    kelas Pelajaran {
+                        ada nama = "Fisika"
+                        ada sta MATEMATIKA = Pelajaran.baru("Matematika")
+
+                        fn sta baru(n) {
+                            Pelajaran.baru.tuk(fn (p) { p.nama = n })
+                        }
+                    }
+
+                    tuntut Pelajaran.MATEMATIKA.nama == "Matematika"
+
+                    ada x = Pelajaran.baru
+                    tuntut Pelajaran.baru.nama == "Fisika"
+                })
+            })
+
+            saat("dalam ekspresi multidefinisi", fn () {
+                saat("pada posisi awal", fn () {
+                    ia("dievaluasi dengan benar", fn () {
+                        tidakAda!(fn () { Pelajaran })
+
+                        kelas Pelajaran {
+                            ada sta MATEMATIKA = Pelajaran.baru("Matematika"), nama = "Fisika"
+
+                            fn sta baru(n) {
+                                Pelajaran.baru.tuk(fn (p) { p.nama = n })
+                            }
+                        }
+
+                        tuntut Pelajaran.MATEMATIKA.nama == "Matematika"
+
+                        ada x = Pelajaran.baru
+                        tuntut Pelajaran.baru.nama == "Fisika"
+                    })
+                })
+
+                saat("pada posisi akhir", fn () {
+                    ia("dievaluasi dengan benar", fn () {
+                        tidakAda!(fn () { Pelajaran })
+
+                        kelas Pelajaran {
+                            ada nama = "Fisika", sta MATEMATIKA = Pelajaran.baru("Matematika")
+
+                            fn sta baru(n) {
+                                Pelajaran.baru.tuk(fn (p) { p.nama = n })
+                            }
+                        }
+
+                        tuntut Pelajaran.MATEMATIKA.nama == "Matematika"
+                        tuntut Pelajaran.baru.nama == "Fisika"
+                    })
+                })
+
+                saat("menggunakan operasi keduk", fn () {
+                    ia("akan menjadi masalah", fn () {
+                        tidakAda!(fn () { Pelajaran })
+
+                        coba {
+                            kelas Pelajaran {
+                                ada nama, sta MATEMATIKA = ..["Fisika", Pelajaran.baru("Matematika")]
+
+                                fn sta baru(n) {
+                                    Pelajaran.baru.tuk(fn (p) { p.nama = n })
+                                }
+                            }
+                            salah
+                        } tahan (e) {
+                            tuntut e.pesan == "operasi keduk tidak dapat digunakan untuk variabel statis"
+                            benar
+                        } == benar
+
+                        tidakAda!(fn () { Pelajaran })
+                    })
+                })
+            })
+        })
     })
 
     tentang("fungsi", fn () {
