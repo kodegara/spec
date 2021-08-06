@@ -229,6 +229,12 @@ sidang("Operator", fn () {
             } == benar
         })
 
+        ia("dapat bermasalah namun tidak menyimpan masalah pada sisi kiri", fn () {
+            ada a = []
+            coba { a = a + 1 } tahan (e) { }
+            tuntut a == []
+        })
+
         tentang("saat penempatan multi-variabel", fn () {
             ia("bisa melakukan banyak penempatan nilai sekaligus selama pengenal telah terdefinisikan", fn () {
                 ada a, b, c
@@ -757,6 +763,12 @@ sidang("Operator", fn () {
                 a.a += 1
                 tuntut a.a == 124
             })
+        })
+
+        ia("dapat bermasalah namun tidak menyimpan masalah pada sisi kiri", fn () {
+            ada a = []
+            coba { a += 1 } tahan (e) { }
+            tuntut a == []
         })
     })
 
