@@ -12,6 +12,19 @@ sidang(Kelas, fn () {
         tuntut Siswa.baru() itu Siswa
     })
 
+    ia("menghiraukan `utus` dalam tubuh kelas", fn () {
+        tidakAda!(fn () { A })
+
+        kelas A {
+            utus 1
+            ada a
+        }
+
+        ada a = A.baru
+        a.a = 12
+        tuntut a.a == 12
+    })
+
     tentang("nama", fn () {
         ia("harus diawali huruf kapital", fn () {
             tuntut coba {
