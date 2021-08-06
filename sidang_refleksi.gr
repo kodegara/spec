@@ -3,7 +3,14 @@
 // Penggunaan tunduk pada aturan lisensi.
 
 sidang(Refleksi, fn () {
-    tentang("terapkan!", fn () {
+    tentang("#lmem", fn () {
+        ia("mencetak lokasi memori suatu objek", fn () {
+            tuntut Refleksi.lmem(benar) == Refleksi.lmem(benar)
+            tuntut Refleksi.lmem(Objek.baru) != Refleksi.lmem(Objek.baru)
+        })
+    })
+
+    tentang("#terapkan!", fn () {
         ia("akan bermasalah jika nama metode tidak dapat diterima sesuai kaidah penamaan", fn () {
             tuntut coba {
                 Refleksi.terapkan!("", "123", fn() {}); salah
