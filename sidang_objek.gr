@@ -274,6 +274,21 @@ sidang(Objek, fn () {
             tuntut Integer.metode().berisi?("hanyaDiKelas") == benar
             tuntut 1.metode().berisi?("hanyaDiKelas") == salah
         })
+
+        saat("metode diragamkan", fn () {
+            ia("terdaftar satu kali", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {
+                    fn a() {}
+                    fn a(arg1) {}
+                    fn a(arg1, arg2) {}
+                }
+
+                ada a = A.baru
+                tuntut a.metode.jumlah("a") == 1
+            })
+        })
     })
 
     ia(".nil?() mengecek apakah objek ini `nil`", fn () {
