@@ -46,6 +46,15 @@ sidang(Integer, fn () {
         tuntut a == [benar, benar, benar]
     })
 
+    tentang(".keRiil()", fn () {
+        ia("mengonversi dari integer ke riil", fn () {
+            tuntut 1.keRiil == 1.0
+            tuntut -1.keRiil == -1.0
+            tuntut 0.keRiil == 0.0
+            tuntut -0.keRiil == 0.0
+        })
+    })
+
     ia(".kobit() mencetak kode bibit sebagai kunci peta", fn () {
         tuntut 1.kobit() != nil
         tuntut -2.kobit() != nil
@@ -56,5 +65,14 @@ sidang(Integer, fn () {
         tuntut -0.negatif?() == salah
         tuntut 0.negatif?() == salah
         tuntut 1.negatif?() == salah
+    })
+
+    tentang(".riil()", fn () {
+        ia("mengonversi dari integer ke riil", fn () {
+            tuntut 1.riil == 1.0
+            tuntut -1.riil == -1.0
+            tuntut 0.riil == 0.0
+            tuntut -0.riil == 0.0
+        })
     })
 })
