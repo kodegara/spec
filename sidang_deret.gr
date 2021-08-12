@@ -340,6 +340,16 @@ sidang(Deret, fn () {
         tuntut [[], 1, 2, nil, {}, 3].jumlah() == 6
     })
 
+    tentang(".jumlah(arg)", fn () {
+        ia("mengutus berapa banyak elemen `arg` terdapat dalam deret", fn () {
+            ada deret = [1, 1, 2, 3, 5, 1, 2, nil, 1.0, 1.0, 1.01, 4, 6, 1, nil]
+
+            tuntut deret.jumlah(nil) == 2
+            tuntut deret.jumlah(1) == 6
+            tuntut deret.jumlah(1.0) == 2
+        })
+    })
+
     ia(".kobit() mencetak kode bibit", fn () {
         tuntut [].kobit() != "".kobit()
         tuntut [1].kobit() != 1.kobit()
