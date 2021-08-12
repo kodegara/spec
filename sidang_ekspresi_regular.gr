@@ -24,8 +24,8 @@ sidang(EkspresiRegular, fn () {
         } == benar
     })
 
-    ia(".jadiKata() menuliskan ekspresi regular", fn () {
-        tuntut #r{ga}.jadiKata() == "#r{ga}"
+    ia(".keKata() menuliskan ekspresi regular", fn () {
+        tuntut #r{ga}.keKata() == "#r{ga}"
     })
 
     ia(".literal() mengembalikan literal yang digunakan sebagai ekspresi regular", fn () {

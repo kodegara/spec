@@ -299,8 +299,8 @@ sidang(Kata, fn () {
         })
     })
 
-    ia(".jadiKata() mengembalikan diri sendiri", fn () {
-        tuntut "gara".jadiKata() == "gara"
+    ia(".keKata() mengembalikan diri sendiri", fn () {
+        tuntut "gara".keKata() == "gara"
     })
 
     ia(".ganti(arg1, arg2) mengubah setiap kemunculan arg1 menjadi arg2 dalam Kata yang baru", fn () {

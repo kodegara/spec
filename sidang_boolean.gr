@@ -28,6 +28,13 @@ sidang(Boolean, fn () {
         tuntut !benar || benar && salah == salah
     })
 
+    tentang(".keKata()", fn () {
+        ia("menuliskan nilai Boolean itu sendiri", fn () {
+            tuntut benar.keKata == "benar"
+            tuntut salah.keKata == "salah"
+        })
+    })
+
     ia(".kobit() mencetak kode bibit", fn () {
         tuntut benar.kobit() != salah.kobit()
     })

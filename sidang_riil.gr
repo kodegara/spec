@@ -48,20 +48,20 @@ sidang("Riil", fn () {
         tuntut fNaN.kobit() == -1182712812731
     })
 
-    ia(".jadiKata() menuliskan representasi bilangan riil yang mudah dibaca manusia", fn () {
-        tuntut 0.3.jadiKata() == "0.3"
-        tuntut (0.1 + 0.2).jadiKata() == "0.3"
-        tuntut (2 ** 2.5).jadiKata() == "5.65685424949238"
-        tuntut fAnanta.jadiKata() == "fAnanta"
-        tuntut -fAnanta.jadiKata() == "-fAnanta"
-        tuntut fNaN.jadiKata() == "fNaN"
+    ia(".keKata() menuliskan representasi bilangan riil yang mudah dibaca manusia", fn () {
+        tuntut 0.3.keKata() == "0.3"
+        tuntut (0.1 + 0.2).keKata() == "0.3"
+        tuntut (2 ** 2.5).keKata() == "5.65685424949238"
+        tuntut fAnanta.keKata() == "fAnanta"
+        tuntut -fAnanta.keKata() == "-fAnanta"
+        tuntut fNaN.keKata() == "fNaN"
     })
 
-    ia(".jadiKataPersis() menuliskan representasi bilangan riil secara akurat dan lengkap", fn () {
-        tuntut 0.3.jadiKataPersis() == "0.3000000000000000000108420217248550443400745280086994171142578125"
-        tuntut fAnanta.jadiKataPersis() == "fAnanta"
-        tuntut -fAnanta.jadiKataPersis() == "-fAnanta"
-        tuntut fNaN.jadiKataPersis() == "fNaN"
+    ia(".keKataPersis() menuliskan representasi bilangan riil secara akurat dan lengkap", fn () {
+        tuntut 0.3.keKataPersis() == "0.3000000000000000000108420217248550443400745280086994171142578125"
+        tuntut fAnanta.keKataPersis() == "fAnanta"
+        tuntut -fAnanta.keKataPersis() == "-fAnanta"
+        tuntut fNaN.keKataPersis() == "fNaN"
     })
 
     ia(".negatif?() mengecek apakah suatu bilangan negatif atau positif", fn () {

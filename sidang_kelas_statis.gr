@@ -470,11 +470,11 @@ sidang("Statis pada `kelas`", fn () {
             tidakAda!(fn () { A })
 
             kelas A {
-                fn sta x(x) { x.jadiKata() }
+                fn sta x(x) { x.keKata() }
             }
 
             tuntut A.x(1) == "1"
-            tuntut A.x([1,2,3]) == [1,2,3].jadiKata()
+            tuntut A.x([1,2,3]) == [1,2,3].keKata()
         })
 
         ia("bisa memanggil fungsi statis", fn () {
@@ -486,7 +486,7 @@ sidang("Statis pada `kelas`", fn () {
                 fn sta ab() { a() + b() }
                 fn sta abc() { a() + b() + c() }
 
-                fn sta x(x) { x.jadiKata() }
+                fn sta x(x) { x.keKata() }
                 fn sta abcx(arg) { abc() + x(arg) }
 
                 pribadi {
@@ -506,7 +506,7 @@ sidang("Statis pada `kelas`", fn () {
             tidakAda!(fn () { A })
 
             kelas A {
-                fn sta x(x) { x.jadiKata() }
+                fn sta x(x) { x.keKata() }
                 fn sta aa() { x("a") + A.x("a") }
             }
 

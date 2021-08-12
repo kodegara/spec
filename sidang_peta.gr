@@ -278,10 +278,10 @@ sidang(Peta, fn () {
         tuntut p.panjang() > 0
     })
 
-    tentang(".jadiKata()", fn () {
+    tentang(".keKata()", fn () {
         ia("menuliskan Peta menjadi Kata", fn () {
-            tuntut peta.jadiKata() itu Kata
-            cetak(peta.jadiKata())
+            tuntut peta.keKata() itu Kata
+            cetak(peta.keKata())
         })
 
         saat("nilai kobit sama", fn () {
@@ -294,7 +294,7 @@ sidang(Peta, fn () {
                 Refleksi.terapkan!(obj2, "kobit", fnKobit)
 
                 ada p = {obj1: obj1, obj2: obj2}
-                tuntut p.jadiKata() == "{123: 123, \"abc\": \"abc\"}"
+                tuntut p.keKata() == "{123: 123, \"abc\": \"abc\"}"
             })
         })
     })

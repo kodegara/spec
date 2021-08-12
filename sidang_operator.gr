@@ -200,7 +200,7 @@ sidang("Operator", fn () {
                 ada a = 1.5
                 a = -a
                 tuntut a == -1.5
-                tuntut a.jadiKata() == "-1.5"
+                tuntut a.keKata() == "-1.5"
                 tuntut a + 1.5 == 0
 
                 tuntut -fAnanta == -fAnanta

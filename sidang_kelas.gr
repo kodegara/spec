@@ -1049,8 +1049,8 @@ sidang(Kelas, fn () {
             }
 
             ada a = A.baru()
-            tuntut a.jadiKata().berisi?("a=123")
-            tuntut a.jadiKata().berisi?("b=") == salah
+            tuntut a.keKata().berisi?("a=123")
+            tuntut a.keKata().berisi?("b=") == salah
             tuntut a.b() == "b"
         })
 
@@ -1261,7 +1261,7 @@ sidang(Kelas, fn () {
     })
 
     // uji coba tentang metode dari kelas Kelas
-    tentang(".jadiKata", fn () {
+    tentang(".keKata", fn () {
         ia("bisa mencetak instansi variabel yang mereferensikan diri sendiri", fn () {
             kelas A {
                 ada a
@@ -1271,7 +1271,7 @@ sidang(Kelas, fn () {
 
             ada a = A.baru()
             a.a()
-            tuntut a.jadiKata().berisi?("a=<ini>")
+            tuntut a.keKata().berisi?("a=<ini>")
         })
     })
 
