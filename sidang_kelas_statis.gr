@@ -418,6 +418,72 @@ sidang("Statis pada `kelas`", fn () {
                 })
             })
         })
+
+        saat("digabungkan dengan marka `fana`", fn () {
+            ia("bisa diubah nilainya", fn () {
+                tidakAda!(fn () { Negara })
+
+                kelas Negara {
+                    ada sta fana IBUKOTA = []
+
+                    IBUKOTA += ["Jakarta"]
+
+                    fn sta tambahTanpaIni(nama) {
+                        IBUKOTA += [nama]
+                    }
+
+                    fn sta tambahDenganIni(nama) {
+                        ini.IBUKOTA += [nama]
+                    }
+
+                    fn sta tambahDenganNamaKelas(nama) {
+                        Negara.IBUKOTA += [nama]
+                    }
+                }
+
+                tuntut Negara.IBUKOTA == ["Jakarta"]
+
+                Negara.tambahTanpaIni("Paris")
+                Negara.tambahDenganIni("Tokyo")
+                Negara.tambahDenganNamaKelas("Madrid")
+                Negara.IBUKOTA += ["Seoul"]
+
+                tuntut Negara.IBUKOTA == ["Jakarta", "Paris", "Tokyo", "Madrid", "Seoul"]
+            })
+        })
+
+        saat("digabungkan dengan marka `tetap`", fn () {
+            ia("tidak bisa diubah nilainya", fn () {
+                tidakAda!(fn () { Negara })
+
+                kelas Negara {
+                    ada sta tetap IBUKOTA = []
+
+                    coba { IBUKOTA += ["Jakarta"] } tahan (e) {}
+
+                    fn sta tambahTanpaIni(nama) {
+                        IBUKOTA += [nama]
+                    }
+
+                    fn sta tambahDenganIni(nama) {
+                        ini.IBUKOTA += [nama]
+                    }
+
+                    fn sta tambahDenganNamaKelas(nama) {
+                        Negara.IBUKOTA += [nama]
+                    }
+                }
+
+                tuntut Negara.IBUKOTA == []
+
+                tuntut coba { Negara.tambahTanpaIni("Paris") } tahan (e) { benar } == benar
+                tuntut coba { Negara.tambahDenganIni("Tokyo") } tahan (e) { benar } == benar
+                tuntut coba { Negara.tambahDenganNamaKelas("Madrid") } tahan (e) { benar } == benar
+                tuntut coba { Negara.IBUKOTA += ["Seoul"] } tahan (e) { benar } == benar
+
+                tuntut Negara.IBUKOTA == []
+            })
+        })
     })
 
     tentang("fungsi", fn () {
