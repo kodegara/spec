@@ -10,6 +10,47 @@ sidang("Riil", fn () {
         tuntut Riil.PI >= 3.14
     })
 
+    tentang(".desimal(arg1)", fn () {
+        ada angka = 12650.5011872336272724
+        ada angkaAsli = 12650.5011872336272724
+
+        saat("nilai argumen negatif", fn () {
+            ia("memotong seluruh desimal", fn () {
+                tuntut angka.desimal(-1) == 12650.0
+                tuntut angka == angkaAsli
+            })
+        })
+
+        saat("nilai argumen 0", fn () {
+            ia("memotong seluruh desimal", fn () {
+                tuntut angka.desimal(0) == 12650.0
+                tuntut angka == angkaAsli
+            })
+        })
+
+        saat("nilai argumen positif", fn () {
+            ia("mengutus nilai dengan angka dibelakang koma sebanyak argumen", fn () {
+                tuntut angka.desimal(1) == 12650.5
+                tuntut angka.desimal(2) == 12650.5
+                tuntut angka.desimal(3) == 12650.501
+                tuntut angka.desimal(4) == 12650.5011
+                tuntut angka.desimal(5) == 12650.50118
+                tuntut angka.desimal(6) == 12650.501187
+                tuntut angka.desimal(7) == 12650.5011872
+                tuntut angka.desimal(8) == 12650.50118723
+                tuntut angka.desimal(9) == 12650.501187233
+                tuntut angka.desimal(10) == 12650.5011872336
+                tuntut angka.desimal(11) == 12650.50118723362
+                tuntut angka.desimal(12) == 12650.501187233627
+                tuntut angka.desimal(13) == 12650.5011872336272
+                tuntut angka.desimal(14) == 12650.50118723362727
+                tuntut angka.desimal(15) == 12650.501187233627272
+                tuntut angka.desimal(16) == 12650.5011872336272724
+                tuntut angka.desimal(100) == 12650.5011872336272724
+            })
+        })
+    })
+
     ia(".mutlak() mengutus nilai riil yang tidak negatif", fn () {
         tuntut fNaN.mutlak().nan?() == benar
         tuntut fAnanta.mutlak() == fAnanta
