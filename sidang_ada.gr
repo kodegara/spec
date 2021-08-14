@@ -90,6 +90,22 @@ sidang("Kata kunci ada", fn () {
             } == benar
         })
 
+        ia("bisa berisi Unicode", fn () {
+            ada a😍 = "kasmaran"
+            ada 😍 = "kasmaran"
+            tuntut a😍 == 😍
+
+            ada 我爱你 = "i love you"
+            ada ผมรักคุณ = "i love you"
+            ada tôi_mến_bạn = "i love you"
+            ada я_тебя_люблю = "i love you"
+            tuntut 我爱你 == ผมรักคุณ
+            tuntut tôi_mến_bạn == я_тебя_люблю
+
+            ada とうきょう = "Tokyo"
+            tuntut とうきょう == "Tokyo"
+        })
+
         tentang("berakhiran `=`", fn () {
             ia("tidak boleh jika ada `=` lagi", fn () {
                 tuntut coba {
