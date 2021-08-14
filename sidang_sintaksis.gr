@@ -192,6 +192,24 @@ sidang("Sintaksis", fn () {
     })
 
     tentang("interpretasi kode dengan/tanpa titik-koma (`;`)", fn () {
+        saat("dengan operator logika", fn () {
+            ia("tidak memberi titik koma pada baris yang berbeda", fn () {
+                tuntut eval!("benar &&\nbenar") == benar
+                tuntut eval!("salah ||\nbenar") == benar
+                tuntut eval!("salah ||\n\n\n\nbenar") == benar
+            })
+        })
+
+        saat("dengan operator aritmatika", fn () {
+            ia("tidak memberi titik koma pada baris yang berbeda", fn () {
+                tuntut eval!("1 +\n\n\n1") == 2
+                tuntut eval!("1- \n\n\n1") == 0
+                tuntut eval!("1 *\n\n\n3") == 3
+                tuntut eval!("4 /\n\n\n2") == 2
+                tuntut eval!("4 **\n\n2") == 16
+            })
+        })
+
         tentang("Deret", fn () {
             tentang("[] sebagai literal", fn () {
                 ia("tidak menggabung deret dalam baris yang berbeda", fn () {
