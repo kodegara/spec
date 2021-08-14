@@ -297,6 +297,13 @@ sidang(Kata, fn () {
 
             tuntut kata == "Gara"
         })
+
+        ia("mengutus diri sendiri", fn () {
+            ada kata = "Gara"
+            ada kataTerutus = kata.tiap(fn (k) {})
+
+            tuntut kata == kataTerutus
+        })
     })
 
     ia(".keKata() mengembalikan diri sendiri", fn () {

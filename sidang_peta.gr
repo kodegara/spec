@@ -266,16 +266,25 @@ sidang(Peta, fn () {
         tuntut pBaru == {"3": "3", benar: benar, salah: salah}
     })
 
-    ia(".tiap(arg) mengiterasi pasangan kunci-nilai pada peta", fn () {
-        ada p = {}
+    tentang(".tiap(arg1)", fn () {
+        ia("mengiterasi pasangan kunci-nilai pada peta", fn () {
+            ada p = {}
 
-        peta.tiap(fn (k, n) {
-            p = p[k: n]
+            peta.tiap(fn (k, n) {
+                p = p[k: n]
+            })
+
+            tuntut p == peta
+            tuntut p.panjang() == peta.panjang()
+            tuntut p.panjang() > 0
         })
 
-        tuntut p == peta
-        tuntut p.panjang() == peta.panjang()
-        tuntut p.panjang() > 0
+        ia("mengutus diri sendiri", fn () {
+            ada p = {0: 0, benar: benar, salah: salah}
+            ada pTerutus = p.tiap(fn (k, n) {})
+
+            tuntut p == pTerutus
+        })
     })
 
     tentang(".keKata()", fn () {
