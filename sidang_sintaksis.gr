@@ -197,16 +197,19 @@ sidang("Sintaksis", fn () {
                 tuntut eval!("benar &&\nbenar") == benar
                 tuntut eval!("salah ||\nbenar") == benar
                 tuntut eval!("salah ||\n\n\n\nbenar") == benar
+                tuntut eval!("salah || \n\t\tbenar") == benar
+                tuntut eval!("benar && \n\t\tsalah") == salah
             })
         })
 
         saat("dengan operator aritmatika", fn () {
             ia("tidak memberi titik koma pada baris yang berbeda", fn () {
-                tuntut eval!("1 +\n\n\n1") == 2
-                tuntut eval!("1- \n\n\n1") == 0
-                tuntut eval!("1 *\n\n\n3") == 3
-                tuntut eval!("4 /\n\n\n2") == 2
-                tuntut eval!("4 **\n\n2") == 16
+                tuntut eval!("1 +\n\n\t1") == 2
+                tuntut eval!("1- \n\n\t1") == 0
+                tuntut eval!("1 *\n\n\t3") == 3
+                tuntut eval!("4 /\n\n\t2") == 2
+                tuntut eval!("4 **\n\t2") == 16
+                tuntut eval!("cetak(\"a\" + \n\t\"b\")") == nil
             })
         })
 
