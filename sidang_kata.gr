@@ -139,6 +139,17 @@ sidang(Kata, fn () {
         tuntut "-1 derajat".besar() == "-1 DERAJAT"
     })
 
+    tentang("besar?()", fn () {
+        ia("mengutus benar jika seluruh karakter dalam Kata adalah huruf besar", fn () {
+            tuntut "GARA".besar? == benar
+            tuntut "GArA".besar? == salah
+            tuntut "CÉDILLE".besar? == benar
+            tuntut "CéDILLE".besar? == salah
+            tuntut "G".besar? == benar
+            tuntut "é".besar? == salah
+        })
+    })
+
     ia(".cari(arg1) menemukan posisi dimana Kata dapat ditemukan dalam Kata untuk pertama kalinya", fn () {
         tuntut coba { "".cari(1) } tahan (e) { e.pesan().berisi?("tidak dapat menerima Integer") }
         tuntut coba { "".cari("1", "2") } tahan (e) { e.pesan().berisi?("`cari` hanya bisa dipanggil dengan 1 argumen") }
@@ -222,6 +233,17 @@ sidang(Kata, fn () {
         tuntut "Abc".kecil() == "abc"
         tuntut "abc DEF".kecil() == "abc def"
         tuntut "ABC DEF".kecil() == "abc def"
+    })
+
+    tentang("kecil?()", fn () {
+        ia("mengutus benar jika seluruh karakter dalam Kata adalah huruf kecil", fn () {
+            tuntut "gara".kecil? == benar
+            tuntut "gaRa".kecil? == salah
+            tuntut "cédille".kecil? == benar
+            tuntut "CéDILLE".kecil? == salah
+            tuntut "é".kecil? == benar
+            tuntut "É".kecil? == salah
+        })
     })
 
     ia(".kobit() mencetak kode bibit", fn () {
