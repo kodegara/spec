@@ -245,7 +245,7 @@ sidang("Sintaksis", fn () {
                     tuntut n == 100
                 })
 
-                ia("bisa memahami deret", fn () {
+                ia("bisa multi-baris", fn () {
                     ada a = [
                         1
                     ]
@@ -257,6 +257,9 @@ sidang("Sintaksis", fn () {
                     ]
 
                     tuntut a == [2]
+
+                    tuntut eval!("ada a = [\n\t0\n]") == [0]
+                    tuntut eval!("ada a = [\n\t0\n]\n") == [0]
                 })
 
                 ia("bisa memahami Deret dalam Deret", fn () {
@@ -286,6 +289,55 @@ sidang("Sintaksis", fn () {
                     // todo: bisa ada titik komanya
                     // ada n4; // ada titik komanya dan komentar
                     // [].tiap(fn (e) {})
+                })
+            })
+
+            tentang("[] sebagai operasi pengisian", fn () {
+                ia("bisa multi-baris", fn () {
+                    ada a = [0]
+
+                    tuntut eval!("a = a[\n\t0:1\n]") == [1]
+                    tuntut a == [1]
+
+                    tuntut eval!("a = a[\n\t0:2\n]\n") == [2]
+                    tuntut a == [2]
+                })
+            })
+        })
+
+        tentang("Peta", fn () {
+            tentang("{} sebagai literal", fn () {
+                ia("bisa multi-baris", fn () {
+                    ada p = {
+                        0: 0,
+                        1: 1
+                    }
+
+                    tuntut p == {0: 0, 1: 1}
+
+                    tuntut eval!("ada p = {\n\t0: 0,\n\t1: 1\n}") == p
+                    tuntut eval!("ada p = {\n\t0: 0,\n\t1: 1\n}\n") == p
+                })
+            })
+        })
+
+        tentang("Rangkap", fn () {
+            tentang("<> sebagai literal", fn () {
+                ia("bisa multi-baris", fn () {
+                    ada a = <
+                        1
+                    >
+
+                    tuntut a == <1>
+
+                    a = <
+                        2
+                    >
+
+                    tuntut a == <2>
+
+                    tuntut eval!("ada a = <\n\t0\n>") == <0>
+                    tuntut eval!("ada a = <\n\t0\n>\n") == <0>
                 })
             })
         })
