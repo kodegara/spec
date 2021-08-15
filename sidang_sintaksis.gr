@@ -202,6 +202,16 @@ sidang("Sintaksis", fn () {
             tuntut eval!("ada a = 1;\n\t\t\na + 1;") == 2
         })
 
+        ia("tidak menambahkan titik koma pada baris yang hanya berisi spasi", fn () {
+            tuntut eval!("ada a = 1\n \na + 1") == 2
+            tuntut eval!("ada a = 1;\n \na + 1") == 2
+            tuntut eval!("ada a = 1;\n \na + 1;") == 2
+
+            tuntut eval!("ada a = 1\n    \na + 1") == 2
+            tuntut eval!("ada a = 1;\n    \na + 1") == 2
+            tuntut eval!("ada a = 1;\n    \na + 1;") == 2
+        })
+
         saat("dengan operator logika", fn () {
             ia("tidak memberi titik koma pada baris yang berbeda", fn () {
                 tuntut eval!("benar &&\nbenar") == benar
