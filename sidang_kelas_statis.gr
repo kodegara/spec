@@ -757,6 +757,52 @@ sidang("Statis pada `kelas`", fn () {
                 tuntut A.baru(123).a() == 123
                 tuntut A.baru("123").a() == "123"
             })
+
+            saat("mengatur variabel statis yang bersifat pribadi", fn () {
+                ia("dapat dilakukan melalui penempatan sederhana", fn () {
+                    tidakAda!(fn () { A })
+
+                    kelas A {
+                        fn sta baru(a) {
+                            ada x = baru
+                            x.a = a
+                            x.a = x.a() + x.a // satu dengan () dan satu tanpa () di sengaja
+                            x
+                        }
+
+                        fn nilaiA() { a }
+
+                        pribadi {
+                            ada a
+                        }
+                    }
+
+                    ada a = A.baru(123)
+                    tuntut a.nilaiA == 246
+                })
+
+                ia("dapat dilakukan melalui fungsi lapas", fn () {
+                    tidakAda!(fn () { A })
+
+                    kelas A {
+                        fn sta baru(a) {
+                            baru().tuk(fn (obj) {
+                                obj.a = a
+                                obj.a = obj.a() + obj.a // satu dengan () dan satu tanpa () di sengaja
+                            })
+                        }
+
+                        fn nilaiA() { a }
+
+                        pribadi {
+                            ada a
+                        }
+                    }
+
+                    ada a = A.baru(123)
+                    tuntut a.nilaiA == 246
+                })
+            })
         })
     })
 })
