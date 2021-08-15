@@ -30,7 +30,7 @@ sidang(EkspresiRegular, fn () {
 
     ia(".literal() mengembalikan literal yang digunakan sebagai ekspresi regular", fn () {
         tuntut #r{ga}.literal() == "ga"
-        tuntut #r{^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$}.literal() == "^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
+        tuntut #r{^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$}.literal() == "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
     })
 
     ia(".sama?(arg) bernilai benar jika kedua ekspresi regular memiliki literal yang sama", fn () {

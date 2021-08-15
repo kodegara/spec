@@ -10,6 +10,16 @@ sidang(Kata, fn () {
         tuntut Kata.baru() == ""
     })
 
+    ia("bermasalah jika mengandung karakter lepas yang tidak dapat diterima", fn () {
+        tuntut coba {
+            "\."
+            salah
+        } tahan (e) {
+            tuntut e.pesan == "Kata mengandung karakter lepas yang tidak dapat diterima"
+            benar
+        } == benar
+    })
+
     tentang("#ordinal", fn () {
         ia("mengkonversi karakter paling kanan ke nilai ordinalnya", fn () {
             tuntut Kata.metode().berisi?("ordinal")
@@ -84,6 +94,8 @@ sidang(Kata, fn () {
         tuntut id("\"") == File.baca(folder + "/1_petik_tanpa_tutup.txt")
         tuntut id("\"\"") == File.baca(folder + "/1_petik.txt")
         tuntut id("\t\n") == File.baca(folder + "/1_tab.txt")
+        tuntut id("& <> \" \\' YOOO &&&&") == File.baca(folder + "/1_kutip_tunggal_campur_antara.txt")
+        tuntut id("\" \\'") == File.baca(folder + "/1_kutip_tunggal_dan_ganda.txt")
     })
 
     ia("dapat membentang beberapa baris", fn () {
