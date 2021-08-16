@@ -420,35 +420,70 @@ sidang("Statis pada `kelas`", fn () {
         })
 
         saat("digabungkan dengan marka `fana`", fn () {
-            ia("bisa diubah nilainya", fn () {
-                tidakAda!(fn () { Negara })
+            saat("diubah nilainya menggunakan operator penempatan berlapis `+=`", fn () {
+                ia("bisa dilakukan", fn () {
+                    tidakAda!(fn () { Negara })
 
-                kelas Negara {
-                    ada sta fana IBUKOTA = []
+                    kelas Negara {
+                        ada sta fana IBUKOTA = []
 
-                    IBUKOTA += ["Jakarta"]
+                        IBUKOTA += ["Jakarta"]
 
-                    fn sta tambahTanpaIni(nama) {
-                        IBUKOTA += [nama]
+                        fn sta tambahTanpaIni(nama) {
+                            IBUKOTA += [nama]
+                        }
+
+                        fn sta tambahDenganIni(nama) {
+                            ini.IBUKOTA += [nama]
+                        }
+
+                        fn sta tambahDenganNamaKelas(nama) {
+                            Negara.IBUKOTA += [nama]
+                        }
                     }
 
-                    fn sta tambahDenganIni(nama) {
-                        ini.IBUKOTA += [nama]
+                    tuntut Negara.IBUKOTA == ["Jakarta"]
+
+                    Negara.tambahTanpaIni("Paris")
+                    Negara.tambahDenganIni("Tokyo")
+                    Negara.tambahDenganNamaKelas("Madrid")
+                    Negara.IBUKOTA += ["Seoul"]
+
+                    tuntut Negara.IBUKOTA == ["Jakarta", "Paris", "Tokyo", "Madrid", "Seoul"]
+                })
+            })
+
+            saat("diubah nilainya menggunakan operator penempatan `=`", fn () {
+                ia("bisa dilakukan", fn () {
+                    tidakAda!(fn () { Negara })
+
+                    kelas Negara {
+                        ada sta fana IBUKOTA = []
+
+                        IBUKOTA = IBUKOTA[0: "Jakarta"]
+
+                        fn sta tambahTanpaIni(nama) {
+                            IBUKOTA = IBUKOTA[IBUKOTA.panjang(): nama]
+                        }
+
+                        fn sta tambahDenganIni(nama) {
+                            ini.IBUKOTA = ini.IBUKOTA[ini.IBUKOTA.panjang(): nama]
+                        }
+
+                        fn sta tambahDenganNamaKelas(nama) {
+                            Negara.IBUKOTA = Negara.IBUKOTA[Negara.IBUKOTA.panjang(): nama]
+                        }
                     }
 
-                    fn sta tambahDenganNamaKelas(nama) {
-                        Negara.IBUKOTA += [nama]
-                    }
-                }
+                    tuntut Negara.IBUKOTA == ["Jakarta"]
 
-                tuntut Negara.IBUKOTA == ["Jakarta"]
+                    Negara.tambahTanpaIni("Paris")
+                    Negara.tambahDenganIni("Tokyo")
+                    Negara.tambahDenganNamaKelas("Madrid")
+                    Negara.IBUKOTA += ["Seoul"]
 
-                Negara.tambahTanpaIni("Paris")
-                Negara.tambahDenganIni("Tokyo")
-                Negara.tambahDenganNamaKelas("Madrid")
-                Negara.IBUKOTA += ["Seoul"]
-
-                tuntut Negara.IBUKOTA == ["Jakarta", "Paris", "Tokyo", "Madrid", "Seoul"]
+                    tuntut Negara.IBUKOTA == ["Jakarta", "Paris", "Tokyo", "Madrid", "Seoul"]
+                })
             })
         })
 
