@@ -82,6 +82,21 @@ sidang(Kelas, fn () {
     })
 
     tentang("metode", fn () {
+        ia("bisa dipanggil dengan ini", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                fn data() { [1, 2, 3] }
+                fn dataDenganIni() { ini.data }
+                fn dataDenganIniPicu() { ini.data() }
+            }
+
+            ada a = A.baru
+            tuntut a.data == [1, 2, 3]
+            tuntut a.dataDenganIni == [1, 2, 3]
+            tuntut a.dataDenganIniPicu == [1, 2, 3]
+        })
+
         ia("tidak merembet keluar", fn () {
             ada penghitungTanggalLahir
 
