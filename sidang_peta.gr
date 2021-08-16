@@ -98,14 +98,14 @@ sidang(Peta, fn () {
         p.gali(["x", "y", "z", "a", "b"]) == nil
     })
 
-    ia(".hapusPosisi(arg1) menghapus elemen pada posisi arg1", fn () {
+    ia(".hapus(arg1) menghapus elemen pada posisi arg1", fn () {
         ada p = {"x": 123, "y": benar}
 
         tuntut p["x"] == 123
         tuntut p["y"] == benar
 
-        tuntut p.hapusPosisi("x") == 123
-        tuntut p["x"] == nil
+        tuntut p.hapus("x") == <123, {"y": benar}>
+        tuntut p["x"] == 123
         tuntut p["y"] == benar
     })
 
@@ -146,21 +146,33 @@ sidang(Peta, fn () {
         tuntut {nil: nil}.kosong?() == salah
     })
 
-    ia(".kunci() mengembalikan deret berisi kunci", fn () {
-        tuntut peta.kunci() == [
-            1,
-            "two",
-            benar,
-            salah,
-            kFungsi,
-            nil,
-            Masalah,
-            kArr,
-            kPeta,
-            kRiil,
-            kRiil2v1,
-            kRiil2v2
-        ]
+    tentang(".kunci()", fn () {
+        ia(".kunci() mengembalikan deret berisi kunci", fn () {
+            tuntut peta.kunci() == [
+                1,
+                "two",
+                benar,
+                salah,
+                kFungsi,
+                nil,
+                Masalah,
+                kArr,
+                kPeta,
+                kRiil,
+                kRiil2v1,
+                kRiil2v2
+            ]
+        })
+
+        saat("elemen dihapus", fn () {
+            ia("mengembalikan deret kunci yang baru", fn () {
+                ada p = {0: 0, 1: 1, 2: 2}
+                ada pBaru = p.hapus(1).akhir
+
+                tuntut p.kunci != pBaru.kunci
+                tuntut pBaru.kunci == [0, 2]
+            })
+        })
     })
 
     ia(".kunci?(arg) mengecek apakah peta memiliki kunci arg", fn () {
