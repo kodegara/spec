@@ -27,7 +27,7 @@ sidang("Komentar", fn () {
         tuntut benar == benar
     })
 
-    ia("bisa digunakan untuk mengomentasi kode berdekatan dengan `ini`", fn () {
+    ia("bisa digunakan untuk mengomentari kode berdekatan dengan `ini`", fn () {
         kelas A {
             ada a
 
@@ -45,5 +45,18 @@ sidang("Komentar", fn () {
 
         A.baru().a()
         A.baru().b()
+    })
+
+    saat("mengomentari kelas untuk dokumentasi", fn () {
+        ia("bisa dilakukan tanpa diperlukannya garis baru", fn () {
+            tidakAda!(fn () { A })
+
+            // komentar kelas A
+            kelas A {}
+
+            tuntut eval!("// komentar kelas A\nkelas A {\n}") itu Kelas
+            tuntut eval!("\n// komentar kelas A\nkelas A {\n}") itu Kelas
+            eval!("// komentar kelas A\nkelas A {\n}\n\n//komentar kelas B\nkelas B {\n}")
+        })
     })
 })
