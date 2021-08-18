@@ -50,6 +50,8 @@ sidang(Refleksi, fn () {
 
         saat("metode belum terdefinisikan", fn () {
             ia("akan didefinisikan", fn () {
+                tidakAda!(fn () { A })
+
                 kelas A {}
                 ada a1 = A.baru()
                 ada a2 = A.baru()
@@ -60,6 +62,25 @@ sidang(Refleksi, fn () {
                 tuntut a1.hmm == "hmma1"
                 tuntut a2.hmm == "hmma2"
                 tuntut a1.hmm != a2.hmm
+            })
+
+            saat("kelas bersifat tetap", fn () {
+                ia("dapat didefinisikan", fn () {
+                    tidakAda!(fn () { A })
+
+                    kelas tetap A {}
+                    tuntut A.tetap?
+
+                    ada a1 = A.baru()
+                    ada a2 = A.baru()
+
+                    Refleksi.terapkan!(a1, "hmm", fn () { "hmma1" })
+                    Refleksi.terapkan!(a2, "hmm", fn () { "hmma2" })
+
+                    tuntut a1.hmm == "hmma1"
+                    tuntut a2.hmm == "hmma2"
+                    tuntut a1.hmm != a2.hmm
+                })
             })
 
             ia("termasuk dalam daftar metode objek tersebut", fn () {
@@ -163,6 +184,26 @@ sidang(Refleksi, fn () {
                     tuntut A.baru().a() == "A"
                 })
 
+                saat("kelas bersifat tetap", fn () {
+                    ia("bisa ditimpa", fn () {
+                        tidakAda!(fn () { A })
+
+                        kelas tetap A {
+                            fn a() { "A" }
+                        }
+
+                        tuntut A.tetap? == benar
+
+                        ada a = A.baru()
+                        tuntut a.a() == "A"
+
+                        Refleksi.terapkan!(a, "a", fn () { "a" })
+                        tuntut a.a() == "a"
+
+                        tuntut A.baru().a() == "A"
+                    })
+                })
+
                 saat("metode asal berupa metode pribadi", fn () {
                     ia("menjadi dapat diakses secara umum", fn () {
                         tidakAda!(fn () { A })
@@ -209,6 +250,20 @@ sidang(Refleksi, fn () {
             })
 
             saat("membayangi fungsi statis", fn () {
+                ia("tidak dapat dilakukan jika kelas bersifat tetap", fn () {
+                    tidakAda!(fn () { A })
+
+                    kelas tetap A {}
+
+                    tuntut coba {
+                        Refleksi.terapkan!(A, "a", fn () { "A" })
+                        salah
+                    } tahan (e) {
+                        tuntut e.pesan == "dilarang melakukan penerapan pada kelas `A` yang bersifat tetap"
+                        benar
+                    } == benar
+                })
+
                 ia("dapat menggantikan pemanggilan fungsi statis", fn () {
                     tidakAda!(fn () { A })
 

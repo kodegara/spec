@@ -25,6 +25,42 @@ sidang(Kelas, fn () {
         tuntut a.a == 12
     })
 
+    tentang("sifat `tetap`", fn () {
+        ia("membuat kelas tidak bisa diperkaya setelah pendefinisian", fn () {
+            tidakAda!(fn () { A })
+
+            kelas tetap A {
+                ada a
+            }
+
+            ada a = A.baru
+            tuntut a.a == nil
+
+            tuntut coba {
+                kelas A { ada b }
+                salah
+            } tahan (e) {
+                tuntut e.pesan == "kelas `A` tidak dapat diperkaya karena telah bersifat tetap"
+                benar
+            } == benar
+        })
+
+        ia("tidak bisa disematkan pada kelas yang telah terdefinisikan", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {}
+            tuntut A.tetap? == salah
+
+            tuntut coba {
+                kelas tetap A {}
+                salah
+            } tahan (e) {
+                tuntut e.pesan == "dilarang menambahkan sifat tetap ke kelas `A` yang telah didefinisikan"
+                benar
+            } == benar
+        })
+    })
+
     tentang("nama", fn () {
         ia("harus diawali huruf kapital", fn () {
             tuntut coba {
@@ -79,6 +115,19 @@ sidang(Kelas, fn () {
         tuntut 1 itu Integer
         tuntut 1.kelas() == Integer
         tuntut 1.kelas() != Angka
+    })
+
+    tentang(".tetap?", fn () {
+        ia("mengutus `benar` jika kelas bersifat tetap", fn () {
+            tidakAda!(fn () { A })
+            tidakAda!(fn () { B })
+
+            kelas tetap A {}
+            kelas B {}
+
+            tuntut A.tetap? == benar
+            tuntut B.tetap? == salah
+        })
     })
 
     tentang("metode", fn () {
