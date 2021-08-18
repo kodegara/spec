@@ -1,0 +1,163 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
+sidang("Statemen dari", fn () {
+    tentang("sifat", fn () {
+        ia("melakukan iterasi hingga variabel pengontrol bernilai salah", fn () {
+            ada der = []
+            ada i = 0
+
+            dari (i = 0; i < 10; i += 1) {
+                der += [i]
+            }
+
+            tuntut der == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+            tuntut i == 10
+        })
+
+        ia("tanpa variabel pengontrol terdefinisikan, bisa looping jika menggunakan `ada`", fn () {
+            ada der = []
+
+            dari (ada i = 0; i < 10; i += 1) {
+                der += [i]
+            }
+
+            tuntut der == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+            tuntut coba { i == 10 } tahan (e) { -1 } == -1
+        })
+
+        tentang("variabel pengontrol", fn () {
+            tentang("pendefinisian", fn () {
+                tentang("dengan `ada`", fn () {
+                    ia("tidak membayangi variabel luar dengan nama yang sama", fn () {
+                        ada der = []
+                        ada i = 100
+
+                        // dianggap sebagai assignment sehingga nilai i harus berubah sesuai iterasi
+                        dari (i = 0; i < 10; i += 1) {
+                            tuntut i != 100
+                            der += [i]
+                        }
+
+                        tuntut der == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                        tuntut i == 10
+                    })
+                })
+
+                tentang("tanpa `ada`", fn () {
+                    ia("membayangi variabel luar dengan nama yang sama", fn () {
+                        ada der = []
+                        ada i = 100
+
+                        dari (ada i = 0; i < 10; i += 1) {
+                            tuntut i != 100
+                            der += [i]
+                        }
+
+                        tuntut der == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                        tuntut i == 100
+                    })
+
+                    ia("melempar masalah jika belum terdefinisikan", fn () {
+                        ada tertahan = salah
+
+                        coba {
+                            dari (i = 0; i < 10; i += 1) { }
+                        } tahan (e) {
+                            tertahan = benar
+                        }
+
+                        tuntut tertahan == benar
+                    })
+                })
+            })
+
+            tentang("pengondisian", fn () {
+                ia("akan melempar masalah jika bagian pengondisian bermasalah", fn () {
+                    ada tertahan = coba {
+                        dari (ada i = 0; i < 10 + nil; i += 1) { }
+                    } tahan (e) {
+                        e itu Masalah
+                    }
+
+                    tuntut tertahan == benar
+                })
+
+                ia("bisa menggunakan nilai literal", fn () {
+                    ada x = 0
+                    dari (ada i = 0; i < 5; i++) { x++ }
+                    tuntut x == 5
+                })
+
+                ia("bisa menggunakan variabel yang telah terdefinisikan", fn () {
+                    ada maks = 5, x = 0
+                    dari (ada i = 0; i < 5; i++) { x++ }
+                    tuntut x == 5
+                })
+
+                ia("bisa menggunakan fungsi", fn () {
+                    ada maks = fn () { 5 }, x = 0
+                    dari (ada i = 0; i < maks(); i++) { x++ }
+                    tuntut x == 5
+                })
+            })
+
+            tentang("pengubah", fn () {
+                ia("akan melempar masalah jika bagian pengubah bermasalah", fn () {
+                    ada tertahan = coba {
+                        dari (ada i = 0; i < 10; i += 1 + nil) { }
+                    } tahan (e) {
+                        e itu Masalah
+                    }
+
+                    tuntut tertahan == benar
+                })
+            })
+        })
+
+        ia("bisa bersarang", fn () {
+            ada deret = []
+
+            dari (ada i = 0; i < 5; i += 1) {
+                deret += [i]
+
+                ada deretJ = []
+                dari (ada j = i + 1; j < 5; j += 1) {
+                    deretJ += [j]
+
+                    ada deretK = []
+                    dari (ada k = j + 1; k < 5; k += 1) {
+                        deretK += [k]
+                    }
+
+                    deretJ += [deretK]
+                }
+
+                deret += [deretJ]
+            }
+
+            tuntut deret == [
+                0, [1, [2, 3, 4], 2, [3, 4], 3, [4], 4, []],
+                1, [2, [3, 4], 3, [4], 4, []],
+                2, [3, [4], 4, []],
+                3, [4, []],
+                4, []
+            ]
+        })
+    })
+
+    tentang("sintaksis", fn () {
+        ia("bisa melakukan iterasi dengan sintaksis tanpa tanda kurung", fn () {
+            ada der = []
+
+            tuntut der == []
+
+            dari ada i = 0; i < 10; i++ {
+                der += [i]
+            }
+
+            tuntut der == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        })
+    })
+})

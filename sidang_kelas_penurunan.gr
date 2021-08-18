@@ -1,0 +1,602 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
+sidang("Penurunan `kelas`", fn () {
+    ia("hanya bisa dilakukan pada kelas yang belum pernah didefinisikan sebelumnya", fn () {
+        tidakAda!(fn () { A })
+
+        kelas A -> Masalah {}
+        tuntut A itu Kelas
+        tuntut A.baru() itu Masalah
+    })
+
+    ia("memiliki deret moyang dengan benar", fn () {
+        tidakAda!(fn () { A })
+        tidakAda!(fn () { A1 })
+        tidakAda!(fn () { A2 })
+
+        kelas A {}
+        kelas A1 -> A {}
+        kelas A2 -> A1 {}
+
+        tuntut A1.moyang.berisi?(A) == benar
+        tuntut A1.moyang.berisi?(A1) == salah
+        tuntut A1.moyang.berisi?(Kelas) == benar
+        tuntut A1.moyang.berisi?(Objek) == benar
+
+        tuntut A2.moyang.berisi?(A1) == benar
+        tuntut A2.moyang.berisi?(A) == benar
+        tuntut A2.moyang.berisi?(A2) == salah
+        tuntut A2.moyang.berisi?(Kelas) == benar
+        tuntut A2.moyang.berisi?(Objek) == benar
+    })
+
+    tentang("kelas telah terdefinisikan", fn () {
+        ia("bermasalah jika kelas punca berbeda", fn () {
+            tuntut coba {
+                kelas Masalah -> Riil {}
+                salah
+            } tahan (e) {
+                tuntut e.pesan == "kelas `Masalah` telah terdefinisikan sehingga tidak memungkinkan untuk mengubah kelas puncanya dari `Kelas` menjadi `Riil`"
+                benar
+            } == benar
+        })
+
+        ia("tidak bermasalah jika kelas punca sama dengan saat kelas didefinisikan untuk pertama kalinya", fn () {
+            tidakAda!(fn () { A })
+            tidakAda!(fn () { B })
+
+            kelas A {}
+            kelas B -> A { fn a() { "a" }}
+            kelas B -> A { fn b() { "b" }}
+
+            ada b = B.baru
+            tuntut b.a() == "a"
+            tuntut b.b() == "b"
+        })
+    })
+
+    ia("bermasalah jika kelas punca belum terdefinisikan", fn () {
+        tidakAda!(fn () { A })
+        tidakAda!(fn () { B })
+
+        tuntut coba {
+            kelas B -> A {}
+            salah
+        } tahan (e) {
+            tuntut e.pesan == "kelas punca `A` tidak terdefinisikan"
+            benar
+        } == benar
+    })
+
+    ia("bermasalah jika kelas punca adalah dirinya sendiri", fn () {
+        tidakAda!(fn () { A })
+
+        tuntut coba {
+            kelas A -> A {}
+            salah
+        } tahan (e) {
+            tuntut e.pesan == "kelas punca `A` tidak terdefinisikan"
+            benar
+        } == benar
+    })
+
+    ia("bermasalah jika kelas punca bukan turunan dari Kelas", fn () {
+        tidakAda!(fn () { A })
+
+        tuntut coba {
+            kelas A -> Objek {}
+            salah
+        } tahan (e) {
+            tuntut e.pesan == "kelas harus menurun dari `Kelas`"
+            benar
+        } == benar
+
+        kelas A -> Kelas {}
+        tuntut A itu Kelas
+        tuntut A.baru() itu A
+    })
+
+    tentang("dalam alam nama", fn () {
+        ia("bisa menurun dari kelas dalam suatu alam nama", fn () {
+            tidakAda!(fn () { A })
+            tidakAda!(fn () { A::B })
+            tidakAda!(fn () { A::C })
+            tidakAda!(fn () { B })
+            tidakAda!(fn () { C })
+
+            kelas A {
+                kelas B {}
+                kelas C {}
+            }
+
+            kelas B -> A::B {}
+            kelas C -> A::C {}
+
+            ada b, c = ..[B.baru(), C.baru()]
+
+            tuntut b itu B
+            tuntut b itu A::B
+            tuntut b itu A == salah
+
+            tuntut c itu C
+            tuntut c itu A::C
+            tuntut c itu A == salah
+        })
+
+        ia("bisa turun dari kelas melalui resolusi alam utama", fn () {
+            tidakAda!(fn () { A })
+            tidakAda!(fn () { A::B })
+            tidakAda!(fn () { A::C })
+            tidakAda!(fn () { A1 })
+            tidakAda!(fn () { A1::B })
+            tidakAda!(fn () { A1::C })
+            tidakAda!(fn () { B })
+            tidakAda!(fn () { C })
+
+            kelas B {}
+            kelas C {}
+
+            kelas A {
+                kelas B {}
+                kelas C {}
+            }
+
+            // alam nama merujuk pada alam utama
+            kelas A1 {
+                kelas B -> ::A::B {}
+                kelas C -> ::A::C {}
+            }
+
+            ada b = A1::B.baru()
+            tuntut b itu A1::B
+            tuntut b itu A::B
+            tuntut b itu B == salah
+
+            ada c = A1::C.baru()
+            tuntut c itu A1::C
+            tuntut c itu A::C
+            tuntut c itu C == salah
+        })
+
+        ia("bisa turun dari kelas punca secara relatif", fn () {
+            tidakAda!(fn () { A })
+            tidakAda!(fn () { B })
+            tidakAda!(fn () { A::B })
+            tidakAda!(fn () { A::B1 })
+            tidakAda!(fn () { A::B2 })
+
+            kelas B {}
+
+            kelas A {
+                kelas B {}
+                kelas B1 -> B {}
+            }
+
+            kelas A::B2 -> A::B1 {}
+
+            ada ab = A::B.baru()
+            tuntut ab itu A::B
+            tuntut ab itu A == salah
+            tuntut ab itu B == salah
+
+            ada ab1 = A::B1.baru()
+            tuntut ab1 itu A::B1
+            tuntut ab1 itu A::B
+            tuntut ab1 itu A == salah
+            tuntut ab1 itu B == salah
+
+            ada ab2 = A::B2.baru()
+            tuntut ab2 itu A::B2
+            tuntut ab2 itu A::B1
+            tuntut ab2 itu A::B
+            tuntut ab2 itu A == salah
+            tuntut ab2 itu B == salah
+        })
+    })
+
+    ia("bisa dibandingkan menggunakan `itu` dengan kelas puncanya", fn () {
+        tidakAda!(fn () { A })
+        tidakAda!(fn () { B })
+
+        kelas A {}
+        kelas B -> A {}
+
+        ada b = B.baru()
+        tuntut b itu B
+        tuntut b itu A
+
+        ada a = A.baru()
+        tuntut a itu A
+        tuntut a itu B == salah
+    })
+
+    tentang("variabel", fn () {
+        ia("menurunkan variabel", fn () {
+            tidakAda!(fn () { A })
+            tidakAda!(fn () { B })
+
+            kelas A {
+                ada a1 = 123
+                ada a2
+            }
+
+            kelas B -> A {
+                ada b1 = 456
+                ada b2
+            }
+
+            ada b = B.baru()
+            tuntut b.a1 == 123
+            tuntut b.a2 == nil
+            tuntut b.b1 == 456
+            tuntut b.b2 == nil
+
+            b.a1 = 1
+            tuntut b.a1 == 1
+
+            b.a2 = 2
+            tuntut b.a2 == 2
+
+            b.b1 = 3
+            tuntut b.b1 == 3
+
+            b.b2 = 4
+            tuntut b.b2 == 4
+        })
+
+        ia("tidak menurunkan variabel statis", fn () {
+            tidakAda!(fn () { A })
+            tidakAda!(fn () { B })
+
+            kelas A {
+                ada sta XYZ = 123
+            }
+
+            kelas B -> A {}
+
+            tuntut A.XYZ == 123
+
+            tuntut coba {
+                B.XYZ
+                salah
+            } tahan (e) {
+                tuntut e.pesan == "tidak dapat meresolusi identitas statis `XYZ`"
+                benar
+            } == benar
+        })
+    })
+
+    tentang("aripicu", fn () {
+        tentang("metode", fn () {
+            ia("diturunkan", fn () {
+                tidakAda!(fn () { A })
+                tidakAda!(fn () { B })
+
+                kelas A {
+                    fn a() { "a" }
+                }
+
+                kelas B -> A {}
+
+                ada b = B.baru()
+                tuntut b.a() == "a"
+            })
+
+            tentang("pemanggilan metode yang diturunkan menggunakan `punca`", fn () {
+                saat("kelas punca tidak memiliki metode tersebut", fn () {
+                    ia("akan bermasalah", fn () {
+                        tidakAda!(fn () { A })
+
+                        kelas A {}
+                        kelas B -> A {
+                            fn a() { punca }
+                        }
+
+                        tuntut coba {
+                            B.baru.a
+                            salah
+                        } tahan (e) {
+                            tuntut e.pesan == "tidak dapat meresolusi pemanggilan `punca`"
+                            benar
+                        } == benar
+                    })
+                })
+
+                ia("bisa dipanggil tanpa tanda kurung", fn () {
+                    tidakAda!(fn () { A })
+                    tidakAda!(fn () { A1 })
+
+                    kelas A { fn a() { "a" } }
+                    kelas A1 -> A { fn a() { punca } }
+
+                    tuntut A1.baru().a() == "a"
+                })
+
+                ia("bisa dipanggil dengan tanda kurung", fn () {
+                    tidakAda!(fn () { A })
+                    tidakAda!(fn () { A1 })
+
+                    kelas A { fn a() { "a" } }
+                    kelas A1 -> A { fn a() { punca() } }
+
+                    tuntut A1.baru().a() == "a"
+                })
+
+                ia("bisa dijadikan argumen", fn () {
+                    tidakAda!(fn () { A })
+                    tidakAda!(fn () { A1 })
+
+                    kelas A { fn a() { "a" } }
+                    kelas A1 -> A {
+                        fn imbuh(x) { x + "x" }
+                        fn a() { imbuh(punca) }
+                    }
+
+                    tuntut A1.baru().a() == "ax"
+                })
+
+                ia("bisa dikirim pesan pemanggilan", fn () {
+                    tidakAda!(fn () { A })
+                    tidakAda!(fn () { A1 })
+
+                    kelas A { fn a() { "a" } }
+                    kelas A1 -> A { fn a() { punca.kosong? } }
+
+                    tuntut A1.baru().a() itu Boolean
+                })
+            })
+
+            // todo: cari tahu kenapa judul tidak tercetak
+            tentang("visibilitas metode turunan", fn () {
+                saat("metode asal bersifat umum", fn () {
+                    ia("bisa tetap menjadi umum", fn () {
+                        tidakAda!(fn () { A })
+                        tidakAda!(fn () { B })
+
+                        kelas A {
+                            fn a() { "abc" }
+                        }
+
+                        kelas B -> A {
+                            fn a() { punca + "123" }
+                        }
+
+                        tuntut A.baru().a() == "abc"
+                        tuntut B.baru().a() == "abc123"
+                    })
+
+                    ia("bisa menjadi pribadi jika diletakkan dalam blok `pribadi`", fn () {
+                        tidakAda!(fn () { A })
+                        tidakAda!(fn () { B })
+
+                        kelas A {
+                            fn a() { "abc" }
+                        }
+
+                        kelas B -> A {
+                            fn aUmum() { a() }
+
+                            pribadi {
+                                fn a() { punca + "123" }
+                            }
+                        }
+
+                        tuntut A.baru().a() == "abc"
+                        tuntut B.baru().aUmum() == "abc123"
+
+                        tuntut coba {
+                            B.baru().a()
+                            salah
+                        } tahan (e) {
+                            tuntut e.pesan == "`a` adalah metode pribadi kelas B yang hanya bisa dipanggil dari dalam"
+                            benar
+                        } == benar
+                    })
+                })
+
+                saat("metode asal bersifat pribadi", fn () {
+                    ia("bisa tetap menjadi pribadi", fn () {
+                        tidakAda!(fn () { A })
+                        tidakAda!(fn () { B })
+
+                        kelas A {
+                            pribadi {
+                                fn a() { "abc" }
+                            }
+                        }
+
+                        kelas B -> A {
+                            fn aUmum() { a() }
+
+                            pribadi {
+                                fn a() { punca + "123" }
+                            }
+                        }
+
+                        ada a, b = ..[A.baru(), B.baru()]
+
+                        tuntut coba { a.a(); salah } tahan (e) { benar } == benar
+                        tuntut coba { b.a(); salah } tahan (e) { benar } == benar
+
+                        tuntut b.aUmum() == "abc123"
+                    })
+
+                    ia("bisa menjadi umum jika diletakkan diluar blok pribadi", fn () {
+                        tidakAda!(fn () { A })
+                        tidakAda!(fn () { B })
+
+                        kelas A {
+                            pribadi {
+                                fn a() { "abc" }
+                            }
+                        }
+
+                        kelas B -> A {
+                            fn a() { punca + "123" }
+                        }
+
+                        ada a, b = ..[A.baru(), B.baru()]
+
+                        tuntut coba { a.a(); salah } tahan (e) { benar } == benar
+                        tuntut b.a() == "abc123"
+                    })
+                })
+            })
+        })
+
+        tentang("fungsi statis", fn () {
+            ia("diturunkan", fn () {
+                tidakAda!(fn () { A })
+                tidakAda!(fn () { B })
+
+                kelas A {
+                    fn sta a() { "a" }
+                }
+
+                kelas B -> A {}
+
+                tuntut A.a() == "a"
+                tuntut B.a() == "a"
+            })
+
+            tentang("pemanggilan fungsi statis yang diturunkan menggunakan `punca`", fn () {
+                ia("bisa dipanggil tanpa tanda kurung", fn () {
+                    tidakAda!(fn () { A })
+                    tidakAda!(fn () { A1 })
+
+                    kelas A { fn sta a() { "a" } }
+                    kelas A1 -> A { fn sta a() { punca } }
+
+                    tuntut A1.a() == "a"
+                })
+
+                ia("bisa dipanggil dengan tanda kurung", fn () {
+                    tidakAda!(fn () { A })
+                    tidakAda!(fn () { A1 })
+
+                    kelas A { fn sta a() { "a" } }
+                    kelas A1 -> A { fn sta a() { punca() } }
+
+                    tuntut A1.a() == "a"
+                })
+
+                ia("bisa dijadikan argumen", fn () {
+                    tidakAda!(fn () { A })
+                    tidakAda!(fn () { A1 })
+
+                    kelas A { fn sta a() { "a" } }
+                    kelas A1 -> A {
+                        fn sta imbuh(x) { x + "x" }
+                        fn sta a() { imbuh(punca) }
+                    }
+
+                    tuntut A1.a() == "ax"
+                })
+
+                ia("bisa dikirim pesan pemanggilan", fn () {
+                    tidakAda!(fn () { A })
+                    tidakAda!(fn () { A1 })
+
+                    kelas A { fn sta a() { "a" } }
+                    kelas A1 -> A { fn sta a() { punca.kosong? } }
+
+                    tuntut A1.a() itu Boolean
+                })
+            })
+
+            tentang("visibilitas fungsi statis turunan", fn () {
+                saat("fungsi statis asal bersifat umum", fn () {
+                    ia("bisa tetap menjadi umum", fn () {
+                        tidakAda!(fn () { A })
+                        tidakAda!(fn () { B })
+
+                        kelas A {
+                            fn sta a() { "abc" }
+                        }
+
+                        kelas B -> A {
+                            fn sta a() { punca + "123" }
+                        }
+
+                        tuntut A.a() == "abc"
+                        tuntut B.a() == "abc123"
+                    })
+
+                    ia("bisa menjadi pribadi jika diletakkan dalam blok `pribadi`", fn () {
+                        tidakAda!(fn () { A })
+                        tidakAda!(fn () { B })
+
+                        kelas A {
+                            fn sta a() { "abc" }
+                        }
+
+                        kelas B -> A {
+                            fn sta aUmum() { a() }
+
+                            pribadi {
+                                fn sta a() { punca + "123" }
+                            }
+                        }
+
+                        tuntut A.a() == "abc"
+                        tuntut B.aUmum() == "abc123"
+
+                        tuntut coba {
+                            B.a()
+                            salah
+                        } tahan (e) {
+                            tuntut e.pesan == "`a` adalah fungsi statis bersifat pribadi kelas B yang hanya bisa dipanggil dari dalam"
+                            benar
+                        } == benar
+                    })
+                })
+
+                saat("metode asal bersifat pribadi", fn () {
+                    ia("bisa tetap menjadi pribadi", fn () {
+                        tidakAda!(fn () { A })
+                        tidakAda!(fn () { B })
+
+                        kelas A {
+                            pribadi {
+                                fn sta a() { "abc" }
+                            }
+                        }
+
+                        kelas B -> A {
+                            fn sta aUmum() { a() }
+
+                            pribadi {
+                                fn sta a() { punca + "123" }
+                            }
+                        }
+
+                        tuntut coba { A.a(); salah } tahan (e) { benar } == benar
+                        tuntut coba { B.a(); salah } tahan (e) { benar } == benar
+
+                        tuntut B.aUmum() == "abc123"
+                    })
+
+                    ia("bisa menjadi umum jika diletakkan diluar blok pribadi", fn () {
+                        tidakAda!(fn () { A })
+                        tidakAda!(fn () { B })
+
+                        kelas A {
+                            pribadi {
+                                fn sta a() { "abc" }
+                            }
+                        }
+
+                        kelas B -> A {
+                            fn sta a() { punca + "123" }
+                        }
+
+                        tuntut coba { A.a(); salah } tahan (e) { benar } == benar
+                        tuntut B.a() == "abc123"
+                    })
+                })
+            })
+        })
+    })
+})

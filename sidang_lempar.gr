@@ -1,0 +1,63 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
+sidang("Kata kunci `lempar`", fn () {
+    tentang("ketika berekspresi Kata", fn () {
+        ia("melemparnya sebagai MasalahEksekusi", fn () {
+            tuntut coba {
+                lempar "ini masalah"
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahEksekusi
+                tuntut e.pesan == "ini masalah"
+                benar
+            } == benar
+        })
+    })
+
+    tentang("ketika berekspresi Masalah", fn () {
+        ada m = Masalah.baru("permasalahannya adalah bla bla bla")
+
+        tuntut coba {
+            lempar m
+            salah
+        } tahan (e) {
+            tuntut e == m
+            tuntut e itu e.kelas
+            tuntut e.pesan == m.pesan
+            benar
+        } == benar
+    })
+
+    tentang("ketika berekspresi lain", fn () {
+        ia("akan bermasalah", fn () {
+            tuntut coba {
+                lempar 123
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahEksekusi
+                tuntut e.pesan == "hanya bisa melempar instansi Masalah atau Kata"
+            } == benar
+        })
+    })
+
+    tentang("bisa melempar masalah yang tertangkap", fn () {
+        ada tertahan
+        tuntut tertahan.nil?
+
+        tuntut coba {
+            coba {
+                tidak_dan_belum_terdefinisikan()
+            } tahan (e1) {
+                tertahan = e1
+                lempar e1
+            }
+            salah
+        } tahan (e2) {
+            tidakAda!(fn () { e1 })
+            tuntut e2 == tertahan
+            benar
+        } == benar
+    })
+})

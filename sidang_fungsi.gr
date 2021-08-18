@@ -1,0 +1,309 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
+sidang(Fungsi, fn () {
+    ada fungsi = fn () {}
+
+    ia("itu Fungsi", fn () {
+        tuntut Fungsi itu Kelas
+        tuntut Fungsi itu Objek
+
+        tuntut fungsi itu Fungsi
+        tuntut fungsi itu Objek
+
+        tuntut !(fungsi itu Kelas)
+    })
+
+    tentang("pengenal", fn () {
+        ia("bisa diasosiasikan dengan pengenal", fn () {
+            ada tambah = fn (x, y) { x + y }
+
+            tuntut tambah(5, 5) == 10
+            tuntut tambah(5 + 5, tambah(5, 5)) == 20
+        })
+
+        ia("bisa memiliki nama", fn () {
+            ada fn1 = fn fn2(x) { x + 1 }
+
+            tuntut fn1 == fn2
+            tuntut fn1(1) == 2
+            tuntut fn2(1) == 2
+        })
+
+        ia("tidak boleh diawali dengan tanda $", fn () {
+            tuntut coba {
+                fn $abc() {}
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "nama fungsi tidak boleh diawali dengan `$`"
+                benar
+            } == benar
+
+            tuntut coba {
+                kelas ABC {
+                    fn $abc() {}
+                }
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "nama fungsi tidak boleh diawali dengan `$`"
+                benar
+            } == benar
+        })
+
+        ia("tidak boleh diawali dengan huruf besar", fn () {
+            tuntut coba {
+                fn SebuahFungsi() {}
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "nama fungsi tidak boleh diawali huruf besar"
+                benar
+            } == benar
+
+            tuntut coba {
+                kelas ABC {
+                    fn SebuahFungsi() {}
+                    salah
+                }
+            } tahan (e) {
+                tuntut e.pesan() == "nama fungsi tidak boleh diawali huruf besar"
+                benar
+            } == benar
+        })
+
+        ia("tidak boleh berakhiran `=`", fn () {
+            tuntut coba {
+                fn x=() {}
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `=` kecuali sebagai metode dalam kelas"
+                benar
+            } == benar
+
+            tuntut coba {
+                ada x= = fn () {}
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `=` kecuali sebagai metode dalam kelas"
+                benar
+            } == benar
+        })
+
+        ia("tidak boleh statis diluar kelas", fn () {
+            tuntut coba {
+                eval!("ada x = fn sta () {}")
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahKode
+                tuntut e.pesan() == "fungsi bebas tidak dapat menjadi fungsi statis"
+                benar
+            } == benar
+        })
+    })
+
+    tentang("sifat", fn () {
+        ia("bisa dipicu pada fungsi tanpa nama", fn () {
+            tuntut fn () {
+                benar
+            }() == benar
+        })
+
+        ia("mengutus nil jika tak ada yang diutus", fn () {
+            tuntut fn (){}() == nil
+        })
+
+        ia("bermasalah jika fungsi belum terdefinisikan", fn () {
+            tidakAda!(fn () { abcdef })
+
+            tuntut coba {
+                abcdef()
+            } tahan (e) {
+                tuntut e.pesan().berisi?("pengenal `abcdef` tidak ditemukan atau belum terdefinisikan")
+                benar
+            } == benar
+        })
+
+        ia("bisa rekursif", fn () {
+            ada fib = fn (n) {
+                jika (n <= 1) {
+                    utus n
+                } lain {
+                    fib(n-1) + fib(n-2)
+                }
+            }
+
+            tuntut fib(1) == 1
+            tuntut fib(2) == 1
+            tuntut fib(3) == 2
+            tuntut fib(4) == 3
+            tuntut fib(5) == 5
+            tuntut fib(6) == 8
+            tuntut fib(7) == 13
+            tuntut fib(8) == 21
+            tuntut fib(9) == 34
+        })
+
+        ia("tidak menggagalkan sistem saat stack overflow", fn () {
+            tuntut coba {
+                fn x() { x() }
+                x()
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahLuapanTumpukan
+                tuntut e.pesan() == "terlalu banyak fungsi dalam tumpukan (stack overflow)"
+            } == benar
+        })
+
+        tentang("fungsi lapis", fn () {
+            ia("mengingat pengenal dan variabel yang melapisi", fn () {
+                ada fungsiPenambah = fn (x) {
+                    utus fn (y) { x + y }
+                }
+
+                ada tambah5 = fungsiPenambah(5)
+                ada tambah7 = fungsiPenambah(7)
+
+                tuntut tambah5(5) == 10
+                tuntut tambah5(tambah7(3)) == 15
+            })
+
+            xia("mengingat pelapis awal meski ketika berpindah tangan sebagai argumen fungsi", fn () {
+                tidakAda!(fn () { A })
+                tidakAda!(fn () { B })
+
+                kelas A {
+                    ada f
+
+                    fn sta a(f) {
+                        ada obj = baru()
+                        obj.f = f // tetap mengingat instansi B
+                        obj
+                    }
+
+                    fn eksekusi() { f() }
+                }
+
+                kelas B {
+                    fn a(f) {
+                        A.a(f).eksekusi()
+                    }
+
+                    fn dariB() { "B" }
+                }
+
+                ada b = B.baru()
+                tuntut b.a(fn () {
+                    cetak(metode())
+                    dariB()
+                }) == "B"
+            })
+        })
+
+        tentang("argumen", fn () {
+            ia("bermasalah MasalahArgumen jika dipanggil kurang dari aritas", fn () {
+                ada tambah = fn (x, y) { x + y }
+                tuntut coba {
+                    tambah(5)
+                    salah
+                } tahan (e) {
+                    tuntut e itu MasalahArgumen
+                    tuntut e.pesan() == "hanya bisa dipanggil dengan 2 argumen"
+                } == benar
+            })
+
+            xia("tidak mengubah variabel lokal dengan nama yang sama", fn () {
+                ada a = 123
+                tuntut fn (a){ a }(456) == 456
+                tuntut a == 123
+            })
+
+            xia("tidak dipengaruhi oleh variabel lokal yang memiliki nama yang sama", fn () {
+                ada iterasikan = fn (deret, fnPengiterasi) {
+                    cetak(deret)
+                    dari (ada i = 0; i < deret.panjang(); i += 1) {
+                        fnPengiterasi(deret[i])
+                    }
+                }
+
+                ada deret = []
+
+                cetak(deret)
+                iterasikan([1, 2, 3], fn (i) {
+                    deret += i
+                })
+
+                tuntut deret == [1, 2, 3]
+            })
+
+            ia("bersifat pass-by-reference", fn () {
+                kelas A {
+                    ada a
+                    fn a () { a }
+                    fn a=(x) { a = x }
+                }
+
+                ada ubah = fn (a, b) { a.a = b }
+
+                ada a = A.baru()
+                tuntut a.a() == nil
+
+                ubah(a, 12)
+                tuntut a.a() == 12
+            })
+
+            tentang("saat berupa fungsi", fn () {
+                ia("bisa mengakses metode dari kelas Objek", fn () {
+                    tidakAda!(fn() { A })
+
+                    kelas A {
+                        fn a(m) { m() }
+                        fn b() { "b" }
+
+                        pribadi {
+                            fn c() { "c" }
+                        }
+                    }
+
+                    ada a = A.baru()
+                    ada k
+
+                    a.a(fn () { k = kobit })
+                    tuntut k itu Angka
+                })
+            })
+        })
+    })
+
+    tentang("metode bawaan", fn () {
+        tentang(".aritas()", fn () {
+            ia("mengutus jumlah argumen yang dimiliki fungsi", fn () {
+                tuntut fn(){}.aritas == 0
+                tuntut fn (a){}.aritas == 1
+                tuntut fn (a, b, c){}.aritas == 3
+            })
+        })
+
+        tentang(".kobit()", fn () {
+            ia("mencetak kode bibit", fn () {
+                tuntut (fn(){}).kobit() != (fn(){}).kobit()
+            })
+        })
+
+        tentang(".nama()", fn () {
+            ia("mengutus `nil` jika tidak bernama", fn () {
+                tuntut fn(){}.nama == nil
+            })
+
+            ia("mengutus Kata jika bernama", fn () {
+                ada a = fn abc() {}
+                tuntut a.nama == "abc"
+            })
+        })
+
+        tentang(".kelas()", fn () {
+            ia("mengutus kelas Fungsi", fn () {
+                tuntut fn(){}.kelas() == Fungsi
+            })
+        })
+    })
+})

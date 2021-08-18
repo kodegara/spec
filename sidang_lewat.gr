@@ -1,0 +1,93 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
+sidang("Kata kunci `lewat`", fn () {
+    ia("akan menjadi masalah eksekusi jika dipanggil diluar iterasi", fn () {
+        tuntut coba {
+            lewat
+        } tahan (e) {
+            tuntut e itu MasalahEksekusi
+            tuntut e.pesan() == "`lewat` tidak dimungkinkan karena tidak sedang dalam iterasi"
+            benar
+        } == benar
+    })
+
+    tentang("digunakan dengan `dari`", fn () {
+        ia("dapat melewati poin iterasi", fn () {
+            ada deret = []
+
+            dari (ada i = 0; i < 10; i++) {
+                jika (i % 2 == 0) {
+                    lewat
+                    deret += [i]
+                }
+                deret += [i]
+            }
+
+            tuntut deret == [1, 3, 5, 7, 9]
+        })
+    })
+
+    tentang("digunakan dengan `selama`", fn () {
+        ia("dapat melewati poin iterasi", fn () {
+            ada deret = []
+            ada i = 0
+
+            selama (i < 10) {
+                jika (i % 2 == 0) {
+                    i++
+                    lewat
+                    deret += [i]
+                }
+
+                deret += [i]
+                i++
+            }
+
+            tuntut deret == [1, 3, 5, 7, 9]
+        })
+    })
+
+    tentang("digunakan dalam fungsi pengiterasi", fn () {
+        ada iterasikan = fn (x, fnPengiterasi) {
+            dari (ada i = 0; i < x.panjang(); i += 1) {
+                fnPengiterasi(x[i])
+            }
+        }
+
+        ia("dapat dilewati", fn () {
+            ada deret = []
+
+            iterasikan([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], fn (i) {
+                jika (i % 2 == 0) {
+                    lewat
+                    deret += [i]
+                }
+
+                deret += [i]
+            })
+
+            tuntut deret == [1, 3, 5, 7, 9]
+        })
+    })
+
+    ia("hanya melewati iterasi paling dekat", fn () {
+        ada deret = []
+
+        dari (ada i = 0; i < 5; i++) {
+            deret += [i]
+
+            dari (ada j = i; j < 5; j++) {
+                jika (j % 2 == 0) {
+                    lewat
+                    deret += ["b"]
+                }
+
+                deret += ["a"]
+            }
+        }
+
+        tuntut deret == [0, "a", "a", 1, "a", "a", 2, "a", 3, "a", 4]
+    })
+})

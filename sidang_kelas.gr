@@ -1,0 +1,1303 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
+sidang(Kelas, fn () {
+    ia("itu Kelas", fn () {
+        kelas Siswa {}
+
+        tuntut Siswa itu Kelas
+        tuntut Siswa itu Objek
+        tuntut 2 itu Siswa == salah
+        tuntut Siswa.baru() itu Siswa
+    })
+
+    ia("menghiraukan `utus` dalam tubuh kelas", fn () {
+        tidakAda!(fn () { A })
+
+        kelas A {
+            utus 1
+            ada a
+        }
+
+        ada a = A.baru
+        a.a = 12
+        tuntut a.a == 12
+    })
+
+    tentang("nama", fn () {
+        ia("harus diawali huruf kapital", fn () {
+            tuntut coba {
+                kelas a {}
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "nama kelas harus diawali huruf kapital"
+            } == benar
+        })
+
+        ia("tidak boleh diawali dengan operator alam nama", fn () {
+            tuntut coba {
+                kelas ::A {}
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "pengenal kelas tidak boleh diawali dengan `::`"
+                benar
+            } == benar
+        })
+
+        ia("diutus melalui metode .nama()", fn () {
+            tuntut Masalah.nama() == "Masalah"
+
+            kelas Siswa {}
+            tuntut Siswa.nama() == "Siswa"
+
+            ada s = Siswa.baru()
+            tuntut s.metode().berisi?("nama") == salah
+
+            tuntut 12.metode().berisi?("nama") == salah
+            tuntut 12.5.metode().berisi?("nama") == salah
+        })
+    })
+
+    tentang("#baru", fn () {
+        ia("bisa menginisialisasi kelas", fn () {
+            kelas Siswa {}
+
+            ada siswa = Siswa.baru()
+
+            tuntut siswa != nil
+            tuntut siswa itu Siswa
+            tuntut siswa itu Objek
+        })
+    })
+
+    ia(".kelas() bisa lebih spesifik dari `itu`", fn () {
+        kelas Siswa {}
+
+        tuntut Siswa.baru().kelas() == Siswa
+        tuntut 1 itu Angka
+        tuntut 1 itu Integer
+        tuntut 1.kelas() == Integer
+        tuntut 1.kelas() != Angka
+    })
+
+    tentang("metode", fn () {
+        ia("bisa dipanggil dengan ini", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                fn data() { [1, 2, 3] }
+                fn dataDenganIni() { ini.data }
+                fn dataDenganIniPicu() { ini.data() }
+            }
+
+            ada a = A.baru
+            tuntut a.data == [1, 2, 3]
+            tuntut a.dataDenganIni == [1, 2, 3]
+            tuntut a.dataDenganIniPicu == [1, 2, 3]
+        })
+
+        ia("tidak merembet keluar", fn () {
+            ada penghitungTanggalLahir
+
+            kelas Tanggalanku {
+                ada penghitungTanggalLahir = fn (umur) {
+                    2020 - umur
+                }
+
+                fn tanggalLahir() {
+                    tuntut penghitungTanggalLahir != nil
+                    penghitungTanggalLahir(29)
+                }
+
+                fn definisiDalam() {}
+            }
+
+            tuntut Tanggalanku.baru().tanggalLahir() == 1991
+            tuntut penghitungTanggalLahir == nil
+
+            ada tidakTerdefinisikan = salah
+            coba { definisiDalam() } tahan (e) { tidakTerdefinisikan = benar }
+            tuntut tidakTerdefinisikan == benar
+        })
+
+        tentang("pemanggilan tanpa tanda kurung", fn () {
+            tentang("pada metode umum", fn () {
+                ia("bisa dilakukan jika metode tak memiliki argumen", fn () {
+                    tidakAda!(fn () { A })
+                    kelas A { fn a() { "a" } }
+                    tuntut A.baru().a.besar == "A"
+                    tuntut A.baru().a().besar() == "A"
+                })
+
+                ia("tidak bisa dilakukan jika metode tak memiliki argumen", fn () {
+                    tidakAda!(fn () { A })
+                    kelas A { fn a(arg) { arg } }
+
+                    tuntut coba {
+                        A.baru().a.besar == "A"
+                        salah
+                    } tahan (e) {
+                        tuntut e.pesan() == "tidak dapat meresolusi `a` dalam objek bertipe A"
+                        benar
+                    } == benar
+                })
+            })
+
+            tentang("pada metode pribadi", fn () {
+                ia("bisa dilakukan di dalam kelas", fn () {
+                    tidakAda!(fn () { A })
+
+                    kelas A {
+                        fn b() { a.besar }
+
+                        pribadi {
+                            fn a() { "a" }
+                        }
+                    }
+
+                    ada a = A.baru()
+                    tuntut a.b == "A"
+                    tuntut a.b() == "A"
+                })
+            })
+
+            tentang("pada fungsi statis umum", fn () {
+                ia("bisa dilakukan", fn () {
+                    tidakAda!(fn () { A })
+
+                    kelas A {
+                        fn sta a() { b }
+                        fn sta b() { "b" }
+                        fn sta c() { a.besar }
+                    }
+
+                    tuntut A.c == "B"
+                    tuntut A.c() == "B"
+                })
+            })
+
+            tentang("pada fungsi statis pribadi", fn () {
+                ia("hanya bisa dilakukan dari dalam kelas", fn () {
+                    tidakAda!(fn () { A })
+
+                    kelas A {
+                        fn sta ab() { a.besar + b.besar }
+                        pribadi {
+                            fn sta a() { "a" }
+                            fn sta b() { "b" }
+                        }
+                    }
+
+                    tuntut A.ab() == "AB"
+                    tuntut A.ab == "AB"
+                })
+            })
+        })
+
+        ia("tidak bisa diresolusi seperti pengenal variabel", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                ada a = "a"
+                fn a () { a }
+
+                fn b() { a }
+            }
+
+            ada a = A.baru()
+            tuntut a.a() == "a"
+            tuntut a.b() == "a"
+        })
+
+        ia("bisa berakhiran `=`", fn () {
+            kelas A {
+                ada a
+
+                fn a() { a }
+                fn a=(x) {
+                    a = x
+                }
+            }
+
+            ada a = A.baru()
+            tuntut a.a() == nil
+            tuntut a.a=(12)
+            tuntut a.a() == 12
+            tuntut a.a = 13
+            tuntut a.a() == 13
+        })
+
+        ia("bisa bernama mirip dengan variabel tapi tidak boleh menutup akses ke variabel tersebut", fn () {
+            kelas Data {
+                ada nilai = 1
+                fn nilai() { nilai }
+            }
+
+            tuntut Data.baru().nilai() == 1
+        })
+
+        ia("dapat berpolimorfis", fn () {
+            kelas Penyapa {
+                fn sapa(nama) {
+                    "Hai, " + nama
+                }
+
+                fn sapa(sapaan, nama) {
+                    sapaan + nama
+                }
+            }
+
+            ada penyapa = Penyapa.baru()
+            tuntut penyapa.sapa("Gara") == "Hai, Gara"
+            tuntut penyapa.sapa("Yo! ", "Gara") == "Yo! Gara"
+        })
+
+        ia("tidak dianggap sebagai fungsi statis", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                fn a () { "a" }
+            }
+
+            tuntut coba {
+                A.a()
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "kelas A tidak memiliki fungsi statis `a` tak berargumen yang bisa dipanggil"
+                benar
+            } == benar
+        })
+
+        ia("bisa bernama sama dengan metode kelas bawaan", fn () {
+            ada a = 1
+            a.tambah(1) == 2
+
+            kelas Integer {
+                fn tambah(a, b) { ini + a + b }
+            }
+
+            a.tambah(1, 1) == 3
+        })
+
+        saat("mengutus fungsi", fn () {
+            ia("tidak dapat mengingat `ini`", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {
+                    fn fIniDalam() {
+                        fn () { ini }
+                    }
+
+                    fn fIniLuar() {
+                        ada obj = ini
+                        fn () { obj }
+                    }
+                }
+
+                ada a = A.baru()
+
+                tuntut coba {
+                    a.fIniDalam()()
+                    salah
+                } tahan (e) {
+                    tuntut e.pesan == "`ini` hanya bisa digunakan sebagai referensi objek dalam kelas"
+                    benar
+                } == benar
+            })
+        })
+    })
+
+    tentang("fungsi statis", fn () {
+        // todo: memiliki uji coba yang sama/mirip dengan metode
+    })
+
+    ia("bisa diperkaya meski telah didefinisikan", fn () {
+        kelas Siswa {
+            fn namaKapital() { "GARA" }
+        }
+
+        ada siswa = Siswa.baru()
+        ada namaKapitalLama = siswa.namaKapital()
+
+        tuntut siswa.sambut?("fungsiBaruYangBelumAda") == salah
+
+        kelas Siswa {
+            fn fungsiBaruYangBelumAda() {
+                benar
+            }
+        }
+
+        kelas Siswa {
+            fn namaKapital() {
+                "Gara"
+            }
+        }
+
+        tuntut siswa.namaKapital() != namaKapitalLama
+        tuntut siswa.fungsiBaruYangBelumAda() == benar
+    })
+
+    ia("pemerkayaan bersifat global dan permanen", fn () {
+        kelas X1 {
+        }
+
+        ada x1Lama = X1.baru()
+
+        fn () {
+            kelas X1 {
+                fn x1() { 1 }
+            }
+        }()
+
+        tuntut X1.baru().x1() == 1
+        tuntut x1Lama.x1() == 1
+    })
+
+    ia("dapat memperkaya kelas bawaan", fn () {
+        kelas Deret {
+            ada dataBaru
+
+            fn dataBaru(d) { dataBaru = d }
+            fn dataBaru() { dataBaru }
+        }
+
+        kelas Boolean {
+            fn bolehAtauTidak() {
+                "boleh"
+            }
+        }
+
+        ada d = [1, 2, 3]
+        d.dataBaru(10)
+        tuntut d.dataBaru() == 10
+        tuntut [].dataBaru() == nil
+
+        ada b = benar
+        tuntut b.bolehAtauTidak() == "boleh"
+        tuntut salah.bolehAtauTidak() == "boleh"
+    })
+
+    tentang("variabel instansi", fn () {
+        tentang("pemberian nilai", fn () {
+            tentang("saat bersifat umum", fn () {
+                tentang("tanpa metode penyetel", fn () {
+                    ia("bisa dilakukan jika variabel instansi bersifat umum", fn () {
+                        tidakAda!(fn () { A })
+
+                        kelas A {
+                            ada a
+                            fn a() { a }
+
+                            fn sta baru(x) {
+                                ada obj = baru()
+                                obj.a = x
+                                obj
+                            }
+                        }
+
+                        ada a = A.baru(12)
+                        tuntut a.a() == 12
+
+                        a.a = 13
+                        tuntut a.a() == 13
+                    })
+
+                    // todo: mendukung .. untuk objek
+                    // ia("bisa dilakukan dengan menggunakan operator keduk (..)", fn () {
+                    //     tidakAda!(fn () { A })
+
+                    //     kelas A {
+                    //         ada a, b, c
+
+                    //         fn dariDeret(d) {
+                    //             ini.a, ini.b, ini.c = ..d
+                    //         }
+
+                    //         fn dariDeret2(d) {
+                    //             a, b, c = ..d
+                    //         }
+                    //     }
+
+                    //     ada a = A.baru
+                    //     a.a, a.b, a.c = ..[1, 2, 3]
+                    //     a.dariDeret([4, 5, 6])
+                    //     a.dariDeret2([7, 8, 9])
+                    // })
+                })
+
+                tentang("dengan metode penyetel", fn () {
+                    ia("bisa dilakukan dimanapun", fn () {
+                        tidakAda!(fn () { A })
+
+                        kelas A {
+                            ada a
+                            fn a() { a }
+                            fn a=(x) { a = x + 1 } // + 1 memastikan bahwa yang digunakan adalah penyetel
+
+                            fn sta baru(x) {
+                                ada obj = baru()
+                                obj.a = x
+                                obj
+                            }
+                        }
+
+                        ada a = A.baru(12)
+                        tuntut a.a() == 13
+
+                        a.a = 13
+                        tuntut a.a() == 14
+                    })
+                })
+            })
+
+            tentang("saat bersifat pribadi", fn () {
+                tentang("tanpa metode penyetel", fn () {
+                    ia("hanya bisa dilakukan dalam kelas yang sama", fn () {
+                        tidakAda!(fn () { A })
+
+                        kelas A {
+                            fn sta baru(x) {
+                                ada obj = baru()
+                                obj.a = x
+                                obj
+                            }
+
+                            fn a () { a }
+
+                            pribadi {
+                                ada a
+                            }
+                        }
+
+                        tuntut A.baru(123).a() == 123
+                        tuntut A.baru(456).a() == 456
+                    })
+                })
+
+                tentang("dengan metode penyetel", fn () {
+                    ia("bisa dilakukan dimanapun", fn () {
+                        tidakAda!(fn () { A })
+
+                        kelas A {
+                            fn a=(n) { ini.a = n }
+                            fn a() { a }
+
+                            pribadi {
+                                ada a
+                            }
+                        }
+
+                        ada a = A.baru()
+                        tuntut a.a() == nil
+                        a.a = 12
+                        tuntut a.a() == 12
+                    })
+                })
+            })
+        })
+
+        tentang("pengambilan nilai", fn () {
+            tentang("saat bersifat umum", fn () {
+                tentang("tanpa metode pembaca", fn () {
+                    ia("tetap bisa dibaca", fn () {
+                        tidakAda!(fn () { A })
+
+                        kelas A {
+                            ada a = 123
+                        }
+
+                        tuntut A.baru().a() == 123
+                    })
+
+                    ia("bisa dieksekusi hampir mirip metode jika berisi fungsi", fn () {
+                        tidakAda!(fn () { A })
+
+                        kelas A {
+                            ada ivarLain = 123
+
+                            ada a1 = fn aa1 () { "a" }
+
+                            // gagal, karena bukan metode
+                            ada a2 = fn aa2 () {
+                                ini.iVarLain = "XYZ"
+                            }
+
+                            pribadi {
+                                ada b1 = fn b2 () { "b" }
+                            }
+                        }
+
+                        ada a = A.baru()
+                        tuntut a.a1()() == "a"
+
+                        tuntut coba {
+                            a.a2()()
+                            salah
+                        } tahan (e) {
+                            tuntut e.pesan() == "pengenal `iVarLain` tidak ditemukan atau belum terdefinisikan"
+                            benar
+                        } == benar
+                    })
+                })
+            })
+
+            tentang("saat bersifat pribadi", fn () {
+                ia("hanya bisa dibaca dari dalam", fn () {
+                    tidakAda!(fn () { A })
+
+                    kelas A {
+                        fn a1() { a }
+
+                        pribadi {
+                            ada a = 123
+                        }
+                    }
+
+                    ada a = A.baru()
+                    tuntut a.a1() == 123
+
+                    tuntut coba {
+                        a.a
+                        salah
+                    } tahan (e) {
+                        tuntut e.pesan() == "tidak dapat meresolusi `a` dalam objek bertipe A"
+                        benar
+                    } == benar
+                })
+            })
+        })
+
+        ia("dapat memiliki variabel instansi yang bernilai beda tiap objek", fn () {
+            kelas Penghitung {
+                ada angka
+
+                // pengambil dan pengisi
+                fn angka() { angka }
+                fn angka(angka) { ini.angka = angka }
+
+                fn tambah(angka) { ini.angka += angka }
+                fn kurang(angka) { ini.angka -= angka }
+            }
+
+            ada p1 = Penghitung.baru()
+            ada p2 = Penghitung.baru()
+            ada p3 = Penghitung.baru()
+
+            p1.angka(0)
+            p2.angka(1)
+            tuntut p1.angka() == 0
+            tuntut p2.angka() == 1
+            tuntut p3.angka() == nil
+
+            p1.tambah(1)
+            p1.tambah(1)
+            p2.tambah(5)
+            p1.tambah(1)
+            tuntut p1.angka() == 3
+            tuntut p2.angka() == 6
+
+            p1.kurang(1)
+            tuntut p1.angka() == 2
+            p1.kurang(3)
+            tuntut p1.angka() == -1
+
+            tuntut p1.angka() != 0
+            p1.angka(0)
+            tuntut p1.angka() == 0
+        })
+
+        ia("dapat memiliki variabel instansi dengan nilai awal sesuai definisi", fn () {
+            kelas Penghitung {
+                ada angka1 = 5
+                ada angka2 = 10
+
+                fn angka1(angka1) { ini.angka1 = angka1 }
+                fn angka2(angka2) { ini.angka2 = angka2 }
+
+                fn jumlah() { angka1 + ini.angka2 }
+                fn kurang() { ini.angka1 - angka2 }
+                fn bagi() { ini.angka1 / ini.angka2 }
+            }
+
+            ada p1 = Penghitung.baru()
+            ada p2 = Penghitung.baru()
+
+            p2.angka1(30);
+
+            tuntut p1.jumlah() == 15
+            tuntut p2.jumlah() == 40
+
+            tuntut p1.kurang() == -5
+            tuntut p2.kurang() == 20
+
+            tuntut p1.bagi() == 0
+            tuntut p2.bagi() == 3
+        })
+
+        ia("`ini` dapat menyasar variabel intansi tanpa ambiguitas", fn () {
+            kelas A {
+                ada a
+
+                fn a(n) {
+                    ada a = 5 + n
+                    a += 5
+                    ini.a = a + 5
+                    a
+                }
+
+                fn a() { a }
+            }
+
+            ada a = A.baru()
+
+            tuntut a.a(1) == 11
+            tuntut a.a() == 5 + 1 + 5 + 5 // a tetap objek a bukan integer
+
+            tuntut a.a(2) == 12
+            tuntut a.a() == 5 + 2 + 5 + 5
+        })
+
+        ia("dapat merefer ke variabel instansi atau metode tanpa `ini` selama tidak ambigu", fn () {
+            kelas Penilai {
+                ada nilai = 10
+
+                fn nilai() { nilai }
+                fn jumlahDengan(n) { nilai += n }
+                fn jumlahLebihBanyakDengan(n) {
+                    ada jumDg = jumlahDengan(n) + 100
+                    nilai += jumDg
+                }
+            }
+
+            ada p = Penilai.baru()
+            ada p2 = Penilai.baru()
+            tuntut p.nilai() == 10
+            tuntut p2.nilai() == 10
+
+            p.jumlahDengan(101)
+            tuntut p.nilai() == 111
+
+            p.jumlahLebihBanyakDengan(104)
+            tuntut p.nilai() == 530 // 111 + 104 + (215 + 100)
+        })
+
+        ia("variabel instansi yang bernilai fungsi tidak boleh dianggap sebagai metode", fn () {
+            kelas A {
+                ada a1 = fn a2 () { "a" }
+
+                fn bisa() { a1() + b1() }
+                fn tidakBisa() { a2() + b2() }
+
+                pribadi {
+                    ada b1 = fn b2 () { "b" }
+                }
+            }
+
+            ada a = A.baru()
+
+            tuntut coba {
+                a.a2()
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "objek tipe A tidak memiliki metode `a2` tak berargumen yang bisa dipanggil"
+                benar
+            } == benar
+
+            tuntut !a.metode().berisi?("a2")
+
+            tuntut coba {
+                a.b1()
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "objek tipe A tidak memiliki metode `b1` tak berargumen yang bisa dipanggil"
+                benar
+            } == benar
+
+            tuntut coba {
+                a.b2()
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "objek tipe A tidak memiliki metode `b2` tak berargumen yang bisa dipanggil"
+                benar
+            } == benar
+
+            tuntut a.bisa() == "ab"
+
+            tuntut coba {
+                a.tidakBisa()
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "pengenal `a2` tidak ditemukan atau belum terdefinisikan"
+                benar
+            }
+        })
+
+        tentang("ketika bernilai Fungsi", fn () {
+            ia("tidak bisa bertingkah seperti metode", fn () {
+                tidakAda!(fn () { A })
+
+                kelas A {
+                    ada b
+                    fn b() { b }
+                    fn a=(x) { b = x + 5 }
+
+                    ada c = fn (x) { b = x }
+                    ada d = fn (x) { ini.b = x }
+                    ada e = fn (x) { a = 18 }
+                    ada f = fn (x) { ini.a = 18 }
+
+                    fn pengubahC() { c }
+                    fn pengubahD() { d }
+                    fn pengubahE() { e }
+                    fn pengubahF() { f }
+                }
+
+                ada a = A.baru()
+                tuntut a.b() == nil
+
+                tuntut coba {
+                    a.pengubahC()(14)
+                    salah
+                } tahan (e) {
+                    tuntut e.pesan() == "pengenal `b` tidak ditemukan atau belum terdefinisikan"
+                    benar
+                } == benar
+
+                tuntut a.b() == nil
+
+                tuntut coba {
+                    a.pengubahD()(15)
+                    salah
+                } tahan (e) {
+                    tuntut e.pesan() == "`ini` hanya bisa digunakan sebagai referensi objek dalam kelas"
+                    benar
+                } == benar
+
+                tuntut a.b() == nil
+
+                tuntut coba {
+                    a.pengubahE()(15)
+                    salah
+                } tahan (e) {
+                    tuntut e.pesan() == "pengenal `a` tidak ditemukan atau belum terdefinisikan"
+                    benar
+                } == benar
+
+                tuntut coba {
+                    a.pengubahF()(15)
+                    salah
+                } tahan (e) {
+                    tuntut e.pesan() == "`ini` hanya bisa digunakan sebagai referensi objek dalam kelas"
+                    benar
+                } == benar
+            })
+        })
+    })
+
+    ia("`ini` dapat menyasar fungsi dari instansi tanpa ambiguitas", fn () {
+        kelas Penyapa {
+            ada nilai
+
+            fn nilai() { nilai }
+
+            fn sapa(nama) {
+                ada sapaan = "Yo!"
+                ini.nilai = ini.sapaan() + nama
+                sapaan
+            }
+
+            fn sapaan() {
+                "Halo, "
+            }
+        }
+
+        ada p = Penyapa.baru()
+        ada sapaan = p.sapa("Gara")
+        tuntut sapaan == "Yo!"
+        tuntut p.nilai() == "Halo, Gara"
+    })
+
+    ia("`ini` dapat meresolusi pesan berantai", fn () {
+        kelas Alamat {
+            ada kota
+            ada jalan
+
+            fn kota() { kota }
+            fn kota(v) { kota = v}
+
+            fn jalan() { jalan }
+            fn jalan(v) { jalan = v }
+        }
+
+        kelas Sekolah {
+            ada nama
+            ada alamat
+
+            fn nama() { nama }
+            fn nama(v) { nama = v }
+
+            fn alamat() { alamat }
+            fn alamat(v) {
+                tuntut v itu Alamat
+                alamat = v
+            }
+
+            fn ubahNamaJalan(namaBaru) {
+                ini.alamat().jalan(namaBaru)
+            }
+
+            fn alamatLengkap() {
+                ini.alamat().jalan() + ", " + alamat().kota()
+            }
+        }
+
+        ada surabaya = Alamat.baru()
+        surabaya.kota("Surabaya")
+        surabaya.jalan("Jalan ABC")
+
+        ada jakarta = Alamat.baru()
+        jakarta.kota("Jakarta")
+        jakarta.jalan("Jalan DEF")
+
+        ada s = Sekolah.baru()
+        s.alamat(surabaya)
+
+        tuntut s.alamatLengkap() == "Jalan ABC, Surabaya"
+        s.ubahNamaJalan("Jalan Usman Sadar")
+        tuntut s.alamatLengkap() == "Jalan Usman Sadar, Surabaya"
+        tuntut s.alamat().jalan() == "Jalan Usman Sadar"
+    })
+
+    ia("`ini` dapat digunakan berdampingan dengan berbagai macam operator", fn () {
+        kelas Koleksi {
+            ada nilai = []
+            ada checksum = 0
+
+            fn nilai() { nilai }
+            fn checksum() { checksum }
+
+            fn masukkan(item) {
+                nilai += [item]
+                ini.nilai += [item]
+
+                checksum += 2
+                ini.checksum += 2
+
+                checksum -= 1
+                ini.checksum -= 1
+
+                checksum *= 10
+                ini.checksum *= 10
+
+                checksum /= 2
+                ini.checksum /= 2
+            }
+
+            fn jumlah() {
+                ada i = 0
+                ada jml = 0
+
+                selama (i < nilai.panjang()) {
+                    jml += nilai[i]
+                    i += 1
+                }
+
+                utus jml
+            }
+        }
+
+        ada k = Koleksi.baru()
+        k.masukkan(1)
+        k.masukkan(2)
+
+        tuntut k.nilai() == [1, 1, 2, 2]
+        tuntut k.jumlah() == 6
+        tuntut k.checksum() == 1300
+    })
+
+    ia("metode dari suatu kelas, tidak seperti fungsi, tidak dapat diutus keluar", fn () {
+        kelas Penyapa {
+            ada penyapa = fn () { "Halo!" }
+            fn fungsiPenyapa() { penyapa }
+            fn katakanSapaan() { penyapa() }
+
+            fn selamatPagi() { "Selamat Pagi" }
+            fn fungsiSelamatPagi() { selamatPagi }
+            fn katakanSelamatPagi() { selamatPagi() }
+        }
+
+        ada p = Penyapa.baru()
+
+        tuntut p.katakanSapaan() == "Halo!"
+        tuntut p.katakanSelamatPagi() == "Selamat Pagi"
+
+        tuntut p.fungsiPenyapa() itu Fungsi
+        tuntut p.fungsiPenyapa()() == "Halo!"
+
+        //tuntut p.fungsiSelamatPagi() == nil
+    })
+
+    ia("mengakses metode yang tidak ada", fn () {
+        kelas A {
+            fn a(x) { ini.y = x }
+            fn b(x) { y = x }
+        }
+
+        ada a = A.baru()
+
+        coba { a.z() }
+        tahan (e) { tuntut e itu MasalahMetode }
+
+        coba { a.a(10) }
+        tahan (e) { tuntut e itu MasalahPengenal }
+
+        coba { a.b(10) }
+        tahan (e) { tuntut e itu MasalahPengenal }
+    })
+
+    // todo: add test about `ini` on the interpreter level when setReceivingObject is nil `ini.number = `1` directly as a statement
+
+    ia("`ini` dapat merujuk ke variabel instansi atau metode yang sesuai", fn () {
+        kelas A {
+            ada a = "variabel"
+            fn a() { "metode" }
+
+            fn dapatkanVarTanpaIni() { a }
+            fn dapatkanVarDenganIni() { ini.a }
+
+            fn dapatkanMetodeTanpaIni() { a() }
+            fn dapatkanMetodeDenganIni() { ini.a() }
+        }
+
+        ada a = A.baru()
+        ada nilaiVar = "variabel"
+        ada nilaiMet = "metode"
+
+        tuntut a.a() == nilaiMet
+        tuntut a.dapatkanVarTanpaIni() == nilaiVar
+        tuntut a.dapatkanVarDenganIni() == nilaiVar
+
+        tuntut a.dapatkanMetodeTanpaIni() == nilaiMet
+        tuntut a.dapatkanMetodeDenganIni() == nilaiMet
+    })
+
+    ia(".kobit() mencetak kode bibit", fn () {
+        tuntut Kelas.kobit() != Masalah.kobit()
+        tuntut Masalah.kobit() != MasalahArgumen.kobit()
+        tuntut MasalahArgumen.kobit() != MasalahMetode.kobit()
+    })
+
+    tentang("blok `pribadi`", fn () {
+        ia("bisa mendefinisikan metode yang bersifat pribadi", fn () {
+            kelas Penyapa {
+                fn selamatPagi(nama) {
+                    sapa(nama) + ". Selamat pagi."
+                }
+
+                pribadi {
+                    fn sapa(nama) {
+                        "Halo, " + nama
+                    }
+                }
+            }
+
+            ada p = Penyapa.baru()
+            tuntut p.selamatPagi("Adam") == "Halo, Adam. Selamat pagi."
+
+            tuntut coba {
+                p.sapa("Adam")
+                salah
+            } tahan (e) {
+                tuntut e itu Masalah
+                tuntut e.pesan() == "`sapa` adalah metode pribadi kelas Penyapa yang hanya bisa dipanggil dari dalam"
+                benar
+            } == benar
+
+            tuntut p.metode().berisi?("sapa") == salah
+
+            // dipanggil dari kelas lain
+            kelas A {
+                fn b() {
+                    B.baru(ini).aAsli()
+                }
+
+                pribadi {
+                    fn a() { "a" }
+                }
+            }
+
+            kelas B {
+                ada a
+
+                fn sta baru(a) {
+                    ada obj = baru()
+                    obj.a = a
+                    obj
+                }
+
+                fn aAsli() {
+                    ini.a.a()
+                }
+            }
+
+            tuntut coba {
+                A.baru().b()
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "`a` adalah metode pribadi kelas A yang hanya bisa dipanggil dari dalam"
+                benar
+            } == benar
+        })
+
+        ia("bisa mendefinisikan variabel instansi yang tidak tercetak saat inspeksi", fn () {
+            kelas A {
+                ada a = 123
+
+                fn a() { a }
+
+                fn b() { b }
+
+                pribadi {
+                    ada b = "b"
+                }
+            }
+
+            ada a = A.baru()
+            tuntut a.keKata().berisi?("a=123")
+            tuntut a.keKata().berisi?("b=") == salah
+            tuntut a.b() == "b"
+        })
+
+        ia("bisa mendefinisikan variabel instansi yang memiliki fungsi yang bisa dipanggil", fn () {
+            tidakAda!(fn () { A }) // todo: ubah ke: belumAda! { "A" }
+
+            kelas A {
+                fn a() { aPribadi() }
+
+                pribadi {
+                    ada aPribadi = fn () { "a" }
+                }
+            }
+
+            tuntut A.baru().a() == "a"
+        })
+    })
+
+    tentang("kelas dalam alam nama", fn () {
+        ia("bisa didefinisikan dan diresolusi menggunakan `::`", fn () {
+            tidakAda!(fn () { A })
+            tidakAda!(fn () { A::B })
+            tidakAda!(fn () { A::C })
+
+            kelas A {
+                kelas B {}
+                kelas C {
+                    kelas D {
+                        kelas E {}
+                    }
+                }
+            }
+
+            tuntut A itu Kelas
+            tuntut A::B itu Kelas
+            tuntut A::C itu Kelas
+            tuntut A::C::D itu Kelas
+            tuntut A::C::D::E itu Kelas
+
+            tuntut A::B.baru() itu A::B
+            tuntut A::C::D::E.baru() itu A::B == salah
+
+            tidakAda!(fn () { B })
+            tidakAda!(fn () { C })
+            tidakAda!(fn () { B::C })
+            tidakAda!(fn () { A::B::C })
+        })
+
+        ia("menyatakan nama kelas fully-qualified tanpa `::` jika tidak ditemukan", fn () {
+            tidakAda!(fn () { A })
+
+            tuntut coba {
+                ::A
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "pengenal `A` tidak ditemukan atau belum terdefinisikan"
+                benar
+            } == benar
+
+            kelas A {}
+
+            tuntut A itu Kelas
+            tuntut ::A itu Kelas
+            tuntut ::A == A
+            tuntut ::A == ::A
+            tuntut A == A
+        })
+
+        ia("bisa menjangkau kelas dengan nama yang sama yang berada di luar", fn () {
+            kelas A {}
+
+            kelas B {
+                kelas A {}
+
+                fn sta aKu() { A.baru() } // tes menerima pemanggilan
+                fn sta aKu?(a) { a.kelas() == A } // tes pengenal
+
+                fn sta aNya() { ::A.baru() } // tes menerima pemanggilan
+                fn sta aNya?(a) { a.kelas() == ::A } // tes pengenal
+            }
+
+            tuntut B.aKu?(B::A.baru()) == benar
+            tuntut B.aKu?(A.baru()) == salah
+
+            tuntut B.aNya?(B::A.baru()) == salah
+            tuntut B.aNya?(A.baru()) == benar
+
+            tuntut B.aKu() itu B::A
+            tuntut B.aNya() itu A
+        })
+
+        ia("pengenal kelas tidak boleh diawali dengan `::`", fn () {
+            tidakAda!(fn () { A })
+
+            tuntut coba {
+                kelas A {
+                    kelas ::B {}
+                }
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "pengenal kelas tidak boleh diawali dengan `::`"
+                benar
+            } == benar
+        })
+
+        ia("bisa diresolusi dengan benar meski ada kelas dengan nama yang mirip tapi dalam alam nama yang berbeda", fn () {
+            tidakAda!(fn () { Koneksi })
+            tidakAda!(fn () { Sertifikat })
+            tidakAda!(fn () { HTTP::Koneksi })
+
+            kelas Koneksi {}
+            kelas Sertifikat {}
+
+            kelas HTTP {
+                kelas Koneksi {}
+
+                fn sta buatKoneksi() {
+                    Koneksi.baru() // tes menerima panggilan
+                }
+
+                fn sta sekoneksi?(a) {
+                    a.kelas() == Koneksi // tes pengenal
+                }
+
+                fn sta periksaSertifikat(s) {
+                    s.kelas() == Sertifikat // test pengenal
+                }
+
+                fn sta buatSertifikat() {
+                    Sertifikat.baru() // tes menerima panggilan
+                }
+            }
+
+            tuntut Koneksi.baru() itu Koneksi
+            tuntut HTTP::Koneksi.baru() itu HTTP::Koneksi
+            tuntut HTTP.buatKoneksi() itu HTTP::Koneksi
+            tuntut HTTP.sekoneksi?(Koneksi.baru()) == salah
+            tuntut HTTP.sekoneksi?(HTTP::Koneksi.baru()) == benar
+            tuntut HTTP.buatSertifikat() itu Sertifikat
+            tuntut HTTP.periksaSertifikat(Sertifikat.baru()) == benar
+            tuntut HTTP.periksaSertifikat(HTTP::Koneksi.baru()) == salah
+
+            tidakAda!(fn () { A })
+
+            kelas A {
+                kelas B {}
+            }
+
+            tuntut A itu Kelas
+            tuntut A::B itu Kelas
+        })
+
+        ia("tidak bisa didefinisikan jika hirarki kelas sebelumnya belum terdefinisikan", fn () {
+            tuntut coba {
+                kelas A::B {}
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "tidak bisa mendefinisikan kelas karena `A` belum terdefinisikan"
+                benar
+            } == benar
+
+            tuntut coba {
+                kelas A::B::C {}
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "tidak bisa mendefinisikan kelas karena `A::B` belum terdefinisikan"
+                benar
+            } == benar
+
+            tuntut coba {
+                kelas A {
+                    kelas B {}
+                    kelas B::C {}
+                    kelas B::C::D::E {}
+                }
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "tidak bisa mendefinisikan kelas karena `A::B::C::D` belum terdefinisikan"
+                benar
+            } == benar
+        })
+
+        ia("jika kelas utama bersifat sementara, maka kelas dalam kelas juga bersifat sementara", fn () {
+            ada cek = []
+
+            fn () {
+                kelas A {
+                    kelas B {}
+                    kelas C {}
+                }
+
+                cek += [A itu Kelas]
+                cek += [A::B itu Kelas]
+                cek += [A::C itu Kelas]
+            }()
+
+            tuntut cek == [benar, benar, benar]
+
+            tidakAda!(fn() { A })
+            tidakAda!(fn () { A::B })
+            tidakAda!(fn () { A::C })
+        })
+    })
+
+    // todo: pindah ke sini
+    tentang("tingkah laku kelas", fn () {
+
+    })
+
+    // uji coba tentang metode dari kelas Kelas
+    tentang(".keKata", fn () {
+        ia("bisa mencetak instansi variabel yang mereferensikan diri sendiri", fn () {
+            kelas A {
+                ada a
+
+                fn a() { a = ini }
+            }
+
+            ada a = A.baru()
+            a.a()
+            tuntut a.keKata().berisi?("a=<ini>")
+        })
+    })
+
+    tentang(".moyang()", fn () {
+        ia("mengutus deret kelas punca", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {}
+            tuntut A.moyang itu Deret
+            tuntut A.moyang.berisi?(Kelas)
+            tuntut A.moyang.berisi?(Objek)
+        })
+    })
+})

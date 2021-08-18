@@ -1,0 +1,322 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
+sidang(Peta, fn () {
+    // todo: biar variabel tidak berubah-ubah setiap jalannya tes/independen
+    // var("kFungsi") { {} } equal to -> var("kFungsi", fn () { {} }) << hanya jika fungsi sebagai argumen terakhir
+    ada kFungsi = fn () {}
+    ada kPeta = {benar: "adam"}
+    ada kArr = [1, 2, 3, 4, 5]
+
+    // nilai biner nya sama
+    ada kRiil = 3.0
+    ada kRiilTigaJumlah = (1.0 + 2.0)
+
+    // nilai biner nya beda
+    ada kRiil2v1 = 0.1 * 0.2
+    ada kRiil2v2 = 0.02
+
+    ada peta = {
+        1: 1,
+        "two": 4,
+        "two": 2, // harusnya di-overwrite, meski string immutable dan lokasi memori beda, tapi kobit tetap sama
+        benar: "yes",
+        salah: "no",
+        kFungsi: "",
+        kFungsi: "fungsi",
+        nil: salah,
+        nil: benar,
+        Masalah: salah,
+        kArr: kFungsi,
+        kPeta: "x",
+        kRiil: "tigaAsli",
+        kRiilTigaJumlah: "tigaJumlah",
+        kRiil2v1: "v1",
+        kRiil2v2: "v2",
+    }
+
+    ia(".baru() dapat membuat peta baru", fn () {
+        tuntut Peta.baru() == {}
+    })
+
+    ia("itu Peta", fn () {
+        tuntut Peta itu Kelas
+        tuntut Peta itu Objek
+
+        tuntut peta itu Peta
+
+        tuntut !(peta itu Kelas)
+    })
+
+    ia(".balik() membalik kunci menjadi nilai dan sebaliknya", fn () {
+        ada p = {"x": 1, "y": 2, "z": benar}
+        tuntut p.balik() == {1: "x", 2: "y", benar: "z"}
+    })
+
+    ia(".berisi?() bernilai benar jika peta tidak kosong", fn () {
+        tuntut {}.berisi?() == salah
+        tuntut {1: 2}.berisi?() == benar
+        tuntut {nil: nil}.berisi?() == benar
+    })
+
+    ia(".berisi?(arg1) bernilai benar jika peta berisi nilai yang terpetakan dengan kunci arg1", fn () {
+        tuntut peta.berisi?(1) == benar
+    })
+
+    ia(".deretkan() menjadikan peta pasangan deret [kunci, nilai]", fn () {
+        tuntut peta.deretkan() == [
+            [1, 1],
+            ["two", 2],
+            [benar, "yes"],
+            [salah, "no"],
+            [kFungsi, "fungsi"],
+            [nil, benar],
+            [Masalah, salah],
+            [kArr, kFungsi],
+            [kPeta, "x"],
+            [kRiil, "tigaJumlah"],
+            [kRiil2v1, "v1"],
+            [kRiil2v2, "v2"]
+        ]
+    })
+
+    ia(".gali(arg1) menggali nilai beradasarkan deretan kunci", fn () {
+        ada p = {"a": {"b": {"c": 1}, "d": 2}, "e": 3}
+
+        tuntut p.gali(["a", "b", "c"]) == 1
+        tuntut p.gali(["a", "b"]) == {"c": 1}
+        tuntut p.gali(["a", "d"]) == 2
+        tuntut p.gali(["e"]) == 3
+        tuntut p.gali([]) == p
+    })
+
+    ia(".gali(arg1) akan menjadi masalah jika kunci tidak ditemukan", fn () {
+        ada p = {"a": {"b": {"c": 1}, "d": 2}, "e": 3}
+
+        p.gali(["a", "b", "x"]) == nil
+        p.gali(["x", "y", "z", "a", "b"]) == nil
+    })
+
+    ia(".hapus(arg1) menghapus elemen pada posisi arg1", fn () {
+        ada p = {"x": 123, "y": benar}
+
+        tuntut p["x"] == 123
+        tuntut p["y"] == benar
+
+        tuntut p.hapus("x") == <123, {"y": benar}>
+        tuntut p["x"] == 123
+        tuntut p["y"] == benar
+    })
+
+    tentang(".isiDi(arg1, arg2)", fn () {
+        ia("mengutus Peta baru dengan kunci `arg1` yang bernilai `arg2`", fn () {
+            ada p = {}
+
+            tuntut p.kunci?("x") == salah
+
+            ada pBaru = p.isiDi("x", benar)
+            tuntut pBaru.kunci?("x") == benar
+            tuntut p.kunci?("x") == salah
+            tuntut pBaru["x"] == benar
+            tuntut p["x"].nil? == benar
+        })
+
+        saat("nilai kobit sama", fn () {
+            ia("tetap disimpan masing-masing", fn () {
+                ada obj1 = 123
+                ada obj2 = "abc"
+
+                ada fnKobit = fn () { 123 }
+                Refleksi.terapkan!(obj1, "kobit", fnKobit)
+                Refleksi.terapkan!(obj2, "kobit", fnKobit)
+
+                ada p = {}
+                p = p[obj1: obj1]
+                p = p[obj2: obj2]
+
+                tuntut p[obj1] == obj1
+                tuntut p[obj2] == obj2
+            })
+        })
+    })
+
+    ia(".kosong?() bernilai benar jika peta tidak berelemen", fn () {
+        tuntut {}.kosong?() == benar
+        tuntut {nil: nil}.kosong?() == salah
+    })
+
+    tentang(".kunci()", fn () {
+        ia(".kunci() mengembalikan deret berisi kunci", fn () {
+            tuntut peta.kunci() == [
+                1,
+                "two",
+                benar,
+                salah,
+                kFungsi,
+                nil,
+                Masalah,
+                kArr,
+                kPeta,
+                kRiil,
+                kRiil2v1,
+                kRiil2v2
+            ]
+        })
+
+        saat("elemen dihapus", fn () {
+            ia("mengembalikan deret kunci yang baru", fn () {
+                ada p = {0: 0, 1: 1, 2: 2}
+                ada pBaru = p.hapus(1).akhir
+
+                tuntut p.kunci != pBaru.kunci
+                tuntut pBaru.kunci == [0, 2]
+            })
+        })
+    })
+
+    ia(".kunci?(arg) mengecek apakah peta memiliki kunci arg", fn () {
+        tuntut peta.kunci?(1) == benar
+        tuntut peta.kunci?("two") == benar
+        tuntut peta.kunci?(benar) == benar
+        tuntut peta.kunci?(salah) == benar
+        tuntut peta.kunci?(kFungsi) == benar
+        tuntut peta.kunci?(nil) == benar
+        tuntut peta.kunci?(Masalah) == benar
+        tuntut peta.kunci?(kArr) == benar
+        tuntut peta.kunci?(kPeta) == benar
+        tuntut peta.kunci?(fn () {}) == salah
+        tuntut peta.kunci?(["1", {}]) == salah
+    })
+
+    ia(".kobit() mencetak kode bibit", fn () {
+        tuntut peta.kobit() itu Integer
+    })
+
+    ia(".nilai() mengembalikan deret berisi nilai", fn () {
+        tuntut peta.nilai() == [
+            1,
+            2,
+            "yes",
+            "no",
+            "fungsi",
+            benar,
+            salah,
+            kFungsi,
+            "x",
+            "tigaJumlah",
+            "v1",
+            "v2"
+        ]
+    })
+
+    ia(".nilai?(arg) bernilai benar jika peta memiliki nilai arg", fn () {
+        tuntut peta.nilai?(1) == benar
+        tuntut peta.nilai?(2) == benar
+        tuntut peta.nilai?("yes") == benar
+        tuntut peta.nilai?("no") == benar
+        tuntut peta.nilai?("fungsi") == benar
+        tuntut peta.nilai?(benar) == benar
+        tuntut peta.nilai?(salah) == benar
+        tuntut peta.nilai?(kFungsi) == benar
+        tuntut peta.nilai?("x") == benar
+        tuntut peta.nilai?([{}]) == salah
+    })
+
+    tentang(".panjang", fn () {
+        ia("mengutus panjang Peta", fn () {
+            tuntut {}.panjang == 0
+            tuntut {1: 1}.panjang == 1
+            tuntut {1: 1, 1: 1}.panjang == 1
+            tuntut {1: 1, 2: 2}.panjang == 2
+            tuntut {{}: []}.panjang == 1
+        })
+
+        saat("nilai kobit sama", fn () {
+            ia("mengutus panjang Peta dengan benar", fn () {
+                ada obj1 = 123
+                ada obj2 = "abc"
+
+                ada fnKobit = fn () { 123 }
+                Refleksi.terapkan!(obj1, "kobit", fnKobit)
+                Refleksi.terapkan!(obj2, "kobit", fnKobit)
+
+                ada p = {obj1: obj1, obj2: obj2}
+                tuntut p.panjang == 2
+            })
+        })
+    })
+
+    ia(".rapat() menghapus kunci yang terasosiasikan dengan nilai `nil`", fn () {
+        ada p = {1: nil, 2: nil, benar: nil, nil: 4, 5: 6}
+        tuntut p.rapat() == {nil: 4, 5: 6}
+        tuntut p == {1: nil, 2: nil, benar: nil, nil: 4, 5: 6}
+    })
+
+    ia(".sama?(arg) mengecek apakah peta ini memiliki pasangan kunci-nilai yang sama dalam peta arg", fn () {
+        tuntut {}.sama?({}) == benar
+        tuntut {}.sama?({nil: nil}) == salah
+        tuntut {nil: 1}.sama?({1: nil}) == salah
+        tuntut {nil: 1}.sama?({nil: 2}) == salah
+    })
+
+    ia(".temu(arg1, arg2) mengembalikan nilai yang terasosiasikan dengan arg1, jika tidak ada akan mengembalikan arg2 sebagai pengganti", fn () {
+        ada p = {1: 2, 2: benar}
+
+        tuntut p.temu(1, "xyz") == 2
+        tuntut p.temu(2, "xyz") == benar
+        tuntut p.temu(3, "xyz") == "xyz"
+    })
+
+    ia(".tanpa(arg) menepis elemen yang tidak diinginkan", fn () {
+        ada p = {"1": 1, 2: "2", "3": "3", benar: benar, salah: salah}
+        ada pBaru = p.tanpa(fn (k, n) {
+            k itu Angka || n itu Angka
+        })
+
+        tuntut p == {"1": 1, 2: "2", "3": "3", benar: benar, salah: salah}
+        tuntut pBaru == {"3": "3", benar: benar, salah: salah}
+    })
+
+    tentang(".tiap(arg1)", fn () {
+        ia("mengiterasi pasangan kunci-nilai pada peta", fn () {
+            ada p = {}
+
+            peta.tiap(fn (k, n) {
+                p = p[k: n]
+            })
+
+            tuntut p == peta
+            tuntut p.panjang() == peta.panjang()
+            tuntut p.panjang() > 0
+        })
+
+        ia("mengutus diri sendiri", fn () {
+            ada p = {0: 0, benar: benar, salah: salah}
+            ada pTerutus = p.tiap(fn (k, n) {})
+
+            tuntut p == pTerutus
+        })
+    })
+
+    tentang(".keKata()", fn () {
+        ia("menuliskan Peta menjadi Kata", fn () {
+            tuntut peta.keKata() itu Kata
+            cetak(peta.keKata())
+        })
+
+        saat("nilai kobit sama", fn () {
+            ia("menuliskan Peta menjadi Kata", fn () {
+                ada obj1 = 123
+                ada obj2 = "abc"
+
+                ada fnKobit = fn () { 123 }
+                Refleksi.terapkan!(obj1, "kobit", fnKobit)
+                Refleksi.terapkan!(obj2, "kobit", fnKobit)
+
+                ada p = {obj1: obj1, obj2: obj2}
+                tuntut p.keKata() == "{123: 123, \"abc\": \"abc\"}"
+            })
+        })
+    })
+})

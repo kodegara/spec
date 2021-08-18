@@ -1,0 +1,290 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
+sidang("Kata kunci ada", fn () {
+    tentang("pengenal", fn () {
+        ia("tidak dapat diawali dengan angka", fn () {
+            tuntut coba {
+                eval!("ada 123a = 12")
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "seharusnya menjumpai `IDENTITAS`, tapi malah `INTEGER`"
+            } == benar
+        })
+
+        ia("tidak boleh menjadi variabel sistem", fn () {
+            tuntut coba {
+                ada __XYZ__ = 12
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "dilarang mendefinisikan konstanta sistem"
+                benar
+            } == benar
+
+            tuntut coba {
+                tuntut __DIR__ != nil
+                __DIR__ = 123
+            } tahan (e) {
+                tuntut e.pesan() == "dilarang mendefinisikan konstanta sistem"
+                benar
+            }
+        })
+
+        ia("tidak boleh berakhiran `!`", fn () {
+            tuntut coba {
+                ada a! = 12
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahPengenal
+                tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `!` kecuali sebagai metode dalam kelas"
+                benar
+            } == benar
+
+            tuntut coba {
+                ada a! = fn () {}
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `!` kecuali sebagai metode dalam kelas"
+                benar
+            } == benar
+
+            tuntut coba {
+                kelas A {
+                    ada a! = 12
+                }
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `!` kecuali sebagai metode dalam kelas"
+                benar
+            } == benar
+        })
+
+        ia("tidak boleh berakhiran `?`", fn () {
+            tuntut coba {
+                ada a? = 12
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahPengenal
+                tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `?` kecuali sebagai metode dalam kelas"
+                benar
+            } == benar
+
+            tuntut coba {
+                ada a? = fn () {}
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahPengenal
+                tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `?` kecuali sebagai metode dalam kelas"
+                benar
+            } == benar
+
+            tuntut coba {
+                kelas A {
+                    ada a? = 12
+                }
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `?` kecuali sebagai metode dalam kelas"
+                benar
+            } == benar
+        })
+
+        ia("bisa berisi Unicode", fn () {
+            ada a😍 = "kasmaran"
+            ada 😍 = "kasmaran"
+            tuntut a😍 == 😍
+
+            ada 我爱你 = "i love you"
+            ada ผมรักคุณ = "i love you"
+            ada tôi_mến_bạn = "i love you"
+            ada я_тебя_люблю = "i love you"
+            tuntut 我爱你 == ผมรักคุณ
+            tuntut tôi_mến_bạn == я_тебя_люблю
+
+            ada とうきょう = "Tokyo"
+            tuntut とうきょう == "Tokyo"
+        })
+
+        tentang("berakhiran `=`", fn () {
+            ia("tidak boleh jika ada `=` lagi", fn () {
+                tuntut coba {
+                    ada a= = 12
+                    salah
+                } tahan (e) {
+                    tuntut e itu MasalahPengenal
+                    tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `=` kecuali sebagai metode dalam kelas"
+                    benar
+                } == benar
+
+                tuntut coba {
+                    ada a= = fn () {}
+                    salah
+                } tahan (e) {
+                    tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `=` kecuali sebagai metode dalam kelas"
+                    benar
+                } == benar
+
+                tuntut coba {
+                    kelas A {
+                        ada a= = 12
+                    }
+                    salah
+                } tahan (e) {
+                    tuntut e.pesan() == "dilarang mendefinisikan pengenal dengan akhiran `=` kecuali sebagai metode dalam kelas"
+                    benar
+                } == benar
+            })
+
+            ia("diperbolehkan jika tidak ada `=` lagi", fn () {
+                ada a= 12
+                tuntut a == 12
+
+                ada b, c= ..[1, 2]
+                tuntut b == 1
+                tuntut c == 2
+
+                ada d= 4, e = 5
+                tuntut d == 4
+                tuntut e == 5
+            })
+        })
+    })
+
+    tentang("sifat", fn () {
+        ia("bernilai nil sedia kala", fn () {
+            ada x
+            tuntut x == nil
+        })
+
+        ia("bisa memiliki nilai yang langsung ditempatkan", fn () {
+            ada a = 12
+            tuntut a == 12
+
+            ada b =24 // = mendekati nilai
+            tuntut b == 24
+        })
+
+        ia("pernyataan bisa berakhiran titik koma", fn () {
+            ada a = 12;
+            tuntut a == 12;
+
+            ada b;
+            tuntut b == nil
+        })
+
+        ia("menganggap pengenal variabel berakhiran `=` sebagai penempatan jika tidak ditemui `=` lainnya", fn () {
+            ada a= 12
+            tuntut a == 12
+
+            tuntut coba {
+                ada b= = 12
+                salah
+            } tahan (e) {
+                benar
+            } == benar
+        })
+
+        ia("tidak bisa statis diluar kelas", fn () {
+            tuntut coba {
+                eval!("ada sta x = 12")
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "pengenal statis hanya bisa digunakan di luar metode di dalam kelas"
+                benar
+            } == benar
+        })
+
+        ia("mengakses variabel yang belum terdefinisikan akan bermasalah", fn () {
+            tuntut coba {
+                x + 123
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahPengenal
+                tuntut e.pesan() == "pengenal `x` tidak ditemukan atau belum terdefinisikan"
+            } == benar
+        })
+
+        ia("menempatkan nilai pada variabel yang belum terdefinisikan akan bermasalah", fn () {
+            tuntut coba {
+                x = 123
+            } tahan (e) {
+                tuntut e itu MasalahPengenal
+                tuntut e.pesan() == "pengenal `x` tidak ditemukan atau belum terdefinisikan"
+            } == benar
+        })
+
+        tentang("baris multi-variabel", fn () {
+            ia("bisa semuanya tak bernilai", fn () {
+                ada x, y, z
+
+                tuntut x == nil
+                tuntut y == nil
+                tuntut z == nil
+            })
+
+            ia("bisa semuanya berisi nilai", fn () {
+                ada x = 1, y = fn () {}, z = [1, 2, 3, 4]
+
+                tuntut x == 1
+                tuntut y itu Fungsi
+                tuntut z == [1, 2, 3, 4]
+            })
+
+            ia("bisa salah satunya bernilai", fn () {
+                ada x, y = {}, z = fn () {}
+                ada a, b, c = "aloha"
+
+                tuntut x == nil
+                tuntut y == {}
+                tuntut z itu Fungsi
+                tuntut a == nil
+                tuntut b == nil
+                tuntut c == "aloha"
+            })
+
+            ia("bisa mengambil nilai dari variabel lain", fn () {
+                ada x = 1, y = 2, z = 3
+                ada a = z, b = y, c = x
+
+                tuntut a == 3
+                tuntut b == 2
+                tuntut c == 1
+            })
+
+            ia("bisa diisi nilai menggunakan operasi keduk", fn () {
+                ada x, y, z = ..[1, 2, 3]
+                tuntut x == 1
+                tuntut y == 2
+                tuntut z == 3
+            })
+
+            ia("bisa diakhiri titik koma", fn () {
+                ada a = 1, b = 2, c = 3;
+
+                tuntut a == 1
+                tuntut b == 2
+                tuntut c == 3
+            })
+
+            ia("koma harus bertemu identitas", fn () {
+                tuntut coba {
+                    eval!("ada x,")
+                    salah
+                } tahan (e) {
+                    tuntut e itu MasalahKode
+                    tuntut e.pesan == "seharusnya menjumpai `IDENTITAS`, tapi malah `UJUNG`"
+                    benar
+                } == benar
+
+                tuntut coba {
+                    eval!("ada x, 1")
+                    salah
+                } tahan (e) {
+                    tuntut e itu MasalahKode
+                    tuntut e.pesan == "seharusnya menjumpai `IDENTITAS`, tapi malah `INTEGER`"
+                } == benar
+            })
+        })
+    })
+})

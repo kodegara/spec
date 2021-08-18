@@ -1,0 +1,59 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
+sidang(Dir, fn () {
+    tentang("#pindai(arg)", fn () {
+        ada alamat = "./pelengkap/dir"
+        ada d = Dir.pindai(alamat)
+
+        ia("menghasilkan Dir::Entri", fn () {
+            tuntut d.semua?(Dir::Entri) == benar
+        })
+
+        ia("hanya berisi file dan direktori", fn () {
+            ada isiDirektori = [".rahasia", "dalam", "teks1.txt"]
+            // implementasikan ubah terlebih dahulu
+
+            ada nama = d.jelma(fn (entri) { entri.nama() })
+            tuntut nama == isiDirektori
+        })
+
+        ia("tanpa direktori dalam", fn () {
+            ada nama = d.jelma(fn (entri) { entri.nama() })
+            tuntut nama.berisi?("teks2.txt") == salah
+
+            tuntut Dir.pindai(alamat + "/dalam")
+                .jelma(fn (e) { e.nama() })
+                .berisi?("teks2.txt") == benar
+        })
+
+        tentang(Dir::Entri, fn () {
+            ia(".nama() tidak mengutus nilai kosong", fn () {
+                tuntut d.semua?(fn (e) { !e.nama().kosong?() }) == benar
+            })
+
+            ia(".dir?() mengutus nilai Boolean", fn () {
+                tuntut d.semua?(fn (e) { e.dir?().kelas() == Boolean }) == benar
+            })
+
+            ia(".file?() mengutus nilai Boolean", fn () {
+                tuntut d.semua?(fn (e) { e.file?().kelas() == Boolean }) == benar
+            })
+
+            ia(".symlink?() mengutus nilai Boolean", fn () {
+                tuntut d.semua?(fn (e) { e.symlink?().kelas() == Boolean }) == benar
+            })
+
+            ia(".unixSocket?() mengutus nilai Boolean", fn () {
+                tuntut d.semua?(fn (e) { e.unixSocket?().kelas() == Boolean }) == benar
+            })
+
+            ia(".alamat() mengutus nama yang bersifat alamat absolut", fn () {
+                tuntut d.semua?(fn (e) {
+                    e.alamat().berisi?(e.nama())
+                }) == benar
+            })
+        })
+    })
+})

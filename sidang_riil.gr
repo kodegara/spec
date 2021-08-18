@@ -1,0 +1,134 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
+sidang("Riil", fn () {
+    ia("memiliki beberapa konstanta", fn () {
+        tuntut Riil.NAN.nan?() == benar
+        tuntut Riil.ANANTA == fAnanta
+        tuntut Riil.NEG_ANANTA == -fAnanta
+        tuntut Riil.PI >= 3.14
+    })
+
+    tentang(".desimal(arg1)", fn () {
+        ada angka = 12650.5011872336272724
+        ada angkaAsli = 12650.5011872336272724
+
+        saat("nilai argumen negatif", fn () {
+            ia("memotong seluruh desimal", fn () {
+                tuntut angka.desimal(-1) == 12650.0
+                tuntut angka == angkaAsli
+            })
+        })
+
+        saat("nilai argumen 0", fn () {
+            ia("memotong seluruh desimal", fn () {
+                tuntut angka.desimal(0) == 12650.0
+                tuntut angka == angkaAsli
+            })
+        })
+
+        saat("nilai argumen positif", fn () {
+            ia("mengutus nilai dengan angka dibelakang koma sebanyak argumen", fn () {
+                tuntut angka.desimal(1) == 12650.5
+                tuntut angka.desimal(2) == 12650.5
+                tuntut angka.desimal(3) == 12650.501
+                tuntut angka.desimal(4) == 12650.5011
+                tuntut angka.desimal(5) == 12650.50118
+                tuntut angka.desimal(6) == 12650.501187
+                tuntut angka.desimal(7) == 12650.5011872
+                tuntut angka.desimal(8) == 12650.50118723
+                tuntut angka.desimal(9) == 12650.501187233
+                tuntut angka.desimal(10) == 12650.5011872336
+                tuntut angka.desimal(11) == 12650.50118723362
+                tuntut angka.desimal(12) == 12650.501187233627
+                tuntut angka.desimal(13) == 12650.5011872336272
+                tuntut angka.desimal(14) == 12650.50118723362727
+                tuntut angka.desimal(15) == 12650.501187233627272
+                tuntut angka.desimal(16) == 12650.5011872336272724
+                tuntut angka.desimal(100) == 12650.5011872336272724
+            })
+        })
+    })
+
+    ia(".mutlak() mengutus nilai riil yang tidak negatif", fn () {
+        tuntut fNaN.mutlak().nan?() == benar
+        tuntut fAnanta.mutlak() == fAnanta
+        tuntut -fAnanta.mutlak() == -fAnanta
+        tuntut -5.0.mutlak() == 5.0
+        tuntut 5.0.mutlak() == 5.0
+    })
+
+    ia(".bulat() mengutus nilai Integer terdekat yang menjauhi 0", fn () {
+        tuntut 2.5.bulat() == 3
+        tuntut -2.5.bulat() == -3
+
+        tuntut 1.0.bulat() == 1
+        tuntut 1.1.bulat() == 1
+        tuntut 1.2.bulat() == 1
+        tuntut 1.3.bulat() == 1
+        tuntut 1.4.bulat() == 1
+        tuntut 1.5.bulat() == 2
+        tuntut 1.6.bulat() == 2
+        tuntut 1.7.bulat() == 2
+        tuntut 1.8.bulat() == 2
+        tuntut 1.9.bulat() == 2
+        tuntut 2.0.bulat() == 2
+
+        tuntut fNaN.bulat().nan?()
+        tuntut -fAnanta.bulat() == -fAnanta
+        tuntut fAnanta.bulat() == fAnanta
+    })
+
+    ia(".kobit() mencetak kode bibit", fn () {
+        tuntut 1.0.kobit() itu Integer
+        tuntut 1.0.kobit() == 74872343809228800
+        tuntut -1.0.kobit() == 75153818785939456
+        tuntut fAnanta.kobit() == 2378383817268
+        tuntut -fAnanta.kobit() == -3746262718921
+        tuntut fNaN.kobit() == -1182712812731
+    })
+
+    ia(".keKata() menuliskan representasi bilangan riil yang mudah dibaca manusia", fn () {
+        tuntut 0.3.keKata() == "0.3"
+        tuntut (0.1 + 0.2).keKata() == "0.3"
+        tuntut (2 ** 2.5).keKata() == "5.65685424949238"
+        tuntut fAnanta.keKata() == "fAnanta"
+        tuntut -fAnanta.keKata() == "-fAnanta"
+        tuntut fNaN.keKata() == "fNaN"
+    })
+
+    ia(".keKataPersis() menuliskan representasi bilangan riil secara akurat dan lengkap", fn () {
+        tuntut 0.3.keKataPersis() == "0.3000000000000000000108420217248550443400745280086994171142578125"
+        tuntut fAnanta.keKataPersis() == "fAnanta"
+        tuntut -fAnanta.keKataPersis() == "-fAnanta"
+        tuntut fNaN.keKataPersis() == "fNaN"
+    })
+
+    ia(".negatif?() mengecek apakah suatu bilangan negatif atau positif", fn () {
+        tuntut 0.0.negatif?() == salah
+        tuntut -0.0.negatif?() == benar
+    })
+
+    ia(".potong() memotong nilai desimal dibelakang koma", fn () {
+        tuntut 0.123.potong() == 0
+        tuntut 1.123.potong() == 1
+        tuntut 1.32894723984732947329472897493274298.potong() == 1
+        tuntut 12.32894723984732947329472897493274298.potong() == 12
+        tuntut 123.32894723984732947329472897493274298.potong() == 123
+        tuntut 1234.32894723984732947329472897493274298.potong() == 1234
+        tuntut 12345.32894723984732947329472897493274298.potong() == 12345
+    })
+
+    ia(".potong(arg) memotong nilai desimal sesuai jumlah digit dibelakang koma", fn () {
+        tuntut 0.123.potong(0.1) == 0.1
+        tuntut 0.123.potong(0.01) == 0.12
+        tuntut 0.123.potong(0.001) == 0.123
+
+        ada d = 12345.32894723984732947329472897493274298
+        tuntut d.potong(0.1).mendekati?(12345.3)
+        tuntut d.potong(0.01).mendekati?(12345.32)
+        tuntut d.potong(0.001).mendekati?(12345.328)
+        tuntut d.potong(0.0001).mendekati?(12345.3289)
+    })
+})

@@ -1,0 +1,56 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
+sidang("Kata kunci `utus`", fn () {
+    ia("bisa mengutus nilai dari dalam blok selama (benar)", fn () {
+        ada nilaiLain = fn () {
+            ada i = 0
+            ada d = []
+            selama (benar) {
+                d += [i]
+                jika (i == 5) {
+                    utus d
+                }
+                i += 1
+            }
+
+            tuntut salah: "seharusnya tidak dieksekusi"
+            utus "yang lain"
+        }
+
+        tuntut nilaiLain() == [0, 1, 2, 3, 4, 5]
+
+        tuntut fn () {
+            selama (benar) {
+                selama (benar) {
+                    selama (benar) {
+                        utus 1
+                    }
+                }
+            }
+        }() == 1
+    })
+
+    ia("bisa mengutus nilai dari dalam blok dari (benar)", fn () {
+        ada nilaiLain = fn () {
+            ada d = []
+            dari (ada i = 0; benar; i += 1) {
+                d += [i]
+                jika (i == 5) { utus d }
+            }
+        }
+
+        tuntut nilaiLain() == [0, 1, 2, 3, 4, 5]
+
+        tuntut fn () {
+            dari (ada i = benar; benar; i = benar) {
+                dari (ada i = benar; benar; i = benar) {
+                    dari (ada i = benar; benar; i = benar) {
+                        utus 1
+                    }
+                }
+            }
+        }() == 1
+    })
+})

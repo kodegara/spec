@@ -1,0 +1,92 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
+sidang("Kata kunci `itu`", fn () {
+    ia("bernilai benar jika suatu objek adalah instansi kelas yang benar", fn () {
+        tuntut [] itu Deret
+        tuntut [] itu Objek
+    })
+
+    ia("tuntutan hanya bisa dilakukan dengan kelas", fn () {
+       ada a = "BukanKelas"
+
+       coba {
+           tuntut "" itu a
+           salah
+       } tahan (e) {
+           tuntut e.pesan() == "seharusnya bertipe Kelas, tapi menerima Kata"
+           tuntut e itu MasalahEksekusi
+       }
+    })
+
+    ia("bisa menggunakan operasi relasi lain", fn () {
+        tuntut 2 itu Integer && 2.5 itu Riil == benar
+        tuntut 2 itu Integer && 2.5 itu Deret == salah
+        tuntut 2 itu Integer || 2.5 itu Deret == benar
+        tuntut 2 itu Deret || 2.5 itu Riil == benar
+    })
+
+    ia("bisa membandingkan Kelas", fn () {
+        tuntut 2 itu Integer == benar
+        tuntut 2 itu Kelas == salah
+        tuntut Integer itu Kelas == benar
+    })
+
+    ia("bisa menggunakan ekspresi", fn () {
+        ada m = Masalah.baru
+        tuntut m itu m.kelas == benar
+        tuntut m itu Masalah == benar
+        tuntut m itu fn () { Masalah }() == benar
+    })
+
+    ia("bisa membandingkan sampai ke kelas punca", fn () {
+        tuntut [] itu Deret == benar
+        tuntut [] itu Objek == benar
+        tuntut 1 itu Integer == benar
+        tuntut 1 itu Riil == salah
+        tuntut 1.0 itu Integer == salah
+        tuntut 1.0 itu Riil == benar
+        tuntut 1 itu Angka == benar
+        tuntut 1.0 itu Angka == benar
+    })
+
+    tentang("penggunaan didalam kelas", fn () {
+        ia("bisa mengecek dengan benar", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                fn cek() {
+                    123 itu Angka && [] itu Deret && "kata" itu Kata
+                }
+            }
+
+            tuntut A.baru().cek() == benar
+        })
+
+        ia("bisa menggunakan `ini`", fn () {
+            tidakAda!(fn () { A })
+
+            kelas A {
+                fn cek() {
+                    ini itu A && !(ini itu Angka) && !(ini itu Deret) && !(ini itu Kata)
+                }
+            }
+
+            tuntut A.baru().cek() == benar
+        })
+
+        ia("bisa menggunakan `ini` pada kelas turunan", fn () {
+            tidakAda!(fn () { A })
+            tidakAda!(fn () { B })
+
+            kelas A {
+                fn cek() { ini itu A }
+            }
+
+            kelas B -> A {}
+
+            tuntut B.baru().cek() == benar
+        })
+    })
+})

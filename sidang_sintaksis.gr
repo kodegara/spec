@@ -1,0 +1,345 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
+sidang("Sintaksis", fn () {
+    tentang("pemanggilan fungsi", fn () {
+        tentang("ketika fungsi", fn () {
+            ia("bisa dipanggil", fn () {
+                ada a = fn () {}
+                fn b () {}
+
+                tuntut a() == nil
+                tuntut b() == nil
+            })
+        })
+
+        tentang("ketika Kata, akan menjadi masalah", fn () {
+            tuntut coba {
+                "2"()
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahEksekusi
+                tuntut e.pesan() == "bukan fungsi: 2"
+            }
+        })
+
+        tentang("ketika Angka, akan menjadi masalah", fn () {
+            tuntut coba {
+                2()
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahEksekusi
+                tuntut e.pesan() == "bukan fungsi: 2"
+            }
+        })
+
+        tentang("ketika nil", fn () {
+            tuntut coba {
+                nil()
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahEksekusi
+                tuntut e.pesan() == "bukan fungsi: nil"
+            }
+        })
+
+        tentang("ketika objek", fn () {
+            kelas A {}
+
+            tuntut coba {
+                ada a = A.baru()
+                a()
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahEksekusi
+                tuntut e.pesan() == "bukan fungsi: a"
+            }
+        })
+    })
+
+    tentang("sintaksis `:`", fn () {
+        ia("tidak boleh ditempatkan sembarangan", fn () {
+            tuntut coba {
+                eval!("ada a = fn() {}\na: 1: 2")
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "tidak diperbolehkan adanya `:` pada posisi tersebut"
+                tuntut e itu MasalahKode
+                benar
+            } == benar
+        })
+
+        ia("bisa digunakan sebagai pemisah tuntutan dan pesan", fn () {
+            tuntut fn () {} itu Fungsi: "fungsi!"
+
+            tuntut coba {
+                tuntut [] itu Fungsi: "salah"
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "salah"
+                benar
+            } == benar
+
+            tuntut coba {
+                tuntut salah: "salah"
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "salah"
+                benar
+            } == benar
+        })
+
+        tentang(". sebagai pemanggilan fungsi", fn () {
+            ia("dapat dipisah dengan baris baru", fn () {
+                ada d = [1, 2, 3]
+                    .jelma(fn (d) { d + 1 })
+                tuntut d == [2, 3, 4]
+            })
+        })
+
+        tentang("dengan `:` satu lagi untuk alam nama", fn () {
+            tentang("penggunaan sebagai pengenal kelas", fn () {
+                ia("harus diulang dua kali", fn () {
+                    tuntut coba {
+                        A::B
+                        salah
+                    } tahan (e) {
+                        tuntut e itu MasalahKode == salah
+                        benar
+                    } == benar
+                })
+
+                ia("tidak boleh mengambang", fn () {
+                    tuntut coba {
+                        eval!("A::")
+                        salah
+                    } tahan (e) {
+                        tuntut e.pesan().berisi?("tidak dimengerti:")
+                        benar
+                    } == benar
+
+                    tuntut coba {
+                        eval!("kelas A:: {}")
+                        salah
+                    } tahan (e) {
+                        tuntut e.pesan() == "seharusnya menjumpai `IDENTITAS`, tapi malah ` `"
+                        benar
+                    } == benar
+                })
+
+                ia("tidak boleh berdiri sendiri", fn () {
+                    tuntut coba {
+                        eval!("A:B")
+                        salah
+                    } tahan (e) {
+                        tuntut e itu MasalahKode
+                        tuntut e.pesan().berisi?("tidak dimengerti:")
+                        benar
+                    } == benar
+                })
+
+                ia("tidak boleh diulang sebanyak lebih dari 2 kali", fn () {
+                    tuntut coba {
+                        eval!("A:::")
+                        salah
+                    } tahan (e) {
+                        tuntut e itu MasalahKode
+                        tuntut e.pesan() == "tidak dimengerti: `:`"
+                        benar
+                    } == benar
+
+                    tuntut coba {
+                        eval!("A::::B")
+                        salah
+                    } tahan (e) {
+                        tuntut e itu MasalahKode
+                        tuntut e.pesan() == "tidak dimengerti: `:`"
+                        benar
+                    } == benar
+                })
+            })
+
+            ia("tidak diperkenankan penggunaan sebagai pengenal variabel", fn () {
+                tuntut coba {
+                    eval!("a::b")
+                    salah
+                } tahan (e) {
+                    tuntut e itu MasalahKode
+                    tuntut e.pesan() == "tidak dimengerti: `b`"
+                    benar
+                } == benar
+
+                tuntut coba {
+                    eval!("ada a:: = 12")
+                    salah
+                } tahan (e) {
+                    tuntut e itu MasalahKode
+                    tuntut e.pesan() == "tidak dimengerti: ` `"
+                    benar
+                } == benar
+
+                tuntut coba {
+                    eval!("ada a::b = 12")
+                    salah
+                } tahan (e) {
+                    tuntut e itu MasalahKode
+                    tuntut e.pesan() == "tidak dimengerti: `b`"
+                    benar
+                } == benar
+            })
+        })
+    })
+
+    tentang("interpretasi kode dengan/tanpa titik-koma (`;`)", fn () {
+        ia("tidak menambahkan titik koma pada baris yang hanya berisi `tab`", fn () {
+            tuntut eval!("ada a = 1\n\t\na + 1") == 2
+            tuntut eval!("ada a = 1;\n\t\na + 1") == 2
+            tuntut eval!("ada a = 1;\n\t\na + 1;") == 2
+
+            tuntut eval!("ada a = 1\n\t\t\na + 1") == 2
+            tuntut eval!("ada a = 1;\n\t\t\na + 1") == 2
+            tuntut eval!("ada a = 1;\n\t\t\na + 1;") == 2
+        })
+
+        ia("tidak menambahkan titik koma pada baris yang hanya berisi spasi", fn () {
+            tuntut eval!("ada a = 1\n \na + 1") == 2
+            tuntut eval!("ada a = 1;\n \na + 1") == 2
+            tuntut eval!("ada a = 1;\n \na + 1;") == 2
+
+            tuntut eval!("ada a = 1\n    \na + 1") == 2
+            tuntut eval!("ada a = 1;\n    \na + 1") == 2
+            tuntut eval!("ada a = 1;\n    \na + 1;") == 2
+        })
+
+        saat("dengan operator logika", fn () {
+            ia("tidak memberi titik koma pada baris yang berbeda", fn () {
+                tuntut eval!("benar &&\nbenar") == benar
+                tuntut eval!("salah ||\nbenar") == benar
+                tuntut eval!("salah ||\n\n\n\nbenar") == benar
+                tuntut eval!("salah || \n\t\tbenar") == benar
+                tuntut eval!("benar && \n\t\tsalah") == salah
+            })
+        })
+
+        saat("dengan operator aritmatika", fn () {
+            ia("tidak memberi titik koma pada baris yang berbeda", fn () {
+                tuntut eval!("1 +\n\n\t1") == 2
+                tuntut eval!("1- \n\n\t1") == 0
+                tuntut eval!("1 *\n\n\t3") == 3
+                tuntut eval!("4 /\n\n\t2") == 2
+                tuntut eval!("4 **\n\t2") == 16
+                tuntut eval!("cetak(\"a\" + \n\t\"b\")") == nil
+            })
+        })
+
+        tentang("Deret", fn () {
+            tentang("[] sebagai literal", fn () {
+                ia("tidak menggabung deret dalam baris yang berbeda", fn () {
+                    ada n
+                    [0]
+                    [100].tiap(fn (e) { // tidak dibaca [0][100]
+                        n = e
+                    })
+
+                    tuntut n == 100
+                })
+
+                ia("bisa multi-baris", fn () {
+                    ada a = [
+                        1
+                    ]
+
+                    tuntut a == [1]
+
+                    a = [
+                        2
+                    ]
+
+                    tuntut a == [2]
+
+                    tuntut eval!("ada a = [\n\t0\n]") == [0]
+                    tuntut eval!("ada a = [\n\t0\n]\n") == [0]
+                })
+
+                ia("bisa memahami Deret dalam Deret", fn () {
+                    ada a = [
+                        [
+                            [1]
+                        ]
+                    ]
+
+                    tuntut a == [[[1]]]
+                })
+            })
+
+            tentang("[] sebagai pengutus elemen", fn () {
+                ia("tidak ambigu jika disejajarkan dengan pengenal", fn () {
+                    // tanpa spasi setelah n
+                    ada n1
+                    [].tiap(fn (e) {}) // tidak dianggap ada n[].tiap ...
+
+                    ada n2 // ada spasinya
+                    [].tiap(fn (e) {}) // tidak dianggap ada n[].tiap ...
+
+                    // ada titik komanya tapi tanpa spasi setelah nama variabel
+                    ada n3;
+                    [].tiap(fn (e) {}) // tidak bermasalah
+
+                    // todo: bisa ada titik komanya
+                    // ada n4; // ada titik komanya dan komentar
+                    // [].tiap(fn (e) {})
+                })
+            })
+
+            tentang("[] sebagai operasi pengisian", fn () {
+                ia("bisa multi-baris", fn () {
+                    ada a = [0]
+
+                    tuntut eval!("a = a[\n\t0:1\n]") == [1]
+                    tuntut a == [1]
+
+                    tuntut eval!("a = a[\n\t0:2\n]\n") == [2]
+                    tuntut a == [2]
+                })
+            })
+        })
+
+        tentang("Peta", fn () {
+            tentang("{} sebagai literal", fn () {
+                ia("bisa multi-baris", fn () {
+                    ada p = {
+                        0: 0,
+                        1: 1
+                    }
+
+                    tuntut p == {0: 0, 1: 1}
+
+                    tuntut eval!("ada p = {\n\t0: 0,\n\t1: 1\n}") == p
+                    tuntut eval!("ada p = {\n\t0: 0,\n\t1: 1\n}\n") == p
+                })
+            })
+        })
+
+        tentang("Rangkap", fn () {
+            tentang("<> sebagai literal", fn () {
+                ia("bisa multi-baris", fn () {
+                    ada a = <
+                        1
+                    >
+
+                    tuntut a == <1>
+
+                    a = <
+                        2
+                    >
+
+                    tuntut a == <2>
+
+                    tuntut eval!("ada a = <\n\t0\n>") == <0>
+                    tuntut eval!("ada a = <\n\t0\n>\n") == <0>
+                })
+            })
+        })
+    })
+})

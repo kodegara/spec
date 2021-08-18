@@ -1,0 +1,64 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
+sidang("Kata kunci `tuntutan`", fn () {
+    ia("tuntutan adalah pernyataan bukan ekspresi", fn () {
+        tuntut coba {
+            eval!("ada x = tuntut benar")
+            salah
+        } tahan (e) {
+            tuntut e itu MasalahKode
+            tuntut e.pesan() == "tidak diperbolehkan adanya `tuntut` pada posisi tersebut"
+            benar
+        } == benar
+    })
+
+    ia("tuntut jika menemui kebenaran tidak melakukan apa-apa", fn () {
+        tuntut benar == benar
+    })
+
+    ia("tuntut jika menemui kesalahan akan menjadi masalah", fn () {
+        coba {
+            tuntut salah
+            salah
+        } tahan (e) {
+            tuntut e.pesan() == "tuntutan tidak terpenuhi: salah"
+            tuntut e itu MasalahTuntutan
+            benar
+        } == benar
+    })
+
+    tentang("dengan pesan sendiri", fn () {
+        ia("diperbolehkan jika Kata", fn () {
+            coba {
+                tuntut salah: "pesan tersendiri"
+                salah
+            } tahan (e) {
+                tuntut e.pesan() == "pesan tersendiri"
+                tuntut e itu MasalahTuntutan
+                benar
+            } == benar
+        })
+
+        ia("dilarang jika ekspresi tidak menghasilkan Kata", fn () {
+            coba {
+                eval!("tuntut salah: fn () { \"pesan tersendiri \"}()")
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahKode
+                tuntut e.pesan() == "seharusnya menjumpai pesan tuntutan, tapi malah `fn`"
+                benar
+            } == benar
+
+            coba {
+                eval!("tuntut salah: 1")
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahKode
+                tuntut e.pesan() == "seharusnya menjumpai pesan tuntutan, tapi malah `INTEGER`"
+                benar
+            } == benar
+        })
+    })
+})

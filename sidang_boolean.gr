@@ -1,0 +1,41 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
+sidang(Boolean, fn () {
+    ia("itu Boolean", fn () {
+        tuntut Boolean itu Kelas
+        tuntut Boolean itu Objek
+
+        tuntut benar itu Boolean
+        tuntut salah itu Boolean
+        tuntut benar itu Objek
+        tuntut salah itu Objek
+
+        tuntut !(benar itu Kelas)
+        tuntut !(salah itu Kelas)
+    })
+
+    ia("kedudukan", fn () {
+        // test tingkatan kedudukan operator (precedence)
+        // NOT > && > ||
+
+        tuntut benar || salah && salah == benar
+        tuntut (benar || salah) && salah == salah
+        tuntut !salah && benar == benar
+        tuntut !salah && benar || salah == benar
+        tuntut !salah || benar && salah == benar
+        tuntut !benar || benar && salah == salah
+    })
+
+    tentang(".keKata()", fn () {
+        ia("menuliskan nilai Boolean itu sendiri", fn () {
+            tuntut benar.keKata == "benar"
+            tuntut salah.keKata == "salah"
+        })
+    })
+
+    ia(".kobit() mencetak kode bibit", fn () {
+        tuntut benar.kobit() != salah.kobit()
+    })
+})

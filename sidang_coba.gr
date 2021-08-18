@@ -1,0 +1,148 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
+sidang("Ekspresi coba", fn () {
+    fn jumlah(angka1, angka2) {
+        angka1 + angka2
+    }
+
+    ia("dengan `tahan` saja maka masalah dapat ditahan", fn () {
+        ada ditahan = salah
+
+        coba {
+            Kelas.baru()
+        } tahan {
+            ditahan = benar
+        }
+
+        tuntut ditahan
+    })
+
+    ia("dengan `lalu` saja maka blok `lalu` selalu dieksekusi meski dengan adanya masalah", fn () {
+        ada ditahan = salah
+        ada dilalui = salah
+        ada kodeSetelahnyaDieksekusi = salah
+
+        coba {
+            coba { nil + nil; ditahan = benar } lalu { dilalui = benar }
+            kodeSetelahnyaDieksekusi = benar
+        } tahan { }
+
+        tuntut ditahan == salah
+        tuntut kodeSetelahnyaDieksekusi == salah
+        tuntut dilalui == benar
+    })
+
+    ia("dengan `lalu` saja maka blok `lalu` selalu dieksekusi meski tanpa adanya masalah", fn () {
+        ada dilalui = salah
+        ada kodeSetelahnyaDieksekusi = salah
+
+        coba { 1 + 1; kodeSetelahnyaDieksekusi = benar }
+        lalu { dilalui = benar }
+
+        tuntut kodeSetelahnyaDieksekusi == benar
+        tuntut dilalui == benar
+    })
+
+    ia("dengan `tahan` dan `lalu` masalah bisa ditahan dan dilalui", fn () {
+        ada ditahan = salah
+        ada dilalui = salah
+        ada kodeSetelahnyaDieksekusi = salah
+
+        coba { nil + nil; kodeSetelahnyaDieksekusi = benar }
+        tahan { ditahan = benar }
+        lalu { dilalui = benar }
+
+        tuntut kodeSetelahnyaDieksekusi == salah
+        tuntut ditahan == benar
+        tuntut dilalui == benar
+    })
+
+    ia("dengan `tahan` dan `lalu` dan tanpa adanya masalah, hanya akan mengeksekusi blok `lalu`", fn () {
+        ada ditahan = salah
+        ada dilalui = salah
+        ada kodeSetelahnyaDieksekusi = salah
+
+        coba { 1 + 1; kodeSetelahnyaDieksekusi = benar }
+        tahan { ditahan = benar }
+        lalu { dilalui = benar }
+
+        tuntut kodeSetelahnyaDieksekusi == benar
+        tuntut ditahan == salah
+        tuntut dilalui == benar
+    })
+
+    ia("blok penahan bisa menerima variabel bernilai masalah", fn () {
+        ada masalah1
+        ada masalah2
+
+        coba {
+            Kelas.baru()
+        } tahan (m) {
+            tuntut m itu Masalah
+            masalah1 = m
+        }
+
+        tuntut masalah1 itu Masalah
+
+        coba {
+            ada xyz = fn (x) {}
+            xyz()
+        } tahan (m) {
+            tuntut m itu Masalah
+            masalah2 = m
+        }
+
+        tuntut masalah1.pesan() == "objek tipe Kelas tidak memiliki metode `baru` yang bisa dipanggil"
+        tuntut masalah2.pesan() == "hanya bisa dipanggil dengan 1 argumen"
+    })
+
+    ia("variabel pengenal pada blok penahan bisa shadowing variabel dengan pengenal yang sama", fn () {
+        ada e = [1, 2, 3]
+
+        coba { nil + nil }
+        tahan (e) {
+            tuntut e itu Masalah
+            tuntut e itu Deret == salah
+        }
+
+        tuntut e itu Masalah == salah
+        tuntut e itu Deret == benar
+    })
+
+    ia("blok `lalu` pasti dieksekusi", fn () {
+        ada d = []
+
+        coba { nil + nil } tahan { 0 } lalu { d += [1] }
+        tuntut d == [1]
+
+        coba { 1 + 1 } tahan { 0 } lalu { d += [2] }
+        tuntut d == [1, 2]
+
+        tuntut d == [1, 2]
+    })
+
+    ia("ekspresi `coba` bisa mengutus nilai secara implisit", fn () {
+        ada angka = coba { jumlah(1, 2) } tahan { 0 }
+        tuntut angka == 3
+    })
+
+    ia("bisa memiliki ekspresi `tahan` yang mengutus nilai", fn () {
+        ada angka = coba { jumlah(1, nil) } tahan { 0 }
+        tuntut angka == 0
+    })
+
+    ia("bisa memiliki ekspresi `lalu` yang mengutus nilai", fn () {
+        tuntut coba { jumlah(1, 2) } lalu { 0 } == 0
+        tuntut coba { jumlah(1, 2) } tahan { 1 } lalu { 0 } == 0
+
+        ada tertahan = salah
+        tuntut coba { jumlah(1, 2) } tahan (e) { tertahan = benar } lalu { 0 } == 0
+        tuntut tertahan == salah
+
+        tertahan = salah
+        tuntut coba { nil + 123 } tahan (e) { tertahan = benar } lalu { 0 } == 0
+        tuntut tertahan == benar
+    })
+})

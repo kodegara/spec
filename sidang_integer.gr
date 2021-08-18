@@ -1,0 +1,78 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
+sidang(Integer, fn () {
+    ada satu = 1
+    ada dua = 2
+
+    ia("itu Integer", fn () {
+        tuntut Integer itu Kelas
+        tuntut Integer itu Objek
+
+        tuntut satu itu Integer
+        tuntut dua itu Integer
+        tuntut satu itu Objek
+        tuntut dua itu Objek
+
+        tuntut !(satu itu Kelas)
+    })
+
+    ia(".mutlak() mengutus nilai non-negatif", fn () {
+        tuntut 5.mutlak() == 5
+        tuntut -5.mutlak() == 5
+    })
+
+    ia(".antara(arg1, arg2) mengecek apakah suatu Integer berada dalam rentang arg1 ke arg2, inklusif", fn () {
+        tuntut 1.antara?(1, 2)
+        tuntut 2.antara?(1, 2)
+        tuntut 1.antara?(0, 2)
+        tuntut -1.antara?(-2, 2)
+        tuntut -1.antara?(-2, -1)
+        tuntut -1.antara?(-2, 0)
+    })
+
+    ia(".kali() mengutus deret berisi Integer dari 0 hingga n", fn () {
+        tuntut 3.kali() == [0, 1, 2]
+    })
+
+    ia(".kali(arg) menjalankan arg selama n-kali", fn () {
+        ada a = []
+
+        3.kali(fn () {
+            a += [benar]
+        })
+
+        tuntut a == [benar, benar, benar]
+    })
+
+    tentang(".keRiil()", fn () {
+        ia("mengonversi dari integer ke riil", fn () {
+            tuntut 1.keRiil == 1.0
+            tuntut -1.keRiil == -1.0
+            tuntut 0.keRiil == 0.0
+            tuntut -0.keRiil == 0.0
+        })
+    })
+
+    ia(".kobit() mencetak kode bibit sebagai kunci peta", fn () {
+        tuntut 1.kobit() != nil
+        tuntut -2.kobit() != nil
+    })
+
+    ia(".negatif?() mengecek apakah suatu bilangan negatif atau positif", fn () {
+        tuntut -1.negatif?() == benar
+        tuntut -0.negatif?() == salah
+        tuntut 0.negatif?() == salah
+        tuntut 1.negatif?() == salah
+    })
+
+    tentang(".riil()", fn () {
+        ia("mengonversi dari integer ke riil", fn () {
+            tuntut 1.riil == 1.0
+            tuntut -1.riil == -1.0
+            tuntut 0.riil == 0.0
+            tuntut -0.riil == 0.0
+        })
+    })
+})

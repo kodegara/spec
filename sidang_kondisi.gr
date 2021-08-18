@@ -1,0 +1,255 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
+sidang("Ekspresi Kondisi", fn () {
+    ia("saat benar dan hanya memiliki blok kebenaran", fn() {
+        ada nilai = 0
+        tuntut nilai == 0
+
+        jika (benar) {
+            nilai = 1
+        }
+
+        tuntut nilai == 1
+    })
+
+    ia("saat salah dan hanya memiliki blok kebenaran", fn() {
+        ada nilai = 0
+
+        jika (salah) {
+            nilai = 1
+        }
+
+        tuntut nilai == 0
+    })
+
+    ia("saat nil dan hanya memiliki blok kebenaran", fn() {
+        ada nilai = 0
+
+        jika (nil) {
+            nilai = 1
+        }
+
+        tuntut nilai == 0
+    })
+
+    ia("saat bernilai sebenar dan hanya memiliki blok kebenaran", fn() {
+        ada nilai = 0
+
+        jika (1) {
+            nilai += 2
+        }
+
+        jika ("gara") {
+            nilai -= 1
+        }
+
+        tuntut nilai == 1
+    })
+
+    ia("bisa mengutus dari blok paling dalam", fn () {
+        ada a
+
+        a = fn () {
+            jika (10 > 1) {
+                jika (10 > 1) {
+                    utus 1
+                }
+
+                utus 2
+            }
+        }()
+
+        tuntut a == 1
+    })
+
+    ia("saat salah dan memiliki blok lain", fn () {
+        ada a
+
+        jika (salah) {
+            a = 1
+        } lain {
+            a = 2
+        }
+
+        tuntut a == 2
+    })
+
+    tentang("sebagai ekspresi", fn () {
+        ia("bisa digunakan dengan blok `{}`", fn () {
+            tuntut jika benar { 1 } == 1
+            tuntut jika benar { 1 } lain { 2 } == 1
+            tuntut jika salah { 1 } lain { 2 } == 2
+        })
+
+        xia("bisa digunakan setelah ekspresi", fn () {
+            // todo: bisa dilakukan:
+            // tuntut 1 jika benar == 1
+            // tuntut 1 jika salah == nil
+        })
+    })
+
+    tentang("dengan ekspresi penempatan sebagai bagian kondisi", fn () {
+        saat("pengenal sudah terdefinisikan", fn () {
+            ia("dilakukan jika bernilai `benar`", fn () {
+                ada a, dilakukan
+
+                jika (a = 15) {
+                    dilakukan = benar
+                } lain {
+                    dilakukan = salah
+                }
+
+                tuntut dilakukan == benar
+            })
+        })
+
+        saat("pengenal baru terdefinisikan dengan `ada`", fn () {
+            ia("bisa dilakukan", fn () {
+                ada dilakukan, a = 1
+
+                // todo: nilai 1 harusnya 1 diluar blok ini, shadowed, seperti di looping
+                jika (ada a = 15) {
+                    dilakukan = benar
+                } lain {
+                    dilakukan = salah
+                }
+
+                tuntut dilakukan == benar
+                tuntut a == 15
+            })
+        })
+
+        saat("menggunakan operasi keduk yang rumit", fn () {
+            xia("bisa dilakukan", fn () {
+                // jika (ada a, b = ..[benar, salah] && a == benar && b == salah) {
+                // }
+            })
+        })
+    })
+
+    tentang("dengan berbagai cabang alternatif berkondisi", fn () {
+        ia("tidak boleh menggunakan cabang alternatif berkondisi setelah cabang alternatif tak berkondisi", fn () {
+            // setelah memiliki fungsi eval() & multi-line string
+            coba {
+                eval!("
+                jika (benar) { }
+                lain { }
+                lain jika (salah) { }
+                ")
+                salah
+            } tahan (e) {
+                tuntut e itu MasalahKode
+                tuntut e.pesan() == "tidak diperbolehkan adanya `lain` pada posisi tersebut"
+                benar
+            } == benar
+        })
+
+        tentang("cabang utama bernilai benar", fn () {
+            ia("hanya mengeksekusi cabang utama meski terdapat 1 cabang alternatif berkondisi", fn () {
+                ada a
+                tuntut a == nil
+
+                jika (benar) {
+                    a = 1
+                } lain jika (benar) {
+                    a = 2
+                }
+
+                tuntut a == 1
+
+                a = nil
+                tuntut a == nil
+
+                jika (benar) {
+                    a = 1
+                } lain jika (benar) {
+                    a = 2
+                } lain {
+                    a = 3
+                }
+
+                tuntut a == 1
+            })
+
+            ia("hanya mengeksekusi cabang utama meski terdapat 2 cabang alternatif berkondisi", fn () {
+                ada a
+                tuntut a == nil
+
+                jika (benar) { a = 1 }
+                lain jika (benar) { a = 2 }
+                lain jika (benar) { a = 3 }
+
+                tuntut a == 1
+
+                a = nil
+                tuntut a == nil
+
+                jika (benar) { a = 1 }
+                lain jika (benar) { a = 2 }
+                lain jika (benar) { a = 3 }
+                lain { a = 4 }
+
+                tuntut a == 1
+            })
+        })
+
+        tentang("cabang utama bernilai salah", fn () {
+            ia("mengeksekusi cabang alternatif berkondisi pertama yang bernilai benar", fn () {
+                ada a
+
+                jika (salah) { a = 1 }
+                lain jika (benar) { a = 2 }
+                lain jika (benar) { a = 3 }
+                lain { a = 4 }
+
+                tuntut a == 2
+
+                a = nil
+                tuntut a == nil
+
+                jika (salah) { a = 1 }
+                lain jika (salah) { a = 2 }
+                lain jika (benar) { a = 3 }
+                lain { a = 4 }
+
+                tuntut a == 3
+
+                a = nil
+                tuntut a == nil
+
+                jika (salah) { a = 1 }
+                lain jika (salah) { a = 2 }
+                lain jika !(salah) { a = 3 }
+                lain { a = 4 }
+
+                tuntut a == 3
+            })
+
+            ia("mengeksekusi cabang alternatif tak berkondisi jika ada dengan catatan seluruh cabang yang berkondisi bernilai salah", fn () {
+                ada a
+
+                jika (salah) { a = 1 }
+                lain jika (salah) { a = 2 }
+                lain jika (salah) { a = 3 }
+                lain jika !(benar) { a = 4 }
+                lain { a = 5 }
+
+                tuntut a == 5
+            })
+
+            ia("tidak mengeksekusi blok manapung jika tidak ada cabang yang bernilai sebenar", fn () {
+                ada a
+
+                jika (salah) { a = 1 }
+                lain jika (salah) { a = 2 }
+                lain jika (salah) { a = 3 }
+                lain jika (salah) { a = 4 }
+                lain jika !(benar) { a = 5 }
+
+                tuntut a == nil
+            })
+        })
+    })
+})

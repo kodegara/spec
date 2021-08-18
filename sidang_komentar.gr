@@ -1,0 +1,62 @@
+// Hak Cipta (c) 2021 Adam Notodikromo.
+// Hak cipta dilindungi undang-undang.
+// Penggunaan tunduk pada aturan lisensi.
+
+sidang("Komentar", fn () {
+    ia("boleh dekat dengan kata kunci", fn() {
+        // ada nilai = 0
+    })
+
+    ia("boleh dekat dengan operator", fn() {
+        // a == 0
+    })
+
+    ia("boleh berentetan sebaris", fn () {
+        // //
+    })
+
+    ia("boleh berentetan banyak baris", fn () {
+        // a
+        // b
+        // c
+        tuntut benar == benar
+
+        //
+        //
+        //
+        tuntut benar == benar
+    })
+
+    ia("bisa digunakan untuk mengomentari kode berdekatan dengan `ini`", fn () {
+        kelas A {
+            ada a
+
+            fn a() {
+                // aadadadsad
+                ini.a
+            }
+
+            fn b () {
+                // asdadad
+                ini.a()
+                a()
+            }
+        }
+
+        A.baru().a()
+        A.baru().b()
+    })
+
+    saat("mengomentari kelas untuk dokumentasi", fn () {
+        ia("bisa dilakukan tanpa diperlukannya garis baru", fn () {
+            tidakAda!(fn () { A })
+
+            // komentar kelas A
+            kelas A {}
+
+            tuntut eval!("// komentar kelas A\nkelas A {\n}") itu Kelas
+            tuntut eval!("\n// komentar kelas A\nkelas A {\n}") itu Kelas
+            eval!("// komentar kelas A\nkelas A {\n}\n\n//komentar kelas B\nkelas B {\n}")
+        })
+    })
+})
