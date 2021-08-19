@@ -1412,7 +1412,7 @@ sidang("Operator", fn () {
                     1 |> fn antahBerantah(){}()
                     salah
                 } tahan (e) {
-                    tuntut e.pesan == "aripicu `antahBerantah` hanya bisa dipicu dengan tanpa argumen"
+                    tuntut e.pesan == "`antahBerantah` hanya bisa dipicu dengan tanpa argumen"
                     benar
                 } == benar
             })

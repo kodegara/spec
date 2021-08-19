@@ -420,7 +420,7 @@ sidang("Penurunan `kelas`", fn () {
                             B.baru().a()
                             salah
                         } tahan (e) {
-                            tuntut e.pesan == "`a` adalah metode pribadi kelas B yang hanya bisa dipanggil dari dalam"
+                            tuntut e.pesan == "`a` adalah metode pribadi kelas B yang hanya bisa dipicu dari dalam"
                             benar
                         } == benar
                     })
@@ -577,7 +577,7 @@ sidang("Penurunan `kelas`", fn () {
                             B.a()
                             salah
                         } tahan (e) {
-                            tuntut e.pesan == "`a` adalah fungsi statis bersifat pribadi kelas B yang hanya bisa dipanggil dari dalam"
+                            tuntut e.pesan == "`a` adalah fungsi statis bersifat pribadi kelas B yang hanya bisa dipicu dari dalam"
                             benar
                         } == benar
                     })

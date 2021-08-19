@@ -10,7 +10,7 @@ sidang(Rangkap::Pabrik, fn () {
                 salah
             } tahan (e) {
                 tuntut e itu MasalahMetode
-                tuntut e.pesan == "`baru` adalah fungsi statis bersifat pribadi kelas Rangkap::Pabrik yang hanya bisa dipanggil dari dalam"
+                tuntut e.pesan == "`baru` adalah fungsi statis bersifat pribadi kelas Rangkap::Pabrik yang hanya bisa dipicu dari dalam"
                 benar
             } == benar
         })

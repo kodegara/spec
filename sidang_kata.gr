@@ -152,7 +152,7 @@ sidang(Kata, fn () {
 
     ia(".cari(arg1) menemukan posisi dimana Kata dapat ditemukan dalam Kata untuk pertama kalinya", fn () {
         tuntut coba { "".cari(1) } tahan (e) { e.pesan().berisi?("tidak dapat menerima Integer") }
-        tuntut coba { "".cari("1", "2") } tahan (e) { e.pesan().berisi?("`cari` hanya bisa dipanggil dengan 1 argumen") }
+        tuntut coba { "".cari("1", "2") } tahan (e) { e.pesan().berisi?("`cari` hanya bisa dipicu dengan 1 argumen") }
 
         tuntut "foobar".cari("") == 0
         tuntut "foobar".cari("foo") == 0
@@ -227,7 +227,7 @@ sidang(Kata, fn () {
     })
 
     ia(".kecil() menjadikan seluruh karakter berhuruf kecil", fn () {
-        tuntut coba { "".kecil(1) } tahan (e) { e.pesan().berisi?("`kecil` hanya bisa dipanggil dengan tanpa argumen") }
+        tuntut coba { "".kecil(1) } tahan (e) { e.pesan().berisi?("`kecil` hanya bisa dipicu dengan tanpa argumen") }
 
         tuntut "ABC".kecil() == "abc"
         tuntut "Abc".kecil() == "abc"
@@ -280,7 +280,7 @@ sidang(Kata, fn () {
     })
 
     ia(".panjang() memberi informasi jumlah karakter dalam kata", fn () {
-        tuntut coba { "".panjang(1) } tahan (e) { e.pesan().berisi?("`panjang` hanya bisa dipanggil dengan tanpa argumen") }
+        tuntut coba { "".panjang(1) } tahan (e) { e.pesan().berisi?("`panjang` hanya bisa dipicu dengan tanpa argumen") }
 
         tuntut "".panjang() == 0
         tuntut "1".panjang() == 1
@@ -309,7 +309,7 @@ sidang(Kata, fn () {
     })
 
     ia(".rapi() menghapus seluruh karakter spasi diawal dan diakhir Kata", fn () {
-        tuntut coba { "".rapi(1) } tahan (e) { e.pesan().berisi?("`rapi` hanya bisa dipanggil dengan tanpa argumen") }
+        tuntut coba { "".rapi(1) } tahan (e) { e.pesan().berisi?("`rapi` hanya bisa dipicu dengan tanpa argumen") }
 
         tuntut "   Gara   ".rapi() == "Gara"
         tuntut "  G a r a   ".rapi() == "G a r a"

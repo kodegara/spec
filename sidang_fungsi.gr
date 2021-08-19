@@ -207,7 +207,7 @@ sidang(Fungsi, fn () {
                     salah
                 } tahan (e) {
                     tuntut e itu MasalahArgumen
-                    tuntut e.pesan() == "hanya bisa dipanggil dengan 2 argumen"
+                    tuntut e.pesan() == "aripicu hanya bisa dipicu dengan 2 argumen"
                 } == benar
             })
 

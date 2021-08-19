@@ -664,7 +664,7 @@ sidang("Statis pada `kelas`", fn () {
                 A.b()
                 salah
             } tahan (e) {
-                tuntut e.pesan() == "`b` adalah fungsi statis bersifat pribadi kelas A yang hanya bisa dipanggil dari dalam"
+                tuntut e.pesan() == "`b` adalah fungsi statis bersifat pribadi kelas A yang hanya bisa dipicu dari dalam"
                 benar
             } == benar
         })
@@ -745,7 +745,7 @@ sidang("Statis pada `kelas`", fn () {
                     A.baru()
                     salah
                 } tahan (e) {
-                    tuntut e.pesan() == "`baru` adalah fungsi statis bersifat pribadi kelas A yang hanya bisa dipanggil dari dalam"
+                    tuntut e.pesan() == "`baru` adalah fungsi statis bersifat pribadi kelas A yang hanya bisa dipicu dari dalam"
                     benar
                 } == benar
             })

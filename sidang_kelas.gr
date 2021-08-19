@@ -1059,7 +1059,7 @@ sidang(Kelas, fn () {
                 salah
             } tahan (e) {
                 tuntut e itu Masalah
-                tuntut e.pesan() == "`sapa` adalah metode pribadi kelas Penyapa yang hanya bisa dipanggil dari dalam"
+                tuntut e.pesan() == "`sapa` adalah metode pribadi kelas Penyapa yang hanya bisa dipicu dari dalam"
                 benar
             } == benar
 
@@ -1094,7 +1094,7 @@ sidang(Kelas, fn () {
                 A.baru().b()
                 salah
             } tahan (e) {
-                tuntut e.pesan() == "`a` adalah metode pribadi kelas A yang hanya bisa dipanggil dari dalam"
+                tuntut e.pesan() == "`a` adalah metode pribadi kelas A yang hanya bisa dipicu dari dalam"
                 benar
             } == benar
         })
