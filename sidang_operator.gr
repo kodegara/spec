@@ -1333,4 +1333,89 @@ sidang("Operator", fn () {
             })
         })
     })
+
+    tentang("|> (operasi salur)", fn () {
+        ia("dapat digunakan tanpa argumen tambahan", fn () {
+            ada tambah5 = fn (arg1) { arg1 + 5 }
+            ada a = 1 |> fn (arg1){ arg1 + 5 }() |> tambah5()
+            tuntut a == 11
+        })
+
+        ia("dapat digunakan dengan fungsi statis dalam kelas", fn () {
+            tidakAda!(fn () { Matku })
+
+            kelas Matku {
+                fn sta tambah(a1, a2) { a1 + a2 }
+                fn sta kurang(a1, a2) { a1 - a2 }
+                fn sta kali(a1, a2) { a1 * a2 }
+                fn sta bagi(a1, a2) { a1 / a2 }
+                fn sta tambah5(a1) { a1 + 5 }
+            }
+
+            ada angka = 1
+                |> Matku.tambah5()
+                |> Matku.kali(2)
+                |> Matku.kurang(2)
+                |> Matku.kali(3)
+                |> Matku.bagi(10)
+
+            tuntut angka == 3
+        })
+
+        ia("memiliki precedence yang rendah", fn () {
+            tuntut (1 + 2 |> fn(a) { a + 1 }()) == 4
+            tuntut (!benar |> fn (b) { !b }()) == benar
+            tuntut (!benar |> fn (b) { !b }() |> fn (b) { nil }()) == nil
+        })
+
+        ia("dapat melempar masalah", fn () {
+            tuntut coba {
+                1 + nil |> fn (x){ x }()
+                salah
+            } tahan (e) {
+                tuntut e.pesan == "tidak dapat menerima Nirdefinisi"
+                benar
+            } == benar
+
+            tuntut coba {
+                1 |> fn (x){ x + nil }()
+                salah
+            } tahan (e) {
+                tuntut e.pesan == "tidak dapat menerima Nirdefinisi"
+                benar
+            } == benar
+        })
+
+        saat("sisi kanan bukan fungsi", fn () {
+            ia("akan bermasalah", fn () {
+                tuntut coba {
+                    1 |> Kelas
+                    salah
+                } tahan (e) {
+                    tuntut e.pesan == "sisi kanan operasi salur (`|>`) harus pemanggilan aripicu"
+                    benar
+                } == benar
+            })
+        })
+
+        saat("sisi kanan adalah fungsi yang tidak menerima argumen", fn () {
+            ia("akan bermasalah", fn () {
+                tuntut coba {
+                    1 |> fn(){}()
+                    salah
+                } tahan (e) {
+                    tuntut e.pesan == "aripicu hanya bisa dipicu dengan tanpa argumen"
+                    benar
+                } == benar
+
+                tuntut coba {
+                    1 |> fn antahBerantah(){}()
+                    salah
+                } tahan (e) {
+                    tuntut e.pesan == "aripicu `antahBerantah` hanya bisa dipicu dengan tanpa argumen"
+                    benar
+                } == benar
+            })
+        })
+    })
 })
