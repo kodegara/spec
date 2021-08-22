@@ -1417,5 +1417,139 @@ sidang("Operator", fn () {
                 } == benar
             })
         })
+
+        saat("digunakan dengan kondisi bercabang", fn () {
+            saat("digunakan dengan ekspresi jika-lain", fn () {
+                saat("cabang memiliki satu pernyataan", fn () {
+                    ia("bisa dilakukan tanpa masalah", fn () {
+                        ada a = 1 |> jika (benar) { fn(n){n+1}() } lain { fn(n){n+2}() }
+                        tuntut a == 2
+
+                        ada a = 1 |> jika (salah) { fn(n){n+1}() } lain { fn(n){n+2}() }
+                        tuntut a == 3
+                    })
+                })
+
+                saat("cabang memiliki lebih dari satu pernyataan", fn () {
+                    ia("tidak bisa dilakukan", fn () {
+                        tuntut coba {
+                            ada a = 1 |> jika (benar) { ada a; fn(n){n+1}() } lain { ada b; fn(n){n+2}() }
+                            salah
+                        } tahan (e) {
+                            tuntut e.pesan == "cabang kondisi untuk operasi salur hanya dapat berisi satu pernyataan"
+                            benar
+                        } == benar
+                    })
+                })
+            })
+            saat("digunakan dengan operasi tigas (?:)", fn () {
+                saat("tidak memiliki cabang alternatif", fn () {
+                    ia("bermasalah", fn () {
+                        tuntut coba {
+                            eval!("1 ? benar")
+                            salah
+                        } tahan (e) {
+                            tuntut e.pesan == "seharusnya menjumpai `:`, tapi malah `UJUNG`"
+                            benar
+                        } == benar
+                    })
+                })
+
+                ia("bisa dilakukan tanpa masalah", fn () {
+                    ada fnA = fn (n) { n + 3 },
+                        fnB = fn (n) { n + 5 },
+                        fnC = fn (n) { n + 7 },
+                        fnD = fn (n) { n + 11 },
+                        fnE = fn (n) { n + 13 },
+                        fnF = fn (n) { n + 17 }
+
+                    ada a = 1 + 1 |> benar ? fnA() : fnB()
+                    tuntut a == 5
+
+                    ada a = 1 + 1 |> salah ? fnA() : fnB()
+                    tuntut a == 7
+
+                    ada a = 1 + 1
+                        |> salah ? fnA() : fnB()
+                            |> 1 == 1 ? fnC() : fnD()
+
+                    tuntut a == 14
+
+                    ada a = 1 + 1
+                        |> salah ? fnA() : fnB()
+                            |> salah ? fnC() : fnD()
+                                |> 1 == 1 ? fnE() : fnF()
+
+                    tuntut a == 31
+
+                    ada a = 1 + 1
+                        |> salah ? fnA() : fnB()
+                            |> salah ? fnC() : fnD()
+                                |> 1 != 1 ? fnE() : fnF()
+
+                    tuntut a == 35
+                })
+
+                saat("kondisi dinegasikan", fn () {
+                    ia("tetap bisa dioperasikan dengan benar", fn () {
+                        tuntut !benar ? "0" : "1" == "1"
+                        tuntut !salah ? "0" : "1" == "0"
+                    })
+                })
+            })
+        })
+    })
+
+    tentang("?: (operasi tigas)", fn () {
+        ia("mengutus cabang benar jika benar", fn () {
+            tuntut 1 ? "1" : "0" == "1"
+
+            ada x = fn () { benar }
+            tidakAda!(fn () { A })
+            kelas A { fn sta x() { benar }}
+
+            tuntut 1 && (benar || salah) && benar && (x() && A.x()) ? "1" : "0" == "1"
+        })
+
+        ia("mengutus cabang salah jika salah", fn () {
+            tuntut nil ? "1" : "0" == "0"
+
+            ada x = fn () { salah }
+            tidakAda!(fn () { A })
+            kelas A { fn sta x() { salah }}
+
+            tuntut 1 && (benar || salah) && benar && (x() && A.x()) && salah ? "1" : "0" == "0"
+        })
+
+        ia("bisa multi-baris", fn () {
+            ada a = 1 == 1 ?
+                "1" : "0"
+
+            tuntut a == "1"
+
+            ada a = 1 == 2 ?
+                "1" :
+                "0"
+
+            tuntut a == "0"
+
+            ada a = 2 == 2
+                ? "1"
+                : "0"
+
+            tuntut a == "1"
+        })
+
+        saat("digunakan dengan operasi penempatan", fn () {
+            ada a = 1 > 0 ? "1" : "0"
+            tuntut a == "1"
+
+            ada a = 1 > 2 ? "1" : "2"
+            tuntut a == "2"
+
+            ada a = 4 > 3 ? "0" : "1", b = 3 > 4 ? "0" : "1"
+            tuntut a == "0"
+            tuntut b == "1"
+        })
     })
 })
