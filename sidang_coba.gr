@@ -95,7 +95,7 @@ sidang("Ekspresi coba", fn () {
         }
 
         tuntut masalah1.pesan() == "objek tipe Kelas tidak memiliki metode `baru` yang bisa dipanggil"
-        tuntut masalah2.pesan() == "hanya bisa dipanggil dengan 1 argumen"
+        tuntut masalah2.pesan() == "aripicu hanya bisa dipicu dengan 1 argumen"
     })
 
     ia("variabel pengenal pada blok penahan bisa shadowing variabel dengan pengenal yang sama", fn () {

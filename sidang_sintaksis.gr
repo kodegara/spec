@@ -20,7 +20,7 @@ sidang("Sintaksis", fn () {
                 salah
             } tahan (e) {
                 tuntut e itu MasalahEksekusi
-                tuntut e.pesan() == "bukan fungsi: 2"
+                tuntut e.pesan() == "bukan fungsi: \"2\""
             }
         })
 

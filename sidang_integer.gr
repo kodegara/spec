@@ -18,6 +18,45 @@ sidang(Integer, fn () {
         tuntut !(satu itu Kelas)
     })
 
+    tentang("penggunaan tanda hubung `_`", fn () {
+        ia("bisa dilakukan ditengah angka", fn () {
+            tuntut 1_2 == 12
+            tuntut 123_000 == 123000
+            tuntut 123_0 == 1230
+            tuntut 123_456_789 == 123456789
+        })
+
+        ia("tidak bisa dilakukan diawal angka", fn () {
+            tuntut coba {
+                _123
+                salah
+            } tahan (e) {
+                tuntut e.pesan == "pengenal `_123` tidak ditemukan atau belum terdefinisikan"
+                benar
+            } == benar
+        })
+
+        ia("tidak bisa dilakukan diakhir angka", fn () {
+            tuntut coba {
+                eval!("123_")
+                salah
+            } tahan (e) {
+                tuntut e.pesan == "angka `123_` tidak dimengerti"
+                benar
+            } == benar
+        })
+
+        ia("tidak bisa bersambungan", fn () {
+            tuntut coba {
+                eval!("1__2")
+                salah
+            } tahan (e) {
+                tuntut e.pesan == "angka `1__2` tidak dimengerti"
+                benar
+            } == benar
+        })
+    })
+
     ia(".mutlak() mengutus nilai non-negatif", fn () {
         tuntut 5.mutlak() == 5
         tuntut -5.mutlak() == 5

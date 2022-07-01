@@ -32,7 +32,37 @@ sidang("Penurunan `kelas`", fn () {
         tuntut A2.moyang.berisi?(Objek) == benar
     })
 
-    tentang("kelas telah terdefinisikan", fn () {
+    ia("bisa bersifat tetap", fn () {
+        tidakAda!(fn () { A })
+        tidakAda!(fn () { B })
+
+        kelas A { ada a = "a" }
+        kelas tetap B -> A { ada b = "b" }
+
+        tuntut B.tetap?
+        ada b = B.baru
+        tuntut b.a == "a"
+        tuntut b.b == "b"
+    })
+
+    saat("menurun dari kelas yang bersifat tetap", fn () {
+        ia("tidak bisa dilakukan", fn () {
+            tidakAda!(fn () { A })
+            tidakAda!(fn () { B })
+
+            kelas tetap A {}
+
+            tuntut coba {
+                kelas B -> A {}
+                salah
+            } tahan (e) {
+                tuntut e.pesan == "kelas punca `A` tidak dapat diturunkan karena telah bersifat tetap"
+                benar
+            } == benar
+        })
+    })
+
+    saat("kelas telah terdefinisikan", fn () {
         ia("bermasalah jika kelas punca berbeda", fn () {
             tuntut coba {
                 kelas Masalah -> Riil {}
@@ -390,7 +420,7 @@ sidang("Penurunan `kelas`", fn () {
                             B.baru().a()
                             salah
                         } tahan (e) {
-                            tuntut e.pesan == "`a` adalah metode pribadi kelas B yang hanya bisa dipanggil dari dalam"
+                            tuntut e.pesan == "`a` adalah metode pribadi kelas B yang hanya bisa dipicu dari dalam"
                             benar
                         } == benar
                     })
@@ -547,7 +577,7 @@ sidang("Penurunan `kelas`", fn () {
                             B.a()
                             salah
                         } tahan (e) {
-                            tuntut e.pesan == "`a` adalah fungsi statis bersifat pribadi kelas B yang hanya bisa dipanggil dari dalam"
+                            tuntut e.pesan == "`a` adalah fungsi statis bersifat pribadi kelas B yang hanya bisa dipicu dari dalam"
                             benar
                         } == benar
                     })

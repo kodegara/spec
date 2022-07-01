@@ -10,6 +10,45 @@ sidang("Riil", fn () {
         tuntut Riil.PI >= 3.14
     })
 
+    tentang("penggunaan tanda hubung `_`", fn () {
+        ia("bisa dilakukan ditengah angka", fn () {
+            tuntut 123_456.789 == 123456.789
+            tuntut 123.456_789 == 123.456789
+            tuntut 123.45_67_89 == 123.456789
+            tuntut 12_3.45_67_89 == 123.456789
+        })
+
+        ia("tidak bisa dilakukan diawal angka", fn () {
+            tuntut coba {
+                eval!("_123.456")
+                salah
+            } tahan (e) {
+                tuntut e.pesan == "seharusnya menjumpai `IDENTITAS`, tapi malah `INTEGER`"
+                benar
+            } == benar
+        })
+
+        ia("tidak bisa dilakukan diakhir angka", fn () {
+            tuntut coba {
+                eval!("123.456_")
+                salah
+            } tahan (e) {
+                tuntut e.pesan == "angka `123.456_` tidak dimengerti"
+                benar
+            } == benar
+        })
+
+        ia("tidak bisa bersambungan", fn () {
+            tuntut coba {
+                eval!("123.45__6")
+                salah
+            } tahan (e) {
+                tuntut e.pesan == "angka `123.45__6` tidak dimengerti"
+                benar
+            } == benar
+        })
+    })
+
     tentang(".desimal(arg1)", fn () {
         ada angka = 12650.5011872336272724
         ada angkaAsli = 12650.5011872336272724

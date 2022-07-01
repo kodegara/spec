@@ -33,7 +33,7 @@ sidang(Deret, fn () {
                     [].awal(1)
                 } tahan (e) {
                     tuntut e itu MasalahArgumen
-                    tuntut e.pesan().berisi?("`awal` hanya bisa dipanggil dengan tanpa argumen")
+                    tuntut e.pesan().berisi?("`awal` hanya bisa dipicu dengan tanpa argumen")
                     benar
                 }
 
